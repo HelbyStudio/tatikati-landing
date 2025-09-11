@@ -7,18 +7,19 @@ interface PodcastScrollerState {
   currentIndex: number;
   totalItems: number;
   cardWidth: number;
+  trackPadding: number;
   isAnimating: boolean;
   touchStartX: number;
   touchCurrentX: number;
   isDragging: boolean;
   autoplayInterval?: number;
+  scrollTimeout?: number;
+  isManualScrolling: boolean;
 }
 
 class PodcastScroller {
   private container: HTMLElement;
   private track: HTMLElement;
-  private prevBtn: HTMLButtonElement;
-  private nextBtn: HTMLButtonElement;
   private indicators: NodeListOf<HTMLButtonElement>;
   private cards: NodeListOf<HTMLElement>;
   private featuredPlayer: HTMLElement;
@@ -27,9 +28,7 @@ class PodcastScroller {
   constructor(container: HTMLElement) {
     this.container = container;
     this.track = container.querySelector('[data-podcast-track]') as HTMLElement;
-    this.prevBtn = container.querySelector('.control-prev') as HTMLButtonElement;
-    this.nextBtn = container.querySelector('.control-next') as HTMLButtonElement;
-    this.indicators = container.querySelectorAll('[data-indicator-index]') as NodeListOf<HTMLButtonElement>;
+    this.indicators = container.parentElement?.parentElement?.querySelectorAll('[data-indicator-index]') as NodeListOf<HTMLButtonElement>;
     this.cards = container.querySelectorAll('.podcast-card') as NodeListOf<HTMLElement>;
     this.featuredPlayer = document.querySelector('[data-featured-player]') as HTMLElement;
 
@@ -37,10 +36,12 @@ class PodcastScroller {
       currentIndex: 0,
       totalItems: this.cards.length,
       cardWidth: 0,
+      trackPadding: 0,
       isAnimating: false,
       touchStartX: 0,
       touchCurrentX: 0,
-      isDragging: false
+      isDragging: false,
+      isManualScrolling: false
     };
 
     this.init();
@@ -55,17 +56,17 @@ class PodcastScroller {
 
   private calculateDimensions(): void {
     if (this.cards.length > 0) {
-      const cardStyle = window.getComputedStyle(this.cards[0]);
+      const trackStyle = window.getComputedStyle(this.track);
       const cardWidth = this.cards[0].offsetWidth;
-      const gap = parseInt(cardStyle.marginRight) || 16;
+      const trackPadding = parseInt(trackStyle.paddingLeft) || 0;
+      const gap = parseInt(trackStyle.gap) || 16;
+      
       this.state.cardWidth = cardWidth + gap;
+      this.state.trackPadding = trackPadding;
     }
   }
 
   private bindEvents(): void {
-    // Navigation buttons
-    this.prevBtn?.addEventListener('click', () => this.goToPrevious());
-    this.nextBtn?.addEventListener('click', () => this.goToNext());
 
     // Indicator buttons
     this.indicators.forEach((indicator, index) => {
@@ -105,6 +106,9 @@ class PodcastScroller {
       this.updatePosition();
     });
 
+    // Listen for manual scroll to update indicators
+    this.container.addEventListener('scroll', () => this.handleManualScroll());
+
     // Pause autoplay on hover
     this.container.addEventListener('mouseenter', () => this.stopAutoplay());
     this.container.addEventListener('mouseleave', () => this.startAutoplay());
@@ -134,10 +138,10 @@ class PodcastScroller {
     
     // Add resistance at boundaries
     const resistance = this.getBoundaryResistance(deltaX);
-    const currentTranslate = -this.state.currentIndex * this.state.cardWidth;
-    const newTranslate = currentTranslate + deltaX * resistance;
+    const currentScrollLeft = this.state.currentIndex * this.state.cardWidth;
+    const newScrollLeft = Math.max(0, currentScrollLeft - deltaX * resistance);
 
-    this.track.style.transform = `translateX(${newTranslate}px)`;
+    this.container.scrollLeft = newScrollLeft;
   }
 
   private handleTouchEnd(): void {
@@ -174,10 +178,10 @@ class PodcastScroller {
     this.state.touchCurrentX = e.clientX;
     const deltaX = this.state.touchCurrentX - this.state.touchStartX;
     const resistance = this.getBoundaryResistance(deltaX);
-    const currentTranslate = -this.state.currentIndex * this.state.cardWidth;
-    const newTranslate = currentTranslate + deltaX * resistance;
+    const currentScrollLeft = this.state.currentIndex * this.state.cardWidth;
+    const newScrollLeft = Math.max(0, currentScrollLeft - deltaX * resistance);
 
-    this.track.style.transform = `translateX(${newTranslate}px)`;
+    this.container.scrollLeft = newScrollLeft;
   }
 
   private handleMouseUp(): void {
@@ -200,6 +204,44 @@ class PodcastScroller {
     }
 
     this.startAutoplay();
+  }
+
+  private handleManualScroll(): void {
+    if (this.state.isDragging || this.state.isAnimating) return;
+
+    // Mark as manual scrolling and pause autoplay
+    if (!this.state.isManualScrolling) {
+      this.state.isManualScrolling = true;
+      this.stopAutoplay();
+    }
+
+    // Clear existing timeout
+    if (this.state.scrollTimeout) {
+      clearTimeout(this.state.scrollTimeout);
+    }
+
+    // Calculate current index based on scroll position
+    const scrollLeft = this.container.scrollLeft;
+    // Account for track padding and add a small threshold to handle floating point precision
+    const adjustedScrollLeft = scrollLeft - this.state.trackPadding;
+    const newIndex = Math.round((adjustedScrollLeft + 10) / this.state.cardWidth);
+    
+    // Ensure we're within bounds
+    const boundedIndex = Math.max(0, Math.min(this.getMaxIndex(), newIndex));
+    
+    if (boundedIndex !== this.state.currentIndex) {
+      this.state.currentIndex = boundedIndex;
+      this.updateIndicators();
+      
+      // Debug log to see what's happening
+      console.log('Manual scroll - scrollLeft:', scrollLeft, 'cardWidth:', this.state.cardWidth, 'newIndex:', boundedIndex);
+    }
+
+    // Set timeout to resume autoplay after user stops scrolling
+    this.state.scrollTimeout = window.setTimeout(() => {
+      this.state.isManualScrolling = false;
+      this.startAutoplay();
+    }, 2000); // Resume autoplay after 2 seconds of no scrolling
   }
 
   private getBoundaryResistance(deltaX: number): number {
@@ -322,26 +364,25 @@ class PodcastScroller {
   }
 
   private updatePosition(): void {
-    const translateX = -this.state.currentIndex * this.state.cardWidth;
-    this.track.style.transform = `translateX(${translateX}px)`;
+    const scrollLeft = (this.state.currentIndex * this.state.cardWidth) + this.state.trackPadding;
+    this.container.scrollTo({
+      left: scrollLeft,
+      behavior: 'smooth'
+    });
   }
 
   private updateUI(): void {
-    // Update navigation buttons
-    if (this.prevBtn) {
-      this.prevBtn.disabled = this.state.currentIndex === 0;
-    }
-    if (this.nextBtn) {
-      this.nextBtn.disabled = this.state.currentIndex === this.getMaxIndex();
-    }
-
     // Update indicators
-    this.indicators.forEach((indicator, index) => {
-      indicator.classList.toggle('active', index === this.state.currentIndex);
-    });
+    this.updateIndicators();
 
     // Update ARIA live region for screen readers
     this.announceSlideChange();
+  }
+
+  private updateIndicators(): void {
+    this.indicators.forEach((indicator, index) => {
+      indicator.classList.toggle('active', index === this.state.currentIndex);
+    });
   }
 
   private announceSlideChange(): void {

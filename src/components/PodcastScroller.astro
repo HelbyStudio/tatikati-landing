@@ -22,30 +22,37 @@ const displayPodcasts = showAll ? podcasts : podcasts.slice(0, 8);
     <div class="podcasts-header">
       <h2 class="section-title">{title}</h2>
       <p class="section-subtitle">{subtitle}</p>
-      
-      <div class="podcasts-controls">
-        <button class="control-btn control-prev" aria-label="Podcasts précédents">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-            <path d="M12 16L6 10L12 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-        <button class="control-btn control-next" aria-label="Podcasts suivants">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-            <path d="M8 4L14 10L8 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-      </div>
     </div>
 
-    <!-- Podcast Scroller -->
-    <div class="podcast-scroller-container">
-      <div 
-        class="podcast-scroller" 
-        data-podcast-scroller
-        role="region"
-        aria-label="Liste des podcasts"
-      >
-        <div class="podcast-track" data-podcast-track>
+    <!-- Content Layout -->
+    <div class="podcasts-content">
+      <!-- iPhone Preview -->
+      <div class="iphone-preview">
+        <div class="iframe-container">
+          <iframe 
+            src="https://share.tatikati.app/embed/e/nTyvW0HFluWs"
+            title="Aperçu de l'épisode Tatikati"
+            loading="lazy"
+            allowfullscreen
+          ></iframe>
+        </div>
+        
+        <!-- Testez moi CTA -->
+        <div class="cta-handwritten">
+          <div class="cta-text">Testez moi</div>
+          <div class="cta-arrow">↗</div>
+        </div>
+      </div>
+
+      <!-- Podcast Scroller -->
+      <div class="podcast-scroller-container">
+        <div 
+          class="podcast-scroller" 
+          data-podcast-scroller
+          role="region"
+          aria-label="Liste des podcasts"
+        >
+          <div class="podcast-track" data-podcast-track>
           {displayPodcasts.map((podcast, index) => (
             <div 
               class="podcast-card" 
@@ -65,24 +72,19 @@ const displayPodcasts = showAll ? podcasts : podcasts.slice(0, 8);
                 />
                 <div class="play-overlay">
                   <div class="play-button">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M8 5v14l11-7z"/>
-                    </svg>
+                    <i class="fa-solid fa-play"></i>
                   </div>
                 </div>
               </div>
               
               <div class="podcast-info">
                 <h3 class="podcast-title">{podcast.title}</h3>
-                {podcast.description && (
-                  <p class="podcast-description">{podcast.description}</p>
-                )}
               </div>
             </div>
           ))}
         </div>
       </div>
-
+      
       <!-- Scroll Indicators -->
       <div class="scroll-indicators" data-scroll-indicators>
         {displayPodcasts.map((_, index) => (
@@ -93,6 +95,7 @@ const displayPodcasts = showAll ? podcasts : podcasts.slice(0, 8);
           ></button>
         ))}
       </div>
+    </div>
     </div>
 
     <!-- Featured Podcast Player -->
@@ -148,63 +151,119 @@ const displayPodcasts = showAll ? podcasts : podcasts.slice(0, 8);
     margin: 0 auto;
   }
 
-  .podcasts-controls {
-    position: absolute;
-    top: 0;
-    right: 0;
-    display: flex;
-    gap: var(--space-sm);
+  /* Podcasts Content Layout */
+  .podcasts-content {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-3xl);
+    align-items: flex-start;
+    position: relative;
   }
 
-  .control-btn {
-    width: 44px;
-    height: 44px;
-    border: 1px solid var(--color-gray-300);
-    background: white;
-    border-radius: var(--radius-full);
+  /* iPhone Preview */
+  .iphone-preview {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    color: var(--color-gray-600);
+    margin-bottom: var(--space-xl);
+    position: relative;
   }
 
-  .control-btn:hover {
-    background: var(--color-accent-1);
-    color: white;
-    border-color: var(--color-accent-1);
-    transform: scale(1.05);
+  .iframe-container {
+    position: relative;
+    width: 100%;
+    max-width: 400px; /* Agrandie */
+    aspect-ratio: 9/16; /* iPhone ratio */
+    border-radius: 32px;
+    overflow: hidden;
+    box-shadow: 0 0px 32px rgba(0, 0, 0, 0.5);
+    border: none;
+    background: #000;
+    z-index: 10;
+    margin-bottom: var(--space-md);
+  }
+  
+  /* Handwritten CTA */
+  .cta-handwritten {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    margin-top: var(--space-sm);
+  }
+  
+  .cta-text {
+    font-family: 'Kalam', cursive, var(--font-body);
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--color-accent-1);
+    transform: rotate(-2deg);
+    line-height: 1;
+  }
+  
+  .cta-arrow {
+    font-size: 2rem;
+    color: var(--color-accent-1);
+    transform: rotate(-15deg);
+    animation: bounce 2s infinite;
+  }
+  
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+      transform: rotate(-15deg) translateY(0);
+    }
+    40% {
+      transform: rotate(-15deg) translateY(-3px);
+    }
+    60% {
+      transform: rotate(-15deg) translateY(-1px);
+    }
   }
 
-  .control-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    transform: none;
+  .iframe-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 22px;
   }
 
-  .control-btn:disabled:hover {
-    background: white;
-    color: var(--color-gray-600);
-    border-color: var(--color-gray-300);
+  /* Font Awesome Icons */
+  .play-button i {
+    font-size: 20px;
   }
 
   /* Podcast Scroller */
   .podcast-scroller-container {
     position: relative;
+    overflow: hidden;
+    padding-bottom: 40px;
   }
 
   .podcast-scroller {
-    overflow: hidden;
+    overflow-x: auto;
+    overflow-y: hidden;
     border-radius: var(--radius-lg);
-    margin-bottom: var(--space-xl);
+    margin-bottom: var(--space-sm);
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+    position: relative;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+  }
+  
+  .podcast-scroller::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
   }
 
   .podcast-track {
     display: flex;
     gap: var(--space-lg);
     transition: transform 0.5s ease;
-    padding: var(--space-sm);
+    padding: var(--space-lg);
+    width: max-content;
   }
 
   .podcast-card {
@@ -216,6 +275,8 @@ const displayPodcasts = showAll ? podcasts : podcasts.slice(0, 8);
     cursor: pointer;
     transition: all 0.3s ease;
     border: 1px solid var(--color-gray-200);
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
   }
 
   .podcast-card:hover {
@@ -313,7 +374,8 @@ const displayPodcasts = showAll ? podcasts : podcasts.slice(0, 8);
     display: flex;
     justify-content: center;
     gap: var(--space-sm);
-    margin-top: var(--space-xl);
+    margin-top: var(--space-sm);
+    padding-bottom: var(--space-md);
   }
 
   .indicator {
@@ -427,13 +489,38 @@ const displayPodcasts = showAll ? podcasts : podcasts.slice(0, 8);
   }
 
   /* Responsive Design */
-  @media (max-width: 767px) {
-    .podcasts-controls {
-      position: static;
-      justify-content: center;
-      margin-top: var(--space-lg);
+  @media (min-width: 968px) {
+    .podcasts-content {
+      grid-template-columns: 350px 1fr;
+      gap: var(--space-lg);
+      align-items: center;
+      overflow: visible;
     }
 
+    .iphone-preview {
+      margin-bottom: 0;
+      position: sticky;
+      top: 100px;
+      z-index: 15;
+    }
+
+    .iframe-container {
+      max-width: 350px;
+    }
+    
+    .podcast-scroller-container {
+      position: relative;
+      z-index: 5;
+    }
+    
+    .podcast-scroller {
+      mask: linear-gradient(to right, black 0%, black 90%, transparent 100%);
+      -webkit-mask: linear-gradient(to right, black 0%, black 90%, transparent 100%);
+    }
+    
+  }
+
+  @media (max-width: 767px) {
     .podcast-card {
       flex: 0 0 260px;
     }
@@ -451,17 +538,6 @@ const displayPodcasts = showAll ? podcasts : podcasts.slice(0, 8);
       border-color: var(--color-gray-800);
     }
 
-    .control-btn {
-      background: var(--color-gray-800);
-      border-color: var(--color-gray-700);
-      color: var(--color-gray-300);
-    }
-
-    .control-btn:disabled {
-      background: var(--color-gray-800);
-      color: var(--color-gray-600);
-      border-color: var(--color-gray-700);
-    }
 
     .featured-content {
       background: var(--color-gray-900);

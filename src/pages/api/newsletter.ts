@@ -2,7 +2,18 @@ import type { APIRoute } from 'astro';
 
 export const POST: APIRoute = async ({ request }) => {
   try {
-    const data = await request.json();
+    // Parse JSON with error handling
+    let data;
+    try {
+      data = await request.json();
+    } catch (jsonError) {
+      console.error('JSON parsing error:', jsonError);
+      return new Response(
+        JSON.stringify({ error: 'Format de requête invalide' }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+    
     const { email } = data;
 
     // Validate email

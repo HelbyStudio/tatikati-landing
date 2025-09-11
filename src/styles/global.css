@@ -10,13 +10,26 @@
 /* Design Tokens - Tatikati "julias" theme */
 :root {
   /* Colors */
-  --color-bg: #FFFFFF;
+  --color-bg: #F4ECF9;
   --color-fg: #222222;
-  --color-accent-1: #FF6B6B; /* Principal CTA */
-  --color-accent-2: #FFA94D; /* Secondary badges */
-  --color-accent-3: #4D96FF; /* Links */
-  --color-accent-4: #6BCB77; /* Success states */
-  
+  --color-accent-1: #FF6B6B;
+  /* Principal CTA */
+  --color-accent-2: #FFA94D;
+  /* Secondary badges */
+  --color-accent-3: #4D96FF;
+  /* Links */
+  --color-accent-4: #6BCB77;
+  /* Success states */
+
+  /* Category colors */
+  --color-category-1: #15D170;
+  --color-category-2: #169DC5;
+  --color-category-3: #B552E6;
+  --color-category-4: #E252A0;
+  --color-category-5: #EE5845;
+  --color-category-6: #F7661B;
+  --color-category-7: #E6C70B;
+
   /* Neutral colors */
   --color-gray-50: #F9FAFB;
   --color-gray-100: #F3F4F6;
@@ -25,23 +38,23 @@
   --color-gray-600: #4B5563;
   --color-gray-800: #1F2937;
   --color-gray-900: #111827;
-  
+
   /* Spacing & Layout */
   --container-max: 1200px;
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 16px;
   --radius-xl: 24px;
-  
+
   /* Shadows */
   --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.1);
   --shadow-lift: 0 8px 30px rgba(0, 0, 0, 0.15);
   --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.08);
-  
+
   /* Typography */
   --font-heading: 'Mochiy Pop One', cursive;
   --font-body: 'Inter', sans-serif;
-  
+
   /* Spacing scale */
   --space-xs: 8px;
   --space-sm: 12px;
@@ -65,7 +78,7 @@
     --color-gray-600: #A1A1A1;
     --color-gray-800: #D1D1D1;
     --color-gray-900: #E5E5E5;
-    
+
     /* Shadows for dark mode */
     --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.3);
     --shadow-lift: 0 8px 30px rgba(0, 0, 0, 0.4);
@@ -89,7 +102,12 @@ body {
 }
 
 /* Headings */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-heading);
   font-weight: 400;
   line-height: 1.2;
@@ -125,7 +143,8 @@ a {
   transition: color 0.2s ease;
 }
 
-a:hover, a:focus {
+a:hover,
+a:focus {
   color: var(--color-accent-1);
   outline: 2px solid var(--color-accent-3);
   outline-offset: 2px;
@@ -157,7 +176,7 @@ a:hover, a:focus {
   justify-content: center;
   padding: var(--space-sm) var(--space-lg);
   border: none;
-  border-radius: var(--radius-xl);
+  border-radius: 16px;
   font-family: var(--font-body);
   font-weight: 600;
   font-size: 1rem;
@@ -173,8 +192,12 @@ a:hover, a:focus {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--color-accent-1), var(--color-accent-2));
+  background: #F7661B;
   color: white;
+  font-weight: bold;
+  /* Squircle effect - continuous corner style */
+  border-radius: 16px;
+  clip-path: inset(0 round 16px);
 }
 
 .btn-primary:hover {
@@ -244,16 +267,22 @@ a:hover, a:focus {
 
 /* Animations */
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideUp {
-  from { 
+  from {
     opacity: 0;
     transform: translateY(20px);
   }
-  to { 
+
+  to {
     opacity: 1;
     transform: translateY(0);
   }

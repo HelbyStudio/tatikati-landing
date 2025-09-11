@@ -1,0 +1,198 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+  iosUrl?: string;
+  androidUrl?: string;
+}
+
+const {
+  title = "Prêt à commencer l'aventure ?",
+  description = "Rejoignez des milliers de familles qui ont déjà adopté Tatikati pour des moments d'écoute de qualité.",
+  iosUrl = "https://apps.apple.com/fr/app/tatikati",
+  androidUrl = "https://play.google.com/store/apps/details?id=com.tatikati.app"
+} = Astro.props;
+---
+
+<section class="download" id="download">
+  <div class="container">
+    <div class="download-content">
+      <div class="download-text">
+        <h2 class="download-title">{title}</h2>
+        <p class="download-description">{description}</p>
+        <div class="download-features">
+          <div class="feature-item">
+            <i class="fa-solid fa-heart"></i>
+            <span>Gratuit avec contenus premium</span>
+          </div>
+          <div class="feature-item">
+            <i class="fa-solid fa-shield-halved"></i>
+            <span>Mode enfant sécurisé</span>
+          </div>
+          <div class="feature-item">
+            <i class="fa-solid fa-folder"></i>
+            <span>500+ podcasts sélectionnés</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="download-apps">
+        <a 
+          href={iosUrl}
+          class="app-download ios-download"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img 
+            src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/fr-fr?size=250x83&releaseDate=1609459200"
+            alt="Télécharger sur l'App Store"
+            width="180"
+            height="63"
+            loading="lazy"
+          />
+        </a>
+        
+        <a 
+          href={androidUrl}
+          class="app-download android-download"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img 
+            src="https://play.google.com/intl/en_us/badges/static/images/badges/fr_badge_web_generic.png"
+            alt="Disponible sur Google Play"
+            width="180"
+            height="63"
+            loading="lazy"
+          />
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .download {
+    padding: var(--space-4xl) 0;
+    background: linear-gradient(135deg, var(--color-accent-4), var(--color-accent-3));
+    color: white;
+  }
+
+  .download-content {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-3xl);
+    align-items: center;
+    text-align: left;
+  }
+
+  .download-title {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    margin-bottom: var(--space-lg);
+    color: white;
+  }
+
+  .download-description {
+    font-size: clamp(1.1rem, 2vw, 1.25rem);
+    line-height: 1.6;
+    margin-bottom: var(--space-xl);
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .download-features {
+    display: flex;
+    justify-content: flex-start;
+    gap: var(--space-xl);
+    flex-wrap: wrap;
+    margin-bottom: var(--space-xl);
+  }
+
+  .feature-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.95rem;
+  }
+
+  .feature-item i {
+    font-size: 20px;
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .download-apps {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: var(--space-lg);
+    flex-wrap: wrap;
+  }
+
+  .app-download {
+    display: block;
+    transition: transform 0.2s ease;
+  }
+
+  .app-download:hover {
+    transform: scale(1.05);
+  }
+
+  .app-download img {
+    height: 63px;
+    display: block;
+    object-fit: contain;
+  }
+
+  .ios-download img {
+    width: 180px;
+  }
+
+  .android-download img {
+    width: 205px;
+  }
+
+  /* Responsive Design */
+  @media (min-width: 768px) {
+    .download-content {
+      grid-template-columns: 1fr 1fr;
+      text-align: left;
+    }
+
+    .download-apps {
+      justify-content: flex-start;
+      align-items: flex-start;
+    }
+
+    .download-features {
+      justify-content: flex-start;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .download-content {
+      text-align: center;
+    }
+    
+    .download-features {
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-md);
+      justify-content: center;
+    }
+
+    .download-apps {
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  /* Dark Mode */
+  @media (prefers-color-scheme: dark) {
+    .download {
+      background: linear-gradient(135deg, rgba(107, 203, 119, 0.8), rgba(77, 150, 255, 0.8));
+    }
+  }
+</style>

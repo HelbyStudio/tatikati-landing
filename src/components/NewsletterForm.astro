@@ -1,0 +1,337 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+  variant?: 'footer' | 'blog' | 'inline';
+  maxWidth?: string;
+}
+
+const {
+  title = "Restez informés des nouveautés",
+  description = "Recevez nos conseils d'experts et découvrez en avant-première les nouveaux podcasts pour enfants.",
+  variant = 'footer',
+  maxWidth = '500px'
+} = Astro.props;
+---
+
+<div class={`newsletter-section ${variant}`}>
+  <div class="newsletter-content">
+    <div class="newsletter-text">
+      <h3 class="newsletter-title">{title}</h3>
+      <p class="newsletter-description">{description}</p>
+    </div>
+    
+    <form class="newsletter-form" data-newsletter-form>
+      <div class="form-group">
+        <label for={`newsletter-email-${variant}`} class="sr-only">Adresse email</label>
+        <input 
+          type="email" 
+          id={`newsletter-email-${variant}`}
+          name="email"
+          placeholder="Votre adresse email"
+          class="newsletter-input"
+          required
+          aria-describedby={`email-error-${variant}`}
+        />
+        <button type="submit" class="newsletter-submit">
+          <span>S'abonner</span>
+          {variant === 'footer' && <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>}
+        </button>
+      </div>
+      <div id={`email-error-${variant}`} class="error-message" role="alert" aria-live="polite"></div>
+      {variant === 'footer' && (
+        <p class="newsletter-privacy">
+          En vous abonnant, vous acceptez de recevoir nos emails. 
+          <a href="/privacy">Politique de confidentialité</a>
+        </p>
+      )}
+    </form>
+  </div>
+</div>
+
+<style define:vars={{ maxWidth }}>
+  .newsletter-section {
+    width: 100%;
+  }
+
+  .newsletter-content {
+    display: grid;
+    gap: var(--space-2xl);
+    align-items: center;
+  }
+
+  /* Footer variant */
+  .newsletter-section.footer .newsletter-content {
+    grid-template-columns: 1fr;
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: left;
+  }
+
+  /* Blog variant */
+  .newsletter-section.blog .newsletter-content {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  /* Inline variant */
+  .newsletter-section.inline .newsletter-content {
+    text-align: left;
+    max-width: var(--maxWidth);
+  }
+
+  .newsletter-title {
+    font-family: var(--font-heading);
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    font-weight: 700;
+    margin-bottom: var(--space-sm);
+    color: currentColor;
+  }
+
+  .newsletter-section.blog .newsletter-title {
+    font-size: 1.75rem;
+  }
+
+  .newsletter-description {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: currentColor;
+    opacity: 0.9;
+  }
+
+  .newsletter-form {
+    width: 100%;
+  }
+
+  .form-group {
+    display: flex;
+    gap: 0;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+  }
+
+  .newsletter-section.footer .form-group {
+    max-width: 500px;
+    margin: 0;
+  }
+
+  .newsletter-section.blog .form-group {
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  .newsletter-section.inline .form-group {
+    max-width: var(--maxWidth);
+    margin: 0;
+  }
+
+  .newsletter-input {
+    flex: 1;
+    padding: var(--space-lg);
+    border: none;
+    background: white;
+    font-size: 1rem;
+    color: var(--color-fg);
+  }
+
+  .newsletter-input:focus {
+    outline: none;
+    box-shadow: inset 0 0 0 2px var(--color-accent-2);
+  }
+
+  .newsletter-input::placeholder {
+    color: var(--color-gray-500);
+  }
+
+  .newsletter-submit {
+    padding: var(--space-lg) var(--space-xl);
+    background: var(--color-accent-2);
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-weight: 600;
+    transition: background 0.2s ease;
+  }
+
+  .newsletter-submit:hover {
+    background: var(--color-accent-1);
+  }
+
+  .newsletter-submit i {
+    font-size: 16px;
+    margin-left: var(--space-sm);
+  }
+
+  .newsletter-privacy {
+    margin-top: var(--space-md);
+    font-size: 0.85rem;
+    color: currentColor;
+    opacity: 0.8;
+  }
+
+  .newsletter-privacy a {
+    color: currentColor;
+    text-decoration: underline;
+    opacity: 0.9;
+  }
+
+  .error-message {
+    margin-top: var(--space-sm);
+    color: #ffcccb;
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  /* Responsive Design */
+  @media (min-width: 768px) {
+    .newsletter-section.footer .newsletter-content {
+      grid-template-columns: 1fr 1fr;
+      text-align: left;
+      align-items: start;
+      gap: var(--space-3xl);
+    }
+
+    .newsletter-section.footer .form-group {
+      max-width: 450px;
+      margin: 0;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .newsletter-section.footer .newsletter-content,
+    .newsletter-section.blog .newsletter-content {
+      text-align: center;
+    }
+    
+    .newsletter-section.footer .form-group,
+    .newsletter-section.blog .form-group {
+      margin: 0 auto;
+    }
+
+    .form-group {
+      flex-direction: column;
+    }
+
+    .newsletter-submit {
+      justify-content: center;
+    }
+  }
+
+  /* Screen Reader Only */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Newsletter form submission
+    const newsletterForms = document.querySelectorAll('[data-newsletter-form]');
+    
+    newsletterForms.forEach(form => {
+      const emailInput = form.querySelector('.newsletter-input');
+      const errorMessage = form.querySelector('.error-message');
+      const submitButton = form.querySelector('.newsletter-submit');
+
+      if (emailInput && errorMessage && submitButton) {
+        form.addEventListener('submit', async function(e) {
+          e.preventDefault();
+          
+          const email = emailInput.value.trim();
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+          // Reset error state
+          errorMessage.style.display = 'none';
+          errorMessage.textContent = '';
+          emailInput.classList.remove('error');
+
+          // Validate email
+          if (!email) {
+            showError('Veuillez saisir votre adresse email.');
+            return;
+          }
+
+          if (!emailRegex.test(email)) {
+            showError('Veuillez saisir une adresse email valide.');
+            return;
+          }
+
+          // Show loading state
+          const originalText = submitButton.innerHTML;
+          submitButton.innerHTML = '<span>Inscription...</span>';
+          submitButton.disabled = true;
+
+          try {
+            // Call newsletter API endpoint
+            const response = await fetch('/api/newsletter', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ email })
+            });
+
+            const result = await response.json();
+
+            if (response.ok && result.success) {
+              // Success state
+              submitButton.innerHTML = '<span>✓ Inscrit !</span>';
+              submitButton.style.background = 'var(--color-accent-4)';
+              emailInput.value = '';
+              
+              // Analytics
+              console.log('Newsletter subscription success:', email);
+              // Example: gtag('event', 'newsletter_signup', { email: email });
+              
+              // Reset after 3 seconds
+              setTimeout(() => {
+                submitButton.innerHTML = originalText;
+                submitButton.disabled = false;
+                submitButton.style.background = '';
+              }, 3000);
+            } else {
+              // Show error from API or default message
+              showError(result.error || 'Une erreur est survenue. Veuillez réessayer.');
+              submitButton.innerHTML = originalText;
+              submitButton.disabled = false;
+            }
+
+          } catch (error) {
+            console.error('Newsletter error:', error);
+            showError('Une erreur est survenue. Veuillez réessayer.');
+            submitButton.innerHTML = originalText;
+            submitButton.disabled = false;
+          }
+        });
+
+        function showError(message) {
+          errorMessage.textContent = message;
+          errorMessage.style.display = 'block';
+          emailInput.classList.add('error');
+          emailInput.focus();
+        }
+
+        // Real-time validation
+        emailInput.addEventListener('input', function() {
+          if (errorMessage.style.display === 'block') {
+            errorMessage.style.display = 'none';
+            emailInput.classList.remove('error');
+          }
+        });
+      }
+    });
+  });
+</script>

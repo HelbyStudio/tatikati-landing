@@ -23,6 +23,31 @@ function generateStars(rating: number) {
   }
   return stars;
 }
+
+// Generate initials from name
+function getInitials(name: string): string {
+  return name
+    .split(' ')
+    .map(word => word.charAt(0))
+    .join('')
+    .toUpperCase()
+    .substring(0, 2);
+}
+
+// Generate color for monogram based on name
+function getMonogramColor(name: string): string {
+  const colors = [
+    'var(--color-accent-1)',
+    'var(--color-accent-2)',
+    'var(--color-accent-3)',
+    'var(--color-accent-4)'
+  ];
+  const hash = name.split('').reduce((a, b) => {
+    a = ((a << 5) - a) + b.charCodeAt(0);
+    return a & a;
+  }, 0);
+  return colors[Math.abs(hash) % colors.length];
+}
 ---
 
 <section class="reviews" id="avis">
@@ -83,14 +108,8 @@ function generateStars(rating: number) {
           <!-- Review Header -->
           <div class="review-header">
             <div class="reviewer-info">
-              <div class="reviewer-avatar">
-                <img 
-                  src={review.avatar}
-                  alt={`Photo de profil de ${review.name}`}
-                  loading="lazy"
-                  width="48"
-                  height="48"
-                />
+              <div class="reviewer-avatar monogram" style={`background-color: ${getMonogramColor(review.name)}`}>
+                <span class="monogram-text">{getInitials(review.name)}</span>
               </div>
               <div class="reviewer-details">
                 <h3 class="reviewer-name">{review.name}</h3>
@@ -131,7 +150,6 @@ function generateStars(rating: number) {
           
           <!-- Review Footer -->
           <div class="review-footer">
-            <span class="review-source">Avis vérifié App Store</span>
             <time class="review-date" datetime="2024-01-15">
               Il y a {Math.floor(Math.random() * 30) + 1} jours
             </time>
@@ -307,11 +325,22 @@ function generateStars(rating: number) {
     flex-shrink: 0;
   }
 
-  .reviewer-avatar img {
+  .reviewer-avatar {
     width: 48px;
     height: 48px;
     border-radius: 50%;
-    object-fit: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-accent-1);
+    flex-shrink: 0;
+  }
+
+  .monogram-text {
+    color: white;
+    font-weight: 600;
+    font-size: 1rem;
+    font-family: var(--font-heading);
   }
 
   .reviewer-name {
@@ -367,14 +396,10 @@ function generateStars(rating: number) {
 
   .review-footer {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
     font-size: 0.85rem;
     color: var(--color-gray-500);
-  }
-
-  .review-source {
-    font-weight: 500;
   }
 
   /* Reviews CTA */

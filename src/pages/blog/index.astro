@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import NavBar from '../../components/NavBar.astro';
 import Footer from '../../components/Footer.astro';
+import NewsletterForm from '../../components/NewsletterForm.astro';
 
 // Get all blog posts
 const allPosts = await getCollection('blog', ({ data }) => {
@@ -12,9 +13,9 @@ const allPosts = await getCollection('blog', ({ data }) => {
 // Sort posts by publication date (most recent first)
 const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
-// Get featured post
-const featuredPost = sortedPosts.find(post => post.data.featured) || sortedPosts[0];
-const regularPosts = sortedPosts.filter(post => post !== featuredPost);
+// Get featured post - only if explicitly marked as featured
+const featuredPost = sortedPosts.find(post => post.data.featured);
+const regularPosts = featuredPost ? sortedPosts.filter(post => post !== featuredPost) : sortedPosts;
 
 // Categories for filtering
 const categories = {
@@ -24,6 +25,16 @@ const categories = {
   'education': 'Éducation',
   'technologie': 'Technologie',
   'actualites': 'Actualités'
+};
+
+// Category color mapping
+const categoryColors = {
+  'conseils-parents': 'var(--color-category-1)', // Green #15D170
+  'developpement-enfant': 'var(--color-category-2)', // Blue #169DC5
+  'podcasts': 'var(--color-category-3)', // Purple #B552E6
+  'education': 'var(--color-category-4)', // Pink #E252A0
+  'technologie': 'var(--color-category-5)', // Red #EE5845
+  'actualites': 'var(--color-category-6)' // Orange #F7661B
 };
 
 function formatDate(date: Date): string {
@@ -54,9 +65,11 @@ function formatDate(date: Date): string {
         
         <!-- Category Filter -->
         <div class="category-filter">
-          <button class="filter-btn active" data-category="all">
-            Tous les articles
-          </button>
+          {regularPosts.length > 0 && (
+            <button id="all-posts-btn" class="filter-btn active" data-category="all">
+              Tous les articles
+            </button>
+          )}
           {Object.entries(categories).map(([key, label]) => (
             <button class="filter-btn" data-category={key}>
               {label}
@@ -132,95 +145,99 @@ function formatDate(date: Date): string {
       )}
 
       <!-- Regular Posts Grid -->
-      <section class="posts-section">
-        <h2 class="section-title">Tous les articles</h2>
-        <div class="posts-grid">
-          {regularPosts.map((post) => (
-            <article class="post-card" data-category={post.data.category}>
-              <div class="card-image">
-                <a href={`/blog/${post.slug}/`}>
-                  <img 
-                    src={post.data.heroImage || 'https://images.unsplash.com/photo-1544717297-fa95b6ee9643?w=400&h=200&fit=crop&crop=center'}
-                    alt={post.data.heroImageAlt || `Image pour ${post.data.title}`}
-                    loading="lazy"
-                    width="400"
-                    height="200"
-                  />
-                </a>
-              </div>
-              
-              <div class="card-content">
-                <div class="card-meta">
-                  <span class="card-category" data-category={post.data.category}>
-                    {categories[post.data.category]}
-                  </span>
-                  <time class="card-date" datetime={post.data.pubDate.toISOString()}>
-                    {formatDate(post.data.pubDate)}
-                  </time>
+      {regularPosts.length > 0 && (
+        <section class="posts-section">
+          <h2 class="section-title">Tous les articles</h2>
+          <div class="posts-grid">
+            {regularPosts.map((post) => (
+              <article class="post-card" data-category={post.data.category}>
+                <div class="card-image">
+                  <a href={`/blog/${post.slug}/`}>
+                    <img 
+                      src={post.data.heroImage || 'https://images.unsplash.com/photo-1544717297-fa95b6ee9643?w=400&h=200&fit=crop&crop=center'}
+                      alt={post.data.heroImageAlt || `Image pour ${post.data.title}`}
+                      loading="lazy"
+                      width="400"
+                      height="200"
+                    />
+                  </a>
                 </div>
                 
-                <h3 class="card-title">
-                  <a href={`/blog/${post.slug}/`}>
-                    {post.data.title}
-                  </a>
-                </h3>
-                
-                <p class="card-excerpt">
-                  {post.data.description}
-                </p>
-                
-                <div class="card-footer">
-                  <div class="card-author">
-                    {post.data.authorImage && (
-                      <img 
-                        src={post.data.authorImage}
-                        alt={`Photo de ${post.data.author}`}
-                        class="author-avatar"
-                        width="24"
-                        height="24"
-                      />
-                    )}
-                    <span class="author-name">{post.data.author}</span>
+                <div class="card-content">
+                  <div class="card-meta">
+                    <span class="card-category" data-category={post.data.category}>
+                      {categories[post.data.category]}
+                    </span>
+                    <time class="card-date" datetime={post.data.pubDate.toISOString()}>
+                      {formatDate(post.data.pubDate)}
+                    </time>
                   </div>
                   
-                  {post.data.readingTime && (
-                    <span class="reading-time">{post.data.readingTime} min</span>
-                  )}
+                  <h3 class="card-title">
+                    <a href={`/blog/${post.slug}/`}>
+                      {post.data.title}
+                    </a>
+                  </h3>
+                  
+                  <p class="card-excerpt">
+                    {post.data.description}
+                  </p>
+                  
+                  <div class="card-footer">
+                    <div class="card-author">
+                      {post.data.authorImage && (
+                        <img 
+                          src={post.data.authorImage}
+                          alt={`Photo de ${post.data.author}`}
+                          class="author-avatar"
+                          width="24"
+                          height="24"
+                        />
+                      )}
+                      <span class="author-name">{post.data.author}</span>
+                    </div>
+                    
+                    {post.data.readingTime && (
+                      <span class="reading-time">{post.data.readingTime} min</span>
+                    )}
+                  </div>
                 </div>
-              </div>
-            </article>
-          ))}
-        </div>
+              </article>
+            ))}
+          </div>
 
-        <!-- Empty State -->
-        <div class="empty-state" style="display: none;">
+          <!-- Empty State -->
+          <div class="empty-state" style="display: none;">
+            <div class="empty-icon">📝</div>
+            <h3>Aucun article trouvé</h3>
+            <p>Aucun article ne correspond à cette catégorie pour le moment.</p>
+            {sortedPosts.length > 0 && (
+              <button id="empty-state-btn" class="btn btn-secondary">
+                Voir tous les articles
+              </button>
+            )}
+          </div>
+        </section>
+      )}
+
+      {sortedPosts.length === 0 && (
+        <section class="empty-blog-state">
           <div class="empty-icon">📝</div>
-          <h3>Aucun article trouvé</h3>
-          <p>Aucun article ne correspond à cette catégorie pour le moment.</p>
-          <button class="btn btn-secondary" onclick="showAllPosts()">
-            Voir tous les articles
-          </button>
-        </div>
-      </section>
+          <h2>Blog en construction</h2>
+          <p>Nous préparons de super articles pour vous ! Revenez bientôt.</p>
+        </section>
+      )}
 
       <!-- Newsletter CTA -->
       <section class="newsletter-cta">
-        <div class="cta-content">
-          <h3 class="cta-title">Ne manquez aucun conseil</h3>
-          <p class="cta-description">
-            Recevez nos derniers articles et conseils d'experts directement dans votre boîte email.
-          </p>
-          <form class="newsletter-form" data-blog-newsletter>
-            <input 
-              type="email" 
-              placeholder="Votre adresse email"
-              class="newsletter-input"
-              required
+        <div class="newsletter-wrapper">
+          <div class="container">
+            <NewsletterForm 
+              variant="footer"
+              title="Ne manquez aucun conseil"
+              description="Recevez nos derniers articles et conseils d'experts directement dans votre boîte email."
             />
-            <button type="submit" class="newsletter-btn">
-              S'abonner
-            </button>
-          </form>
+          </div>
         </div>
       </section>
     </div>
@@ -237,10 +254,10 @@ function formatDate(date: Date): string {
 
   .blog-header {
     text-align: center;
-    padding: var(--space-4xl) 0;
+    padding: var(--space-4xl) 0 var(--space-2xl);
     background: linear-gradient(135deg, var(--color-bg) 0%, var(--color-gray-25) 100%);
     border-radius: var(--radius-2xl);
-    margin-bottom: var(--space-4xl);
+    margin-bottom: var(--space-2xl);
   }
 
   .page-title {
@@ -256,7 +273,7 @@ function formatDate(date: Date): string {
     color: var(--color-gray-600);
     line-height: 1.6;
     max-width: 600px;
-    margin: 0 auto var(--space-2xl);
+    margin: 0 auto var(--space-lg);
   }
 
   /* Category Filter */
@@ -284,6 +301,58 @@ function formatDate(date: Date): string {
     background: var(--color-accent-1);
     color: white;
     border-color: var(--color-accent-1);
+  }
+
+  /* Category-specific colors for filter buttons when active */
+  .filter-btn.active[data-category="conseils-parents"] {
+    background: var(--color-category-1);
+    border-color: var(--color-category-1);
+  }
+  .filter-btn.active[data-category="developpement-enfant"] {
+    background: var(--color-category-2);
+    border-color: var(--color-category-2);
+  }
+  .filter-btn.active[data-category="podcasts"] {
+    background: var(--color-category-3);
+    border-color: var(--color-category-3);
+  }
+  .filter-btn.active[data-category="education"] {
+    background: var(--color-category-4);
+    border-color: var(--color-category-4);
+  }
+  .filter-btn.active[data-category="technologie"] {
+    background: var(--color-category-5);
+    border-color: var(--color-category-5);
+  }
+  .filter-btn.active[data-category="actualites"] {
+    background: var(--color-category-6);
+    border-color: var(--color-category-6);
+  }
+
+  /* Category-specific colors for filter buttons on hover */
+  .filter-btn[data-category="conseils-parents"]:hover {
+    background: var(--color-category-1);
+    border-color: var(--color-category-1);
+  }
+  .filter-btn[data-category="developpement-enfant"]:hover {
+    background: var(--color-category-2);
+    border-color: var(--color-category-2);
+  }
+  .filter-btn[data-category="podcasts"]:hover {
+    background: var(--color-category-3);
+    border-color: var(--color-category-3);
+  }
+  .filter-btn[data-category="education"]:hover {
+    background: var(--color-category-4);
+    border-color: var(--color-category-4);
+  }
+  .filter-btn[data-category="technologie"]:hover {
+    background: var(--color-category-5);
+    border-color: var(--color-category-5);
+  }
+  .filter-btn[data-category="actualites"]:hover {
+    background: var(--color-category-6);
+    border-color: var(--color-category-6);
   }
 
   /* Section Titles */
@@ -349,6 +418,26 @@ function formatDate(date: Date): string {
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+  }
+
+  /* Category-specific colors */
+  .post-category[data-category="conseils-parents"] {
+    background: var(--color-category-1);
+  }
+  .post-category[data-category="developpement-enfant"] {
+    background: var(--color-category-2);
+  }
+  .post-category[data-category="podcasts"] {
+    background: var(--color-category-3);
+  }
+  .post-category[data-category="education"] {
+    background: var(--color-category-4);
+  }
+  .post-category[data-category="technologie"] {
+    background: var(--color-category-5);
+  }
+  .post-category[data-category="actualites"] {
+    background: var(--color-category-6);
   }
 
   .post-date,
@@ -475,6 +564,26 @@ function formatDate(date: Date): string {
     text-transform: uppercase;
   }
 
+  /* Category-specific colors for cards */
+  .card-category[data-category="conseils-parents"] {
+    background: var(--color-category-1);
+  }
+  .card-category[data-category="developpement-enfant"] {
+    background: var(--color-category-2);
+  }
+  .card-category[data-category="podcasts"] {
+    background: var(--color-category-3);
+  }
+  .card-category[data-category="education"] {
+    background: var(--color-category-4);
+  }
+  .card-category[data-category="technologie"] {
+    background: var(--color-category-5);
+  }
+  .card-category[data-category="actualites"] {
+    background: var(--color-category-6);
+  }
+
   .card-date {
     color: var(--color-gray-500);
     font-size: 0.85rem;
@@ -555,59 +664,41 @@ function formatDate(date: Date): string {
     margin-bottom: var(--space-xl);
   }
 
-  /* Newsletter CTA */
-  .newsletter-cta {
-    background: linear-gradient(135deg, var(--color-accent-3), var(--color-accent-1));
-    border-radius: var(--radius-2xl);
-    padding: var(--space-3xl);
+  /* Empty Blog State */
+  .empty-blog-state {
     text-align: center;
-    color: white;
-  }
-
-  .cta-title {
-    font-family: var(--font-heading);
-    font-size: 1.75rem;
-    font-weight: 700;
-    margin-bottom: var(--space-sm);
-    color: white;
-  }
-
-  .cta-description {
-    font-size: 1.1rem;
-    margin-bottom: var(--space-xl);
-    color: rgba(255, 255, 255, 0.9);
-  }
-
-  .newsletter-form {
-    display: flex;
-    max-width: 400px;
-    margin: 0 auto;
-    gap: 0;
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    box-shadow: var(--shadow-soft);
-  }
-
-  .newsletter-input {
-    flex: 1;
-    padding: var(--space-lg);
-    border: none;
+    padding: var(--space-4xl) 0;
     background: white;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-card);
+    margin: var(--space-4xl) 0;
+  }
+
+  .empty-blog-state .empty-icon {
+    font-size: 5rem;
+    margin-bottom: var(--space-xl);
+  }
+
+  .empty-blog-state h2 {
+    font-family: var(--font-heading);
+    font-size: 2rem;
     color: var(--color-fg);
+    margin-bottom: var(--space-lg);
   }
 
-  .newsletter-btn {
-    padding: var(--space-lg) var(--space-xl);
-    background: var(--color-accent-2);
+  .empty-blog-state p {
+    font-size: 1.1rem;
+    color: var(--color-gray-600);
+    line-height: 1.6;
+  }
+
+  /* Newsletter CTA */
+  .newsletter-wrapper {
+    background: linear-gradient(135deg, var(--color-accent-1), var(--color-accent-3));
+    padding: var(--space-3xl) 0;
     color: white;
-    border: none;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s ease;
-  }
-
-  .newsletter-btn:hover {
-    background: var(--color-accent-1);
+    border-radius: var(--radius-2xl);
+    margin: var(--space-4xl) 0;
   }
 
   /* Responsive Design */
@@ -624,9 +715,6 @@ function formatDate(date: Date): string {
       order: 1;
     }
 
-    .newsletter-form {
-      flex-direction: row;
-    }
   }
 
   @media (max-width: 767px) {
@@ -635,22 +723,15 @@ function formatDate(date: Date): string {
     }
 
     .category-filter {
-      flex-direction: column;
-      align-items: center;
+      justify-content: center;
+      gap: var(--space-xs);
     }
 
-    .newsletter-form {
-      flex-direction: column;
-      border-radius: var(--radius-lg);
+    .filter-btn {
+      font-size: 0.8rem;
+      padding: var(--space-xs) var(--space-sm);
     }
 
-    .newsletter-input {
-      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-    }
-
-    .newsletter-btn {
-      border-radius: 0 0 var(--radius-lg) var(--radius-lg);
-    }
   }
 
   /* Dark Mode */
@@ -732,18 +813,6 @@ function formatDate(date: Date): string {
       });
     });
 
-    // Newsletter form
-    const newsletterForm = document.querySelector('[data-blog-newsletter]');
-    if (newsletterForm) {
-      newsletterForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        const email = this.querySelector('input[type="email"]').value;
-        console.log('Blog newsletter signup:', email);
-        // Handle newsletter signup
-        alert('Merci pour votre inscription !');
-        this.reset();
-      });
-    }
 
     // Smooth scroll for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -757,8 +826,14 @@ function formatDate(date: Date): string {
     });
   });
 
-  // Global function for empty state
-  function showAllPosts() {
-    document.querySelector('[data-category="all"]').click();
+  // Empty state button event listener
+  const emptyStateBtn = document.getElementById('empty-state-btn');
+  if (emptyStateBtn) {
+    emptyStateBtn.addEventListener('click', function() {
+      const allButton = document.getElementById('all-posts-btn');
+      if (allButton) {
+        allButton.click();
+      }
+    });
   }
 </script>
