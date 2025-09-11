@@ -553,26 +553,42 @@ const currentYear = new Date().getFullYear();
         submitButton.disabled = true;
 
         try {
-          // Simulate API call (replace with actual newsletter service)
-          await new Promise(resolve => setTimeout(resolve, 1000));
-          
-          // Success state
-          submitButton.innerHTML = '<span>✓ Inscrit !</span>';
-          submitButton.style.background = 'var(--color-accent-4)';
-          emailInput.value = '';
-          
-          // Analytics
-          console.log('Newsletter subscription:', email);
-          // Example: gtag('event', 'newsletter_signup', { email: email });
-          
-          // Reset after 3 seconds
-          setTimeout(() => {
+          // Call newsletter API endpoint
+          const response = await fetch('/api/newsletter', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email })
+          });
+
+          const result = await response.json();
+
+          if (response.ok && result.success) {
+            // Success state
+            submitButton.innerHTML = '<span>✓ Inscrit !</span>';
+            submitButton.style.background = 'var(--color-accent-4)';
+            emailInput.value = '';
+            
+            // Analytics
+            console.log('Newsletter subscription success:', email);
+            // Example: gtag('event', 'newsletter_signup', { email: email });
+            
+            // Reset after 3 seconds
+            setTimeout(() => {
+              submitButton.innerHTML = originalText;
+              submitButton.disabled = false;
+              submitButton.style.background = '';
+            }, 3000);
+          } else {
+            // Show error from API or default message
+            showError(result.error || 'Une erreur est survenue. Veuillez réessayer.');
             submitButton.innerHTML = originalText;
             submitButton.disabled = false;
-            submitButton.style.background = '';
-          }, 3000);
+          }
 
         } catch (error) {
+          console.error('Newsletter error:', error);
           showError('Une erreur est survenue. Veuillez réessayer.');
           submitButton.innerHTML = originalText;
           submitButton.disabled = false;
