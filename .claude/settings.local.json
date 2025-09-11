@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__astro-docs",
+      "mcp__browsermcp",
+      "Read(/Users/jeromealves/Downloads/**)",
+      "Read(/Users/jeromealves/Downloads/**)",
+      "Bash(pkill:*)",
+      "Bash(npm run dev:*)",
+      "Bash(git add:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

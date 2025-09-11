@@ -1,0 +1,29 @@
+# Robots.txt for Tatikati Landing Page
+# https://tatikati.app
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://tatikati.app/sitemap-index.xml
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 1
+
+# Specific rules for major crawlers
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+# Block common bot paths (optional)
+Disallow: /api/
+Disallow: /admin/
+Disallow: /_astro/
+Disallow: /assets/
+
+# Allow well-known paths
+Allow: /.well-known/

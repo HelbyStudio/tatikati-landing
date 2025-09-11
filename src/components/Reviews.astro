@@ -1,0 +1,659 @@
+---
+import { reviews } from '../data/reviews.ts';
+
+interface Props {
+  title?: string;
+  subtitle?: string;
+  showAll?: boolean;
+}
+
+const {
+  title = "Ce que disent les parents",
+  subtitle = "Des milliers de familles font déjà confiance à Tatikati",
+  showAll = true
+} = Astro.props;
+
+const displayReviews = showAll ? reviews : reviews.slice(0, 3);
+
+// Generate star ratings
+function generateStars(rating: number) {
+  const stars = [];
+  for (let i = 1; i <= 5; i++) {
+    stars.push(i <= rating ? 'filled' : 'empty');
+  }
+  return stars;
+}
+---
+
+<section class="reviews" id="avis">
+  <div class="container">
+    <!-- Section Header -->
+    <div class="reviews-header">
+      <h2 class="section-title">{title}</h2>
+      <p class="section-subtitle">{subtitle}</p>
+      
+      <!-- Trust Indicators -->
+      <div class="trust-indicators">
+        <div class="trust-item">
+          <div class="trust-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 21.35L10.55 20.03C5.4 15.36 2 12.27 2 8.5C2 5.42 4.42 3 7.5 3C9.24 3 10.91 3.81 12 5.08C13.09 3.81 14.76 3 16.5 3C19.58 3 22 5.42 22 8.5C22 12.27 18.6 15.36 13.45 20.03L12 21.35Z"/>
+            </svg>
+          </div>
+          <div class="trust-text">
+            <span class="trust-number">4.8/5</span>
+            <span class="trust-label">Note moyenne</span>
+          </div>
+        </div>
+        
+        <div class="trust-item">
+          <div class="trust-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M16 4C18.2 4 20 5.8 20 8V16C20 18.2 18.2 20 16 20H8C5.8 20 4 18.2 4 16V8C4 5.8 5.8 4 8 4H16ZM16 2H8C4.7 2 2 4.7 2 8V16C2 19.3 4.7 22 8 22H16C19.3 22 22 19.3 22 16V8C22 4.7 19.3 2 16 2Z"/>
+              <path d="M10.5 12L8 14.5L7 13.5L8 12.5L9.5 14L13 10.5L14 11.5L10.5 12Z"/>
+            </svg>
+          </div>
+          <div class="trust-text">
+            <span class="trust-number">10K+</span>
+            <span class="trust-label">Familles conquises</span>
+          </div>
+        </div>
+        
+        <div class="trust-item">
+          <div class="trust-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.48 2 2 6.48 2 12S6.48 22 12 22 22 17.52 22 12 17.52 2 12 2ZM13 17H11V15H13V17ZM13 13H11V7H13V13Z"/>
+            </svg>
+          </div>
+          <div class="trust-text">
+            <span class="trust-number">500+</span>
+            <span class="trust-label">Podcasts disponibles</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reviews Grid -->
+    <div class="reviews-grid">
+      {displayReviews.map((review, index) => (
+        <div 
+          class="review-card"
+          data-review-index={index}
+        >
+          <!-- Review Header -->
+          <div class="review-header">
+            <div class="reviewer-info">
+              <div class="reviewer-avatar">
+                <img 
+                  src={review.avatar}
+                  alt={`Photo de profil de ${review.name}`}
+                  loading="lazy"
+                  width="48"
+                  height="48"
+                />
+              </div>
+              <div class="reviewer-details">
+                <h3 class="reviewer-name">{review.name}</h3>
+                <div class="review-rating" aria-label={`Note ${review.rating} sur 5 étoiles`}>
+                  {generateStars(review.rating).map((star, starIndex) => (
+                    <svg 
+                      key={starIndex}
+                      class={`star star-${star}`}
+                      width="16" 
+                      height="16" 
+                      viewBox="0 0 16 16" 
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path d="M8 1L10.1 5.4L15 6.1L11.5 9.4L12.2 14.3L8 12L3.8 14.3L4.5 9.4L1 6.1L5.9 5.4L8 1Z"/>
+                    </svg>
+                  ))}
+                </div>
+              </div>
+            </div>
+            
+            <!-- Verified Badge -->
+            <div class="verified-badge">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M10 1L12.5 3.5L16 2L17 5.5L20 6.5L18.5 10L20 13.5L17 14.5L16 18L12.5 16.5L10 19L7.5 16.5L4 18L3 14.5L0 13.5L1.5 10L0 6.5L3 5.5L4 2L7.5 3.5L10 1Z"/>
+                <path d="M6 10L8.5 12.5L14 7L15 8L8.5 14.5L5 11L6 10Z" fill="white"/>
+              </svg>
+              <span class="sr-only">Avis vérifié</span>
+            </div>
+          </div>
+          
+          <!-- Review Content -->
+          <div class="review-content">
+            <blockquote class="review-quote">
+              "{review.quote}"
+            </blockquote>
+          </div>
+          
+          <!-- Review Footer -->
+          <div class="review-footer">
+            <span class="review-source">Avis vérifié App Store</span>
+            <time class="review-date" datetime="2024-01-15">
+              Il y a {Math.floor(Math.random() * 30) + 1} jours
+            </time>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Call to Action -->
+    <div class="reviews-cta">
+      <div class="cta-content">
+        <h3 class="cta-title">Rejoignez des milliers de familles satisfaites</h3>
+        <p class="cta-description">
+          Découvrez pourquoi Tatikati est devenu l'application de podcasts préférée des enfants et des parents.
+        </p>
+        <div class="cta-actions">
+          <a href="#download" class="btn btn-primary btn-lg">
+            Télécharger gratuitement
+          </a>
+          <a href="/blog" class="btn btn-secondary btn-lg">
+            Lire nos conseils
+          </a>
+        </div>
+      </div>
+      
+      <!-- App Store Badges -->
+      <div class="app-badges">
+        <div class="badge-item">
+          <img 
+            src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/fr-fr?size=250x83&releaseDate=1609459200"
+            alt="Télécharger sur l'App Store"
+            width="150"
+            height="50"
+            loading="lazy"
+          />
+        </div>
+        <div class="badge-item">
+          <img 
+            src="https://play.google.com/intl/en_us/badges/static/images/badges/fr_badge_web_generic.png"
+            alt="Disponible sur Google Play"
+            width="150"
+            height="58"
+            loading="lazy"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Background Decoration -->
+  <div class="reviews-bg" aria-hidden="true">
+    <div class="bg-quote bg-quote-1">"</div>
+    <div class="bg-quote bg-quote-2">"</div>
+  </div>
+</section>
+
+<style>
+  .reviews {
+    padding: var(--space-4xl) 0;
+    background: linear-gradient(180deg, var(--color-gray-25) 0%, var(--color-bg) 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .reviews-header {
+    text-align: center;
+    margin-bottom: var(--space-4xl);
+  }
+
+  .section-title {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    color: var(--color-fg);
+    margin-bottom: var(--space-lg);
+  }
+
+  .section-subtitle {
+    font-size: clamp(1.1rem, 2vw, 1.25rem);
+    color: var(--color-gray-600);
+    line-height: 1.6;
+    margin-bottom: var(--space-2xl);
+  }
+
+  /* Trust Indicators */
+  .trust-indicators {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-2xl);
+    flex-wrap: wrap;
+  }
+
+  .trust-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+
+  .trust-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, var(--color-accent-1), var(--color-accent-2));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+  }
+
+  .trust-text {
+    text-align: left;
+  }
+
+  .trust-number {
+    display: block;
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-fg);
+  }
+
+  .trust-label {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--color-gray-600);
+  }
+
+  /* Reviews Grid */
+  .reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: var(--space-2xl);
+    margin-bottom: var(--space-4xl);
+  }
+
+  .review-card {
+    background: white;
+    border-radius: var(--radius-xl);
+    padding: var(--space-2xl);
+    box-shadow: var(--shadow-card);
+    border: 1px solid var(--color-gray-200);
+    position: relative;
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 0.8s ease-out forwards;
+  }
+
+  .review-card:nth-child(1) { animation-delay: 0.1s; }
+  .review-card:nth-child(2) { animation-delay: 0.2s; }
+  .review-card:nth-child(3) { animation-delay: 0.3s; }
+  .review-card:nth-child(4) { animation-delay: 0.4s; }
+
+  .review-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-hover);
+  }
+
+  .review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: var(--space-lg);
+  }
+
+  .reviewer-info {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+  }
+
+  .reviewer-avatar {
+    flex-shrink: 0;
+  }
+
+  .reviewer-avatar img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .reviewer-name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-fg);
+    margin-bottom: var(--space-xs);
+  }
+
+  .review-rating {
+    display: flex;
+    gap: 2px;
+  }
+
+  .star {
+    color: var(--color-gray-300);
+    transition: color 0.2s ease;
+  }
+
+  .star-filled {
+    color: var(--color-accent-2);
+  }
+
+  .verified-badge {
+    flex-shrink: 0;
+    color: var(--color-accent-4);
+    opacity: 0.8;
+  }
+
+  .review-content {
+    margin-bottom: var(--space-lg);
+  }
+
+  .review-quote {
+    font-style: italic;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: var(--color-gray-700);
+    margin: 0;
+    position: relative;
+  }
+
+  .review-quote::before {
+    content: '"';
+    position: absolute;
+    top: -10px;
+    left: -20px;
+    font-size: 3rem;
+    font-family: var(--font-heading);
+    color: var(--color-accent-1);
+    opacity: 0.3;
+  }
+
+  .review-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    color: var(--color-gray-500);
+  }
+
+  .review-source {
+    font-weight: 500;
+  }
+
+  /* Reviews CTA */
+  .reviews-cta {
+    background: linear-gradient(135deg, var(--color-accent-1), var(--color-accent-3));
+    border-radius: var(--radius-2xl);
+    padding: var(--space-3xl);
+    color: white;
+    text-align: center;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-2xl);
+    align-items: center;
+  }
+
+  .cta-title {
+    font-family: var(--font-heading);
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    font-weight: 700;
+    margin-bottom: var(--space-md);
+    color: white;
+  }
+
+  .cta-description {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: var(--space-xl);
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  .cta-actions {
+    display: flex;
+    gap: var(--space-lg);
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .cta-actions .btn-primary {
+    background: white;
+    color: var(--color-accent-1);
+  }
+
+  .cta-actions .btn-primary:hover {
+    background: var(--color-gray-100);
+    color: var(--color-accent-1);
+  }
+
+  .cta-actions .btn-secondary {
+    background: transparent;
+    color: white;
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+
+  .cta-actions .btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+
+  .app-badges {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-lg);
+    flex-wrap: wrap;
+  }
+
+  .badge-item img {
+    height: 50px;
+    width: auto;
+    transition: transform 0.2s ease;
+  }
+
+  .badge-item:hover img {
+    transform: scale(1.05);
+  }
+
+  /* Background Decoration */
+  .reviews-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .bg-quote {
+    position: absolute;
+    font-family: var(--font-heading);
+    font-size: 15rem;
+    font-weight: 700;
+    color: var(--color-accent-1);
+    opacity: 0.02;
+    user-select: none;
+  }
+
+  .bg-quote-1 {
+    top: 10%;
+    left: -5%;
+    transform: rotate(-15deg);
+  }
+
+  .bg-quote-2 {
+    bottom: 10%;
+    right: -5%;
+    transform: rotate(15deg);
+  }
+
+  /* Animations */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Responsive Design */
+  @media (max-width: 767px) {
+    .trust-indicators {
+      gap: var(--space-lg);
+    }
+
+    .trust-item {
+      flex-direction: column;
+      text-align: center;
+      gap: var(--space-xs);
+    }
+
+    .reviews-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-xl);
+    }
+
+    .review-header {
+      flex-direction: column;
+      gap: var(--space-sm);
+      align-items: flex-start;
+    }
+
+    .cta-actions {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .app-badges {
+      flex-direction: column;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .reviews-cta {
+      grid-template-columns: 2fr 1fr;
+      text-align: left;
+    }
+
+    .cta-actions {
+      justify-content: flex-start;
+    }
+  }
+
+  /* Dark Mode */
+  @media (prefers-color-scheme: dark) {
+    .reviews {
+      background: linear-gradient(180deg, rgba(17, 24, 39, 0.3) 0%, var(--color-bg) 100%);
+    }
+
+    .review-card {
+      background: var(--color-gray-900);
+      border-color: var(--color-gray-800);
+    }
+
+    .trust-indicators {
+      color: var(--color-gray-300);
+    }
+
+    .bg-quote {
+      opacity: 0.01;
+    }
+  }
+
+  /* Reduced Motion */
+  @media (prefers-reduced-motion: reduce) {
+    .review-card {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+
+    .review-card:hover {
+      transform: none;
+    }
+
+    .badge-item:hover img {
+      transform: none;
+    }
+  }
+
+  /* Screen Reader Only */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Intersection Observer for review cards animation
+    if (window.IntersectionObserver) {
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('animate-in');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, observerOptions);
+
+      const reviewCards = document.querySelectorAll('.review-card');
+      reviewCards.forEach(card => {
+        observer.observe(card);
+      });
+    }
+
+    // Star rating hover effect
+    const reviewCards = document.querySelectorAll('.review-card');
+    reviewCards.forEach(card => {
+      const stars = card.querySelectorAll('.star');
+      
+      card.addEventListener('mouseenter', () => {
+        stars.forEach((star, index) => {
+          setTimeout(() => {
+            star.style.transform = 'scale(1.2)';
+          }, index * 50);
+          
+          setTimeout(() => {
+            star.style.transform = 'scale(1)';
+          }, (index * 50) + 200);
+        });
+      });
+    });
+
+    // App store badges click tracking
+    const appBadges = document.querySelectorAll('.badge-item');
+    appBadges.forEach(badge => {
+      badge.addEventListener('click', function() {
+        const platform = this.querySelector('img').alt.includes('App Store') ? 'ios' : 'android';
+        console.log('App store click:', platform);
+        // Analytics tracking would go here
+      });
+    });
+
+    // Smooth scroll for CTA buttons
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+  });
+</script>

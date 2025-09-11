@@ -1,0 +1,53 @@
+{
+  "name": "Tatikati - Podcasts pour enfants sans écran",
+  "short_name": "Tatikati",
+  "description": "L'application de podcasts spécialement conçue pour les enfants. Mode enfant sécurisé, navigation audio, et contenus soigneusement sélectionnés.",
+  "theme_color": "#FF6B6B",
+  "background_color": "#FFFFFF",
+  "display": "minimal-ui",
+  "orientation": "portrait",
+  "scope": "/",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "/favicon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon-512x512.png", 
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["entertainment", "education", "kids"],
+  "lang": "fr-FR",
+  "shortcuts": [
+    {
+      "name": "Podcasts",
+      "short_name": "Podcasts",
+      "description": "Découvrir nos podcasts pour enfants",
+      "url": "/#podcasts",
+      "icons": [
+        {
+          "src": "/favicon-96x96.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Blog",
+      "short_name": "Blog",
+      "description": "Conseils et actualités pour parents",
+      "url": "/blog",
+      "icons": [
+        {
+          "src": "/favicon-96x96.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ]
+}

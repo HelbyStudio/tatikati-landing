@@ -1,0 +1,108 @@
+---
+export interface Props {
+  type?: 'WebSite' | 'MobileApplication' | 'BlogPosting' | 'Organization';
+  data?: Record<string, any>;
+}
+
+const { type = 'WebSite', data = {} } = Astro.props;
+
+const baseUrl = 'https://tatikati.app';
+
+const structuredDataMap = {
+  WebSite: {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Tatikati - Podcasts pour enfants sans écran",
+    "description": "L'application de podcasts spécialement conçue pour les enfants. Mode enfant sécurisé, navigation audio, et contenus soigneusement sélectionnés.",
+    "url": baseUrl,
+    "publisher": {
+      "@type": "Organization",
+      "name": "Tatikati",
+      "logo": {
+        "@type": "ImageObject",
+        "url": `${baseUrl}/favicon-512x512.png`
+      }
+    },
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": `${baseUrl}/blog?search={search_term_string}`,
+      "query-input": "required name=search_term_string"
+    },
+    ...data
+  },
+  
+  MobileApplication: {
+    "@context": "https://schema.org",
+    "@type": "MobileApplication",
+    "name": "Tatikati",
+    "applicationCategory": "Entertainment",
+    "applicationSubCategory": "Education",
+    "operatingSystem": "iOS, Android",
+    "description": "L'application de podcasts spécialement conçue pour les enfants. Mode enfant sécurisé, navigation audio, et contenus soigneusement sélectionnés.",
+    "url": baseUrl,
+    "downloadUrl": [
+      "https://apps.apple.com/app/tatikati",
+      "https://play.google.com/store/apps/details?id=com.tatikati.app"
+    ],
+    "screenshot": `${baseUrl}/og-image.png`,
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.8",
+      "reviewCount": "1250"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "EUR"
+    },
+    ...data
+  },
+  
+  Organization: {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Tatikati",
+    "description": "Créateur d'applications de podcasts pour enfants, spécialisé dans les contenus éducatifs et divertissants sans écran.",
+    "url": baseUrl,
+    "logo": {
+      "@type": "ImageObject",
+      "url": `${baseUrl}/favicon-512x512.png`,
+      "width": 512,
+      "height": 512
+    },
+    "sameAs": [
+      "https://twitter.com/tatikatiapp",
+      "https://instagram.com/tatikatiapp",
+      "https://facebook.com/tatikatiapp"
+    ],
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "Customer Service",
+      "email": "contact@tatikati.app"
+    },
+    ...data
+  },
+  
+  BlogPosting: {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Tatikati",
+      "logo": {
+        "@type": "ImageObject",
+        "url": `${baseUrl}/favicon-512x512.png`
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": `${baseUrl}/blog`
+    },
+    ...data
+  }
+};
+
+const structuredData = structuredDataMap[type];
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(structuredData)} />

@@ -1,0 +1,565 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import NavBar from '../components/NavBar.astro';
+import Footer from '../components/Footer.astro';
+
+const title = "Politique de confidentialité | Tatikati";
+const description = "Découvrez comment Tatikati protège vos données personnelles et celles de vos enfants. Politique de confidentialité transparente et conforme au RGPD.";
+---
+
+<BaseLayout title={title} description={description}>
+  <NavBar />
+  
+  <main id="main" class="legal-page">
+    <div class="container">
+      <header class="page-header">
+        <h1 class="page-title">Politique de confidentialité</h1>
+        <p class="page-subtitle">
+          Chez Tatikati, la protection de vos données personnelles et celles de vos enfants est notre priorité absolue.
+        </p>
+        <div class="last-updated">
+          <span>Dernière mise à jour : 15 janvier 2024</span>
+        </div>
+      </header>
+
+      <div class="content">
+        <section class="content-section">
+          <h2>1. Qui sommes-nous ?</h2>
+          <p>
+            Tatikati est une application mobile développée par la société HELBY, société par actions simplifiée au capital de 10 000 euros, 
+            immatriculée au RCS de Paris sous le numéro XXX XXX XXX, dont le siège social est situé au 
+            [Adresse], 75000 Paris, France.
+          </p>
+          <p>
+            <strong>Contact :</strong> privacy@tatikati.app
+          </p>
+        </section>
+
+        <section class="content-section">
+          <h2>2. Quelles données collectons-nous ?</h2>
+          
+          <h3>2.1 Données collectées automatiquement</h3>
+          <ul>
+            <li><strong>Données techniques :</strong> type d'appareil, système d'exploitation, version de l'application</li>
+            <li><strong>Données d'usage :</strong> temps d'écoute, podcasts consultés, préférences de navigation</li>
+            <li><strong>Données de connexion :</strong> adresse IP, horodatage des connexions</li>
+          </ul>
+
+          <h3>2.2 Données fournies volontairement</h3>
+          <ul>
+            <li><strong>Compte utilisateur :</strong> adresse email, prénom (optionnel)</li>
+            <li><strong>Préférences :</strong> âge des enfants, centres d'intérêt</li>
+            <li><strong>Support client :</strong> messages et échanges avec notre équipe</li>
+          </ul>
+
+          <h3>2.3 Données concernant les enfants</h3>
+          <div class="highlight-box">
+            <h4>Protection spéciale des mineurs</h4>
+            <p>
+              Conformément au RGPD, nous ne collectons <strong>aucune donnée personnelle</strong> directement auprès des enfants de moins de 16 ans. 
+              Seuls les parents ou tuteurs légaux peuvent créer un compte et renseigner l'âge approximatif de leurs enfants 
+              pour personnaliser les recommandations.
+            </p>
+          </div>
+        </section>
+
+        <section class="content-section">
+          <h2>3. Pourquoi utilisons-nous vos données ?</h2>
+          
+          <h3>3.1 Fonctionnement du service</h3>
+          <ul>
+            <li>Fournir l'accès aux podcasts et fonctionnalités de l'application</li>
+            <li>Synchroniser vos préférences entre vos appareils</li>
+            <li>Mémoriser votre progression dans les épisodes</li>
+          </ul>
+
+          <h3>3.2 Amélioration de l'expérience</h3>
+          <ul>
+            <li>Recommander des contenus adaptés à l'âge de vos enfants</li>
+            <li>Analyser l'usage pour améliorer nos fonctionnalités</li>
+            <li>Corriger les bugs et optimiser les performances</li>
+          </ul>
+
+          <h3>3.3 Communication</h3>
+          <ul>
+            <li>Répondre à vos questions et demandes de support</li>
+            <li>Vous informer des nouvelles fonctionnalités (avec votre accord)</li>
+            <li>Envoyer des notifications de sécurité importantes</li>
+          </ul>
+        </section>
+
+        <section class="content-section">
+          <h2>4. Avec qui partageons-nous vos données ?</h2>
+          
+          <h3>4.1 Principe général</h3>
+          <p>
+            <strong>Nous ne vendons jamais vos données personnelles.</strong> Le partage de vos informations est limité aux cas suivants :
+          </p>
+
+          <h3>4.2 Prestataires techniques</h3>
+          <ul>
+            <li><strong>Hébergement :</strong> nos serveurs sont hébergés en Europe (France/Allemagne)</li>
+            <li><strong>Analyse d'audience :</strong> données anonymisées uniquement</li>
+            <li><strong>Support client :</strong> plateforme de gestion des tickets</li>
+          </ul>
+
+          <h3>4.3 Obligations légales</h3>
+          <p>
+            Nous pouvons être amenés à transmettre vos données si la loi l'exige (réquisition judiciaire, 
+            autorités compétentes).
+          </p>
+        </section>
+
+        <section class="content-section">
+          <h2>5. Combien de temps conservons-nous vos données ?</h2>
+          <table class="data-retention-table">
+            <thead>
+              <tr>
+                <th>Type de données</th>
+                <th>Durée de conservation</th>
+                <th>Justification</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Données de compte</td>
+                <td>Jusqu'à suppression du compte + 1 mois</td>
+                <td>Gestion du service</td>
+              </tr>
+              <tr>
+                <td>Données d'usage</td>
+                <td>24 mois maximum</td>
+                <td>Amélioration du service</td>
+              </tr>
+              <tr>
+                <td>Données de support</td>
+                <td>3 ans après résolution</td>
+                <td>Suivi qualité</td>
+              </tr>
+              <tr>
+                <td>Logs techniques</td>
+                <td>12 mois maximum</td>
+                <td>Sécurité et debug</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="content-section">
+          <h2>6. Vos droits</h2>
+          
+          <div class="rights-grid">
+            <div class="right-item">
+              <h4>🔍 Droit d'accès</h4>
+              <p>Connaître quelles données nous détenons sur vous</p>
+            </div>
+            
+            <div class="right-item">
+              <h4>✏️ Droit de rectification</h4>
+              <p>Corriger vos informations personnelles</p>
+            </div>
+            
+            <div class="right-item">
+              <h4>🗑️ Droit d'effacement</h4>
+              <p>Supprimer votre compte et vos données</p>
+            </div>
+            
+            <div class="right-item">
+              <h4>📦 Droit à la portabilité</h4>
+              <p>Récupérer vos données dans un format lisible</p>
+            </div>
+            
+            <div class="right-item">
+              <h4>⛔ Droit d'opposition</h4>
+              <p>Vous opposer au traitement de vos données</p>
+            </div>
+            
+            <div class="right-item">
+              <h4>⏸️ Droit de limitation</h4>
+              <p>Limiter l'utilisation de vos données</p>
+            </div>
+          </div>
+
+          <p>
+            Pour exercer ces droits, contactez-nous à <a href="mailto:privacy@tatikati.app">privacy@tatikati.app</a>. 
+            Nous vous répondrons dans les 30 jours maximum.
+          </p>
+        </section>
+
+        <section class="content-section">
+          <h2>7. Sécurité de vos données</h2>
+          
+          <h3>7.1 Mesures techniques</h3>
+          <ul>
+            <li><strong>Chiffrement :</strong> toutes les données sont chiffrées en transit (HTTPS/TLS)</li>
+            <li><strong>Stockage sécurisé :</strong> bases de données chiffrées et accès restreint</li>
+            <li><strong>Authentification :</strong> accès protégé par mot de passe fort</li>
+          </ul>
+
+          <h3>7.2 Mesures organisationnelles</h3>
+          <ul>
+            <li>Formation régulière de nos équipes aux bonnes pratiques</li>
+            <li>Audit de sécurité annuel par un tiers indépendant</li>
+            <li>Politique de gestion des incidents de sécurité</li>
+          </ul>
+        </section>
+
+        <section class="content-section">
+          <h2>8. Cookies et technologies similaires</h2>
+          
+          <h3>8.1 Cookies essentiels</h3>
+          <p>
+            Nécessaires au fonctionnement de l'application (authentification, préférences de session).
+          </p>
+
+          <h3>8.2 Cookies analytiques</h3>
+          <p>
+            Nous utilisons des outils d'analyse respectueux de la vie privée pour comprendre l'usage de l'application. 
+            Ces données sont anonymisées et vous pouvez les refuser dans les paramètres de l'app.
+          </p>
+        </section>
+
+        <section class="content-section">
+          <h2>9. Transferts internationaux</h2>
+          <p>
+            Vos données sont hébergées exclusivement en Europe. En cas de transfert vers des pays tiers, 
+            nous nous assurons qu'ils offrent un niveau de protection équivalent au RGPD.
+          </p>
+        </section>
+
+        <section class="content-section">
+          <h2>10. Modifications de cette politique</h2>
+          <p>
+            Cette politique peut être modifiée pour refléter les évolutions de nos pratiques ou de la réglementation. 
+            Nous vous informerons de tout changement important par email ou notification dans l'application.
+          </p>
+        </section>
+
+        <section class="content-section">
+          <h2>11. Contact et réclamations</h2>
+          
+          <div class="contact-info">
+            <h4>Délégué à la Protection des Données (DPO)</h4>
+            <p>Email : <a href="mailto:dpo@tatikati.app">dpo@tatikati.app</a></p>
+            <p>Adresse : HELBY - DPO, [Adresse complète], 75000 Paris</p>
+          </div>
+
+          <div class="contact-info">
+            <h4>Autorité de contrôle</h4>
+            <p>
+              En cas de désaccord, vous pouvez saisir la <strong>CNIL</strong> :
+              <br>Commission Nationale de l'Informatique et des Libertés
+              <br>3 Place de Fontenoy, 75007 Paris
+              <br><a href="https://www.cnil.fr" target="_blank" rel="noopener">www.cnil.fr</a>
+            </p>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+  
+  <Footer />
+</BaseLayout>
+
+<style>
+  .legal-page {
+    padding-top: 80px;
+    min-height: 100vh;
+  }
+
+  .page-header {
+    text-align: center;
+    padding: var(--space-4xl) 0;
+    background: linear-gradient(135deg, var(--color-bg) 0%, var(--color-gray-25) 100%);
+    border-radius: var(--radius-2xl);
+    margin-bottom: var(--space-4xl);
+  }
+
+  .page-title {
+    font-family: var(--font-heading);
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 700;
+    color: var(--color-fg);
+    margin-bottom: var(--space-lg);
+  }
+
+  .page-subtitle {
+    font-size: clamp(1.1rem, 2vw, 1.25rem);
+    color: var(--color-gray-600);
+    line-height: 1.6;
+    max-width: 700px;
+    margin: 0 auto var(--space-xl);
+  }
+
+  .last-updated {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-sm) var(--space-lg);
+    background: var(--color-accent-1);
+    color: white;
+    border-radius: var(--radius-full);
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+
+  .content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding-bottom: var(--space-4xl);
+  }
+
+  .content-section {
+    margin-bottom: var(--space-3xl);
+    padding: var(--space-2xl);
+    background: white;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-card);
+    border: 1px solid var(--color-gray-200);
+  }
+
+  .content-section h2 {
+    font-family: var(--font-heading);
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: var(--color-fg);
+    margin-bottom: var(--space-lg);
+    padding-bottom: var(--space-sm);
+    border-bottom: 2px solid var(--color-accent-1);
+  }
+
+  .content-section h3 {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-fg);
+    margin: var(--space-xl) 0 var(--space-md) 0;
+  }
+
+  .content-section h4 {
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--color-fg);
+    margin: var(--space-lg) 0 var(--space-sm) 0;
+  }
+
+  .content-section p {
+    color: var(--color-gray-700);
+    line-height: 1.7;
+    margin-bottom: var(--space-lg);
+  }
+
+  .content-section ul {
+    margin: var(--space-lg) 0;
+    padding-left: var(--space-xl);
+  }
+
+  .content-section li {
+    color: var(--color-gray-700);
+    line-height: 1.6;
+    margin-bottom: var(--space-sm);
+  }
+
+  .content-section a {
+    color: var(--color-accent-1);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color 0.2s ease;
+  }
+
+  .content-section a:hover {
+    color: var(--color-accent-2);
+  }
+
+  /* Special components */
+  .highlight-box {
+    background: linear-gradient(135deg, var(--color-accent-4), var(--color-accent-3));
+    color: white;
+    padding: var(--space-xl);
+    border-radius: var(--radius-lg);
+    margin: var(--space-xl) 0;
+  }
+
+  .highlight-box h4 {
+    color: white;
+    margin-top: 0;
+  }
+
+  .highlight-box p {
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 0;
+  }
+
+  .data-retention-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: var(--space-lg) 0;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+  }
+
+  .data-retention-table th {
+    background: var(--color-accent-1);
+    color: white;
+    padding: var(--space-lg);
+    text-align: left;
+    font-weight: 600;
+  }
+
+  .data-retention-table td {
+    padding: var(--space-lg);
+    border-bottom: 1px solid var(--color-gray-200);
+    color: var(--color-gray-700);
+  }
+
+  .data-retention-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .data-retention-table tr:nth-child(even) {
+    background: var(--color-gray-25);
+  }
+
+  .rights-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--space-lg);
+    margin: var(--space-xl) 0;
+  }
+
+  .right-item {
+    padding: var(--space-lg);
+    background: var(--color-gray-25);
+    border-radius: var(--radius-md);
+    border-left: 4px solid var(--color-accent-2);
+  }
+
+  .right-item h4 {
+    margin-top: 0;
+    margin-bottom: var(--space-sm);
+    color: var(--color-fg);
+    font-size: 1rem;
+  }
+
+  .right-item p {
+    margin-bottom: 0;
+    font-size: 0.9rem;
+    color: var(--color-gray-600);
+  }
+
+  .contact-info {
+    background: var(--color-gray-25);
+    padding: var(--space-xl);
+    border-radius: var(--radius-md);
+    margin: var(--space-lg) 0;
+  }
+
+  .contact-info h4 {
+    margin-top: 0;
+    color: var(--color-fg);
+  }
+
+  .contact-info p {
+    margin-bottom: var(--space-sm);
+  }
+
+  .contact-info p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 767px) {
+    .rights-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .data-retention-table {
+      font-size: 0.9rem;
+    }
+
+    .data-retention-table th,
+    .data-retention-table td {
+      padding: var(--space-md);
+    }
+
+    .content-section {
+      padding: var(--space-xl);
+      margin-bottom: var(--space-xl);
+    }
+  }
+
+  /* Dark Mode */
+  @media (prefers-color-scheme: dark) {
+    .page-header {
+      background: linear-gradient(135deg, var(--color-bg) 0%, rgba(17, 24, 39, 0.5) 100%);
+    }
+
+    .content-section {
+      background: var(--color-gray-900);
+      border-color: var(--color-gray-800);
+    }
+
+    .data-retention-table tr:nth-child(even) {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .right-item,
+    .contact-info {
+      background: rgba(255, 255, 255, 0.05);
+    }
+  }
+
+  /* Print Styles */
+  @media print {
+    .legal-page {
+      padding-top: 0;
+    }
+
+    .content-section {
+      break-inside: avoid;
+      box-shadow: none;
+      border: 1px solid #ddd;
+    }
+
+    .rights-grid {
+      break-inside: avoid;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+
+    // Add scroll spy for table of contents if needed
+    const sections = document.querySelectorAll('.content-section');
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '-20% 0px -70% 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          // Could highlight current section in a TOC
+          console.log('Current section:', entry.target.querySelector('h2')?.textContent);
+        }
+      });
+    }, observerOptions);
+
+    sections.forEach(section => observer.observe(section));
+  });
+</script>
