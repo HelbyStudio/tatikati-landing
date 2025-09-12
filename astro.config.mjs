@@ -7,7 +7,7 @@ import node from '@astrojs/node';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://tatikati.fr',
+  site: 'https://tatikati.app',
   output: 'server',
   adapter: node({
     mode: 'standalone'
