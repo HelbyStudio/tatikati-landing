@@ -360,25 +360,6 @@ const displayFeatures = showAll ? features : features.slice(0, 3);
     }
   }
 
-  /* Dark Mode */
-  @media (prefers-color-scheme: dark) {
-    .features {
-      background: linear-gradient(180deg, var(--color-bg) 0%, rgba(17, 24, 39, 0.5) 100%);
-    }
-
-    .feature-card {
-      background: var(--color-gray-900);
-      border-color: var(--color-gray-800);
-    }
-
-    .feature-card:hover {
-      border-color: var(--color-accent-1);
-    }
-
-    .bg-pattern {
-      opacity: 0.02;
-    }
-  }
 
   /* Intersection Observer Animation */
   .feature-card.animate-in {
