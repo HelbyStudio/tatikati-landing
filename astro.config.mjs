@@ -33,6 +33,11 @@ export default defineConfig({
       fs: {
         strict: false
       }
+    },
+    resolve: {
+      alias: {
+        '@': new URL('./src', import.meta.url).pathname
+      }
     }
   }
 });

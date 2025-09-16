@@ -1,0 +1,74 @@
+---
+interface Props {
+  title?: string;
+  variant?: 'primary' | 'warning' | 'info';
+}
+
+const { title, variant = 'primary' } = Astro.props;
+---
+
+<div class={`highlight-box highlight-box--${variant}`}>
+  {title && <h4>{title}</h4>}
+  <slot />
+</div>
+
+<style>
+  .highlight-box {
+    color: white;
+    padding: var(--space-xl, 2rem);
+    border-radius: var(--radius-lg, 1rem);
+    margin: var(--space-xl, 2rem) 0;
+  }
+  
+  .highlight-box--primary {
+    background: linear-gradient(135deg, var(--color-accent-4), var(--color-accent-3));
+  }
+  
+  .highlight-box--warning {
+    background: linear-gradient(135deg, #ff6b6b, #ff8787);
+  }
+  
+  .highlight-box--info {
+    background: linear-gradient(135deg, #4dabf7, #74c0fc);
+  }
+
+  .highlight-box h4 {
+    color: white;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+
+  .highlight-box p,
+  .highlight-box li {
+    color: rgba(255, 255, 255, 0.95);
+  }
+
+  .highlight-box p:last-child {
+    margin-bottom: 0;
+  }
+
+  .highlight-box ul {
+    margin: 1rem 0 0 0;
+    padding-left: 1.5rem;
+  }
+
+  .highlight-box li {
+    margin: 0.5rem 0;
+  }
+
+  .highlight-box strong {
+    color: white;
+    font-weight: 600;
+  }
+
+  .highlight-box em {
+    font-style: italic;
+    opacity: 0.95;
+  }
+
+  .highlight-box ul ul {
+    margin-top: 0.5rem;
+  }
+</style>

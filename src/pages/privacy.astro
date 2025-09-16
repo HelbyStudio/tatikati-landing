@@ -1,346 +1,42 @@
 ---
+import { getEntry } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import NavBar from '../components/NavBar.astro';
 import Footer from '../components/Footer.astro';
+import LastUpdated from '../components/mdx/LastUpdated.astro';
 
-const title = "Politique de confidentialité | Tatikati";
-const description = "Découvrez comment Tatikati protège vos données personnelles et celles de vos enfants. Politique de confidentialité transparente et conforme au RGPD.";
+// Détecter la langue courante (fr par défaut, en pour les URLs /en/)
+const currentLocale = Astro.currentLocale || 'fr';
+const pageId = `${currentLocale}/privacy`;
+
+const page = await getEntry('pages', pageId);
+if (!page) {
+  return Astro.redirect('/404');
+}
+
+const { Content } = await page.render();
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout 
+  title={`${page.data.title} | Tatikati`}
+  description={page.data.description}
+>
   <NavBar />
   
   <main id="main" class="legal-page">
     <div class="container">
       <header class="page-header">
-        <h1 class="page-title">Politique de confidentialité</h1>
-        <p class="page-subtitle">
-          Chez Tatikati, la protection de vos données personnelles et celles de vos enfants est notre priorité absolue.
-        </p>
-        <div class="last-updated">
-          <span>Dernière mise à jour : 12 septembre 2025</span>
-        </div>
+        <h1 class="page-title">{page.data.title}</h1>
+        <LastUpdated date={page.data.lastUpdated} />
       </header>
-
+      
       <div class="content">
-        <section class="content-section">
-          <h2>1. Responsable du traitement</h2>
-          <div class="company-info">
-            <h3>Helby Studio SAS</h3>
-            <p>Siège social : 61 rue de Lyon, 75012 Paris, France</p>
-            <p>SIREN : 928 684 323 | SIRET : 928 684 323 00019</p>
-            <p>Forme juridique : Société par actions simplifiée (SAS)</p>
-            <p>Capital social : 1 000,00 €</p>
-            <p>TVA intracommunautaire : FR66928684323</p>
-          </div>
-          <p>
-            Pour toute question relative à la protection de vos données personnelles, vous pouvez nous contacter à l'adresse : <strong>contact@helby.studio</strong>
-          </p>
-        </section>
-
-        <section class="content-section">
-          <h2>2. Compte parent et mode enfant</h2>
-          <div class="highlight-box">
-            <h4>Important :</h4>
-            <ul>
-              <li>Le compte utilisé pour l'inscription est celui d'un adulte (parent ou tuteur légal)</li>
-              <li>L'application propose un <em>mode enfant</em>, activé par le parent</li>
-              <li>Toutes les données du compte demeurent sous la responsabilité de l'adulte</li>
-              <li>Le parent consent explicitement à l'utilisation du mode enfant et aux traitements de données spécifiques</li>
-            </ul>
-          </div>
-          <p>Conformément à l'article 8 du RGPD, en France, les enfants de <strong>moins de 15 ans</strong> ne peuvent pas donner seuls leur consentement pour les services en ligne. Le consentement du titulaire de l'autorité parentale est requis.</p>
-        </section>
-
-        <section class="content-section">
-          <h2>3. Données collectées</h2>
-          
-          <h3>3.1 Données d'identification du parent</h3>
-          <ul>
-            <li>Nom et prénom</li>
-            <li>Adresse email</li>
-            <li>Mot de passe (chiffré)</li>
-            <li>Date d'inscription</li>
-          </ul>
-
-          <h3>3.2 Données liées au mode enfant</h3>
-          <ul>
-            <li>Préférences et paramètres du mode enfant</li>
-            <li>Historique d'utilisation et interactions</li>
-            <li>Données de progression et d'apprentissage</li>
-            <li>Données techniques : type d'appareil, système d'exploitation, logs d'accès</li>
-          </ul>
-
-          <h3>3.3 Données des formulaires</h3>
-          <ul>
-            <li>Données collectées via les formulaires Tally.so</li>
-            <li>Réponses aux enquêtes de satisfaction</li>
-            <li>Messages de contact et demandes de support</li>
-          </ul>
-
-          <h3>3.4 Données de communication</h3>
-          <ul>
-            <li>Préférences de communication</li>
-            <li>Historique des communications marketing (via Brevo)</li>
-            <li>Données de suivi des campagnes email</li>
-          </ul>
-        </section>
-
-        <section class="content-section">
-          <h2>4. Finalités du traitement</h2>
-          <div class="rights-grid">
-            <div class="right-item">
-              <h4>Finalités principales</h4>
-              <ul>
-                <li>Gestion du compte parent</li>
-                <li>Fonctionnement du mode enfant sécurisé</li>
-                <li>Amélioration de l'expérience utilisateur</li>
-                <li>Support technique et assistance</li>
-              </ul>
-            </div>
-            <div class="right-item">
-              <h4>Finalités secondaires</h4>
-              <ul>
-                <li>Communications marketing (avec consentement)</li>
-                <li>Analyses statistiques et d'usage</li>
-                <li>Études de satisfaction</li>
-                <li>Prévention de la fraude</li>
-              </ul>
-            </div>
-          </div>
-        </section>
-
-        <section class="content-section">
-          <h2>5. Base légale des traitements</h2>
-          <div class="highlight-box">
-            <h4>Nos traitements reposent sur :</h4>
-            <ul>
-              <li><strong>Consentement explicite</strong> du parent pour :
-                <ul>
-                  <li>L'inscription et la création du compte</li>
-                  <li>L'activation et l'utilisation du mode enfant</li>
-                  <li>Les communications marketing</li>
-                </ul>
-              </li>
-              <li><strong>Exécution du contrat</strong> pour la fourniture du service</li>
-              <li><strong>Intérêt légitime</strong> pour l'amélioration du service et les analyses d'usage</li>
-              <li><strong>Obligations légales</strong> (conservation de certaines données, sécurité)</li>
-            </ul>
-          </div>
-        </section>
-
-        <section class="content-section">
-          <h2>6. Destinataires des données</h2>
-          
-          <h3>6.1 Destinataires internes</h3>
-          <p>Seules les personnes habilitées au sein d'Helby Studio SAS ont accès aux données personnelles, dans le cadre strict de leurs missions.</p>
-
-          <h3>6.2 Prestataires et sous-traitants</h3>
-          <div class="contact-info">
-            <ul>
-              <li><strong>Railway Corp.</strong> - Hébergement et infrastructure (serveurs, stockage)</li>
-              <li><strong>Tally.so</strong> (Belgique) - Traitement des formulaires et enquêtes</li>
-              <li><strong>Brevo</strong> (anciennement Sendinblue, France) - Envoi d'emails et marketing automation</li>
-            </ul>
-            <p><strong>Tous nos prestataires sont contractuellement tenus de respecter la confidentialité et la sécurité de vos données personnelles.</strong></p>
-          </div>
-        </section>
-
-        <section class="content-section">
-          <h2>7. Transferts internationaux</h2>
-          <p>Certains de nos prestataires peuvent être situés en dehors de l'Union européenne. Dans ce cas, nous nous assurons que des garanties appropriées sont mises en place :</p>
-          <ul>
-            <li>Clauses contractuelles types approuvées par la Commission européenne</li>
-            <li>Certification sous des régimes reconnus (Privacy Shield, etc.)</li>
-            <li>Décision d'adéquation de la Commission européenne</li>
-          </ul>
-        </section>
-
-        <section class="content-section">
-          <h2>8. Durée de conservation</h2>
-          <table class="data-retention-table">
-            <thead>
-              <tr>
-                <th>Type de données</th>
-                <th>Durée</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Compte parent actif</td>
-                <td>Tant que le service est utilisé + 3 ans après fermeture</td>
-              </tr>
-              <tr>
-                <td>Données mode enfant</td>
-                <td>Jusqu'à désactivation du mode ou 2 ans d'inactivité</td>
-              </tr>
-              <tr>
-                <td>Communications marketing</td>
-                <td>3 ans après dernier contact ou désinscription</td>
-              </tr>
-              <tr>
-                <td>Logs techniques</td>
-                <td>12 mois maximum</td>
-              </tr>
-              <tr>
-                <td>Données de facturation</td>
-                <td>10 ans (obligation légale)</td>
-              </tr>
-            </tbody>
-          </table>
-        </section>
-
-        <section class="content-section">
-          <h2>9. Sécurité des données</h2>
-          <div class="rights-grid">
-            <div class="right-item">
-              <h4>Mesures techniques</h4>
-              <ul>
-                <li>Chiffrement des données sensibles</li>
-                <li>Protocoles HTTPS pour tous les échanges</li>
-                <li>Sauvegardes régulières et sécurisées</li>
-                <li>Pare-feu et systèmes de détection d'intrusion</li>
-                <li>Contrôle d'accès strict aux serveurs</li>
-              </ul>
-            </div>
-            <div class="right-item">
-              <h4>Mesures organisationnelles</h4>
-              <ul>
-                <li>Formation du personnel à la protection des données</li>
-                <li>Politique de mots de passe renforcée</li>
-                <li>Accès aux données sur la base du besoin d'en connaître</li>
-                <li>Audits de sécurité réguliers</li>
-                <li>Plan de réponse aux incidents</li>
-              </ul>
-            </div>
-          </div>
-        </section>
-
-        <section class="content-section">
-          <h2>10. Contenus podcasts et données tierces</h2>
-          <div class="highlight-box">
-            <h4>Important - Nature des contenus</h4>
-            <p>
-              Tatikati est un agrégateur de podcasts. Les contenus audio écoutés dans l'application 
-              <strong>ne sont pas hébergés sur nos serveurs</strong> et restent sous le contrôle de leurs créateurs.
-            </p>
-          </div>
-          
-          <h3>10.1 Hébergement des contenus</h3>
-          <p>
-            Les podcasts que vous écoutez sont :
-          </p>
-          <ul>
-            <li>Hébergés par des plateformes tierces (Spotify, Apple Podcasts, Acast, etc.)</li>
-            <li>Fournis via des flux RSS publics</li>
-            <li>Streamés directement depuis les serveurs des hébergeurs</li>
-            <li>Soumis aux politiques de confidentialité de leurs hébergeurs respectifs</li>
-          </ul>
-          
-          <h3>10.2 Données collectées lors de l'écoute</h3>
-          <p>
-            Lorsque vous écoutez un podcast, nous collectons uniquement :
-          </p>
-          <ul>
-            <li>L'historique d'écoute dans votre compte (si activé)</li>
-            <li>Les préférences et favoris que vous définissez</li>
-            <li>Les statistiques d'utilisation anonymisées de l'application</li>
-          </ul>
-          <p>
-            <strong>Nous ne collectons pas :</strong> les données d'écoute détaillées qui pourraient être collectées 
-            par les hébergeurs tiers des podcasts.
-          </p>
-          
-          <h3>10.3 Responsabilité sur les contenus</h3>
-          <p>
-            Les créateurs de podcasts restent responsables de leurs contenus et du respect du RGPD concernant 
-            les données qu'ils pourraient collecter via leurs propres systèmes d'hébergement.
-          </p>
-        </section>
-
-        <section class="content-section">
-          <h2>11. Vos droits</h2>
-          <p>En tant que parent/titulaire du compte, vous disposez des droits suivants concernant vos données personnelles et celles de votre enfant :</p>
-          
-          <div class="rights-grid">
-            <div class="right-item">
-              <h4>🔍 Droit d'accès</h4>
-              <p>Connaître quelles données nous détenons sur vous</p>
-            </div>
-            <div class="right-item">
-              <h4>✏️ Droit de rectification</h4>
-              <p>Corriger les données inexactes ou incomplètes</p>
-            </div>
-            <div class="right-item">
-              <h4>🗑️ Droit à l'effacement</h4>
-              <p>Supprimer vos données dans certaines conditions</p>
-            </div>
-            <div class="right-item">
-              <h4>⛔ Droit d'opposition</h4>
-              <p>Vous opposer au traitement de vos données</p>
-            </div>
-            <div class="right-item">
-              <h4>📦 Droit à la portabilité</h4>
-              <p>Récupérer vos données dans un format structuré</p>
-            </div>
-            <div class="right-item">
-              <h4>⏸️ Droit à la limitation</h4>
-              <p>Limiter le traitement de vos données</p>
-            </div>
-          </div>
-
-          <h3>Comment exercer vos droits ?</h3>
-          <p>Pour exercer ces droits, contactez-nous :</p>
-          <ul>
-            <li><strong>Email :</strong> contact@helby.studio</li>
-            <li><strong>Courrier :</strong> Helby Studio SAS - DPO, 61 rue de Lyon, 75012 Paris</li>
-          </ul>
-          <p><small>Nous vous répondrons dans un délai maximum d'un mois. Une pièce d'identité pourra vous être demandée pour vérifier votre identité.</small></p>
-        </section>
-
-        <section class="content-section">
-          <h2>12. Droit de déposer une réclamation</h2>
-          <div class="contact-info">
-            <p>Si vous estimez que le traitement de vos données personnelles constitue une violation de la réglementation applicable, vous avez le droit de déposer une réclamation auprès de la CNIL :</p>
-            <p><strong>Commission Nationale de l'Informatique et des Libertés (CNIL)</strong></p>
-            <p>3 Place de Fontenoy - TSA 80715 - 75334 PARIS CEDEX 07</p>
-            <p>Téléphone : 01 53 73 22 22</p>
-            <p>Site web : <a href="https://www.cnil.fr" target="_blank" rel="noopener">www.cnil.fr</a></p>
-          </div>
-        </section>
-
-
-        <section class="content-section">
-          <h2>13. Modifications de la politique</h2>
-          <p>Cette politique de confidentialité peut être modifiée à tout moment pour s'adapter aux évolutions légales, techniques ou de nos services. Nous vous informerons de toute modification substantielle :</p>
-          <ul>
-            <li>Par email si vous avez un compte actif</li>
-            <li>Par notification dans l'application</li>
-            <li>Par mise à jour de cette page avec indication de la date de modification</li>
-          </ul>
-        </section>
-
-        <section class="content-section">
-          <h2>14. Contact</h2>
-          <div class="contact-info">
-            <p>Pour toute question concernant cette politique de confidentialité ou le traitement de vos données personnelles :</p>
-            <p><strong>Email :</strong> contact@helby.studio</p>
-            <p><strong>Adresse :</strong> Helby Studio SAS, 61 rue de Lyon, 75012 Paris, France</p>
-            <p><strong>Téléphone :</strong> [À compléter]</p>
-          </div>
-        </section>
-
-        <div class="legal-footer">
-          <p>
-            Cette politique de confidentialité est conforme au Règlement Général sur la Protection des Données (RGPD) 
-            et à la loi Informatique et Libertés modifiée.
-          </p>
-        </div>
+        <Content />
       </div>
     </div>
   </main>
   
-  <Footer locale="fr" />
+  <Footer />
 </BaseLayout>
 
 <style>
@@ -351,10 +47,10 @@ const description = "Découvrez comment Tatikati protège vos données personnel
 
   .page-header {
     text-align: center;
-    padding: var(--space-4xl) 0;
-    background: linear-gradient(135deg, var(--color-bg) 0%, var(--color-gray-25) 100%);
-    border-radius: var(--radius-2xl);
-    margin-bottom: var(--space-4xl);
+    padding: var(--space-4xl, 3rem) 0;
+    background: linear-gradient(135deg, var(--color-bg) 0%, var(--color-gray-25, #f8f9fa) 100%);
+    border-radius: var(--radius-2xl, 1.5rem);
+    margin-bottom: var(--space-4xl, 3rem);
   }
 
   .page-title {
@@ -362,241 +58,104 @@ const description = "Découvrez comment Tatikati protège vos données personnel
     font-size: clamp(2.5rem, 5vw, 4rem);
     font-weight: 700;
     color: var(--color-fg);
-    margin-bottom: var(--space-lg);
-  }
-
-  .page-subtitle {
-    font-size: clamp(1.1rem, 2vw, 1.25rem);
-    color: var(--color-gray-600);
-    line-height: 1.6;
-    max-width: 700px;
-    margin: 0 auto var(--space-xl);
-  }
-
-  .last-updated {
-    display: inline-flex;
-    align-items: center;
-    padding: var(--space-sm) var(--space-lg);
-    background: var(--color-accent-1);
-    color: white;
-    border-radius: var(--radius-full);
-    font-size: 0.9rem;
-    font-weight: 500;
+    margin-bottom: var(--space-lg, 1.5rem);
   }
 
   .content {
     max-width: 800px;
     margin: 0 auto;
-    padding-bottom: var(--space-4xl);
+    padding-bottom: var(--space-4xl, 3rem);
   }
 
-  .content-section {
-    margin-bottom: var(--space-3xl);
-    padding: var(--space-2xl);
+  /* MDX content styling */
+  .content :global(section),
+  .content :global(.content-section) {
+    margin-bottom: var(--space-3xl, 2.5rem);
+    padding: var(--space-2xl, 2rem);
     background: white;
-    border-radius: var(--radius-xl);
+    border-radius: var(--radius-xl, 1rem);
     box-shadow: var(--shadow-card);
-    border: 1px solid var(--color-gray-200);
+    border: 1px solid var(--color-gray-200, #e9ecef);
   }
 
-  .content-section h2 {
+  .content :global(h2) {
     font-family: var(--font-heading);
     font-size: 1.75rem;
     font-weight: 600;
     color: var(--color-fg);
-    margin-bottom: var(--space-lg);
-    padding-bottom: var(--space-sm);
+    margin-bottom: var(--space-lg, 1.5rem);
+    padding-bottom: var(--space-sm, 0.5rem);
     border-bottom: 2px solid var(--color-accent-1);
   }
 
-  .content-section h3 {
+  .content :global(h3) {
     font-family: var(--font-heading);
     font-size: 1.25rem;
     font-weight: 600;
     color: var(--color-fg);
-    margin: var(--space-xl) 0 var(--space-md) 0;
+    margin: var(--space-xl, 2rem) 0 var(--space-md, 1rem) 0;
   }
 
-  .content-section h4 {
+  .content :global(h4) {
     font-family: var(--font-heading);
     font-size: 1.1rem;
     font-weight: 600;
     color: var(--color-fg);
-    margin: var(--space-lg) 0 var(--space-sm) 0;
+    margin: var(--space-lg, 1.5rem) 0 var(--space-sm, 0.5rem) 0;
   }
 
-  .content-section p {
-    color: var(--color-gray-700);
+  .content :global(p) {
+    color: var(--color-gray-700, #495057);
     line-height: 1.7;
-    margin-bottom: var(--space-lg);
+    margin-bottom: var(--space-lg, 1.5rem);
   }
 
-  .content-section ul {
-    margin: var(--space-lg) 0;
-    padding-left: var(--space-xl);
+  .content :global(ul),
+  .content :global(ol) {
+    margin: var(--space-lg, 1.5rem) 0;
+    padding-left: var(--space-xl, 2rem);
   }
 
-  .content-section li {
-    color: var(--color-gray-700);
+  .content :global(li) {
+    color: var(--color-gray-700, #495057);
     line-height: 1.6;
-    margin-bottom: var(--space-sm);
+    margin-bottom: var(--space-sm, 0.5rem);
   }
 
-  .content-section a {
+  .content :global(a) {
     color: var(--color-accent-1);
     text-decoration: underline;
     text-underline-offset: 2px;
     transition: color 0.2s ease;
   }
 
-  .content-section a:hover {
+  .content :global(a:hover) {
     color: var(--color-accent-2);
   }
 
-  /* Special components */
-  .highlight-box {
-    background: linear-gradient(135deg, var(--color-accent-4), var(--color-accent-3));
-    color: white;
-    padding: var(--space-xl);
-    border-radius: var(--radius-lg);
-    margin: var(--space-xl) 0;
-  }
-
-  .highlight-box h4 {
-    color: white;
-    margin-top: 0;
-  }
-
-  .highlight-box p {
-    color: rgba(255, 255, 255, 0.9);
-    margin-bottom: 0;
-  }
-
-  .data-retention-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: var(--space-lg) 0;
-    border-radius: var(--radius-md);
-    overflow: hidden;
-    box-shadow: var(--shadow-soft);
-  }
-
-  .data-retention-table th {
-    background: var(--color-accent-1);
-    color: white;
-    padding: var(--space-lg);
-    text-align: left;
+  .content :global(strong) {
     font-weight: 600;
-  }
-
-  .data-retention-table td {
-    padding: var(--space-lg);
-    border-bottom: 1px solid var(--color-gray-200);
-    color: var(--color-gray-700);
-  }
-
-  .data-retention-table tr:last-child td {
-    border-bottom: none;
-  }
-
-  .data-retention-table tr:nth-child(even) {
-    background: var(--color-gray-25);
-  }
-
-  .rights-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: var(--space-lg);
-    margin: var(--space-xl) 0;
-  }
-
-  .right-item {
-    padding: var(--space-lg);
-    background: var(--color-gray-25);
-    border-radius: var(--radius-md);
-    border-left: 4px solid var(--color-accent-2);
-  }
-
-  .right-item h4 {
-    margin-top: 0;
-    margin-bottom: var(--space-sm);
-    color: var(--color-fg);
-    font-size: 1rem;
-  }
-
-  .right-item p {
-    margin-bottom: 0;
-    font-size: 0.9rem;
-    color: var(--color-gray-600);
-  }
-
-  .contact-info {
-    background: var(--color-gray-25);
-    padding: var(--space-xl);
-    border-radius: var(--radius-md);
-    margin: var(--space-lg) 0;
-  }
-
-  .contact-info h4 {
-    margin-top: 0;
     color: var(--color-fg);
   }
 
-  .contact-info p {
-    margin-bottom: var(--space-sm);
+  .content :global(em) {
+    font-style: italic;
   }
 
-  .contact-info p:last-child {
-    margin-bottom: 0;
-  }
-
-  .company-info {
-    background: var(--color-gray-25);
-    padding: var(--space-xl);
-    border-radius: var(--radius-md);
-    margin: var(--space-lg) 0;
-  }
-
-  .company-info h3 {
-    margin-top: 0;
-    color: var(--color-fg);
-    font-size: 1.25rem;
-  }
-
-  .legal-footer {
-    text-align: center;
-    padding-top: var(--space-xl);
-    margin-top: var(--space-2xl);
-    border-top: 1px solid var(--color-gray-200);
-  }
-
-  .legal-footer p {
-    color: var(--color-gray-500);
-    font-size: 0.9rem;
-    margin: 0;
+  .content :global(hr) {
+    border: none;
+    border-top: 1px solid var(--color-gray-200, #e9ecef);
+    margin: var(--space-2xl, 2rem) 0;
   }
 
   /* Responsive Design */
   @media (max-width: 767px) {
-    .rights-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .data-retention-table {
-      font-size: 0.9rem;
-    }
-
-    .data-retention-table th,
-    .data-retention-table td {
-      padding: var(--space-md);
-    }
-
-    .content-section {
-      padding: var(--space-xl);
-      margin-bottom: var(--space-xl);
+    .content :global(section),
+    .content :global(.content-section) {
+      padding: var(--space-xl, 1.5rem);
+      margin-bottom: var(--space-xl, 1.5rem);
     }
   }
-
 
   /* Print Styles */
   @media print {
@@ -604,14 +163,11 @@ const description = "Découvrez comment Tatikati protège vos données personnel
       padding-top: 0;
     }
 
-    .content-section {
+    .content :global(section),
+    .content :global(.content-section) {
       break-inside: avoid;
       box-shadow: none;
       border: 1px solid #ddd;
-    }
-
-    .rights-grid {
-      break-inside: avoid;
     }
   }
 </style>
@@ -631,23 +187,5 @@ const description = "Découvrez comment Tatikati protège vos données personnel
         }
       });
     });
-
-    // Add scroll spy for table of contents if needed
-    const sections = document.querySelectorAll('.content-section');
-    const observerOptions = {
-      threshold: 0.1,
-      rootMargin: '-20% 0px -70% 0px'
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          // Could highlight current section in a TOC
-          console.log('Current section:', entry.target.querySelector('h2')?.textContent);
-        }
-      });
-    }, observerOptions);
-
-    sections.forEach(section => observer.observe(section));
   });
 </script>

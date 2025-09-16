@@ -1,0 +1,42 @@
+---
+import { useTranslations } from '../../i18n/utils';
+
+const currentLocale = Astro.currentLocale || 'fr';
+const t = useTranslations(currentLocale);
+---
+
+<div class="company-info">
+  <h3>Helby Studio SAS</h3>
+  <p>{t('legal.address')}: 61 rue de Lyon, 75012 Paris, France</p>
+  <p>SIREN : 928 684 323 | SIRET : 928 684 323 00019</p>
+  <p>{t('legal.legalForm')}: Société par actions simplifiée (SAS)</p>
+  <p>{t('legal.capital')}: 1 000,00 €</p>
+  <p>TVA intracommunautaire : FR66928684323</p>
+</div>
+
+<style>
+  .company-info {
+    background-color: var(--color-bg-secondary, #f8f9fa);
+    padding: 1.5rem;
+    border-radius: var(--radius-md, 0.5rem);
+    margin: 1.5rem 0;
+  }
+
+  .company-info h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: var(--color-text-primary);
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+
+  .company-info p {
+    margin: 0.5rem 0;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+  }
+
+  .company-info p:last-child {
+    margin-bottom: 0;
+  }
+</style>

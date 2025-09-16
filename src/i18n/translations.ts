@@ -97,6 +97,14 @@ export const translations = {
         other: 'English'
       }
     },
+    
+    // Legal pages
+    legal: {
+      address: 'Siège social',
+      legalForm: 'Forme juridique',
+      capital: 'Capital social',
+      lastUpdated: 'Dernière mise à jour'
+    },
 
     // Meta
     meta: {
@@ -297,6 +305,14 @@ export const translations = {
         current: 'English',
         other: 'Français'
       }
+    },
+    
+    // Legal pages  
+    legal: {
+      address: 'Head office',
+      legalForm: 'Legal form',
+      capital: 'Share capital',
+      lastUpdated: 'Last updated'
     },
 
     // Meta

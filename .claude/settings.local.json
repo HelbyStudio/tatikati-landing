@@ -21,7 +21,13 @@
       "WebFetch(domain:*.github.io)",
       "WebFetch(domain:astro.build)",
       "WebFetch(domain:*.astro.build)",
-      "WebSearch"
+      "WebSearch",
+      "Bash(mkdir:*)",
+      "Bash(curl:*)",
+      "Bash(for page in legal privacy terms)",
+      "Bash(do)",
+      "Bash(sed:*)",
+      "Bash(done)"
     ],
     "deny": [],
     "ask": []

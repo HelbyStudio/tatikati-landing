@@ -1,523 +1,42 @@
 ---
+import { getEntry } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import NavBar from '../components/NavBar.astro';
 import Footer from '../components/Footer.astro';
+import LastUpdated from '../components/mdx/LastUpdated.astro';
 
-const title = "Politique de Cookies | Tatikati";
-const description = "Découvrez comment Tatikati utilise les cookies et traceurs. Informations complètes sur les cookies essentiels, analytiques et vos choix de consentement.";
+// Détecter la langue courante (fr par défaut, en pour les URLs /en/)
+const currentLocale = Astro.currentLocale || 'fr';
+const pageId = `${currentLocale}/cookies`;
+
+const page = await getEntry('pages', pageId);
+if (!page) {
+  return Astro.redirect('/404');
+}
+
+const { Content } = await page.render();
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout 
+  title={`${page.data.title} | Tatikati`}
+  description={page.data.description}
+>
   <NavBar />
   
   <main id="main" class="legal-page">
     <div class="container">
       <header class="page-header">
-        <h1 class="page-title">Politique de Cookies</h1>
-        <p class="page-subtitle">
-          Informations sur l'utilisation des cookies et traceurs sur l'application Tatikati et notre site web.
-        </p>
-        <div class="last-updated">
-          <span>Dernière mise à jour : 12 septembre 2025</span>
-        </div>
+        <h1 class="page-title">{page.data.title}</h1>
+        <LastUpdated date={page.data.lastUpdated} />
       </header>
-
+      
       <div class="content">
-        <section class="content-section">
-          <h2>1. Qu'est-ce qu'un cookie ?</h2>
-          
-          <div class="definition-box">
-            <h3>Définition technique</h3>
-            <p>
-              Un cookie est un petit fichier texte déposé sur votre terminal (ordinateur, tablette, smartphone) 
-              lors de la consultation d'un site web ou l'utilisation d'une application. Il permet de reconnaître 
-              votre terminal lors de vos visites ultérieures.
-            </p>
-          </div>
-
-          <h3>Types de cookies utilisés</h3>
-          <div class="cookie-types-grid">
-            <div class="cookie-type">
-              <h4>🍪 Cookies de session</h4>
-              <p>Temporaires, supprimés à la fermeture de l'application</p>
-            </div>
-            <div class="cookie-type">
-              <h4>📅 Cookies persistants</h4>
-              <p>Conservés jusqu'à leur expiration ou suppression manuelle</p>
-            </div>
-            <div class="cookie-type">
-              <h4>🥇 Cookies propriétaires</h4>
-              <p>Déposés directement par Tatikati</p>
-            </div>
-            <div class="cookie-type">
-              <h4>🤝 Cookies tiers</h4>
-              <p>Déposés par nos partenaires (avec votre consentement)</p>
-            </div>
-          </div>
-        </section>
-
-        <section class="content-section">
-          <h2>2. Cookies utilisés par Tatikati</h2>
-          
-          <h3>2.1 Cookies strictement nécessaires</h3>
-          <div class="necessary-cookies">
-            <p class="cookie-notice">
-              ⚡ Ces cookies ne nécessitent pas votre consentement car ils sont essentiels au fonctionnement de l'application
-            </p>
-            
-            <div class="cookie-table-container">
-              <table class="cookie-table">
-                <thead>
-                  <tr>
-                    <th>Nom du cookie</th>
-                    <th>Finalité</th>
-                    <th>Durée</th>
-                    <th>Type</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><code>tatikati_session</code></td>
-                    <td>Maintien de la session utilisateur</td>
-                    <td>Session</td>
-                    <td>Essentiel</td>
-                  </tr>
-                  <tr>
-                    <td><code>user_preferences</code></td>
-                    <td>Mémorisation des préférences (mode enfant, langue)</td>
-                    <td>1 an</td>
-                    <td>Essentiel</td>
-                  </tr>
-                  <tr>
-                    <td><code>auth_token</code></td>
-                    <td>Authentification sécurisée</td>
-                    <td>30 jours</td>
-                    <td>Essentiel</td>
-                  </tr>
-                  <tr>
-                    <td><code>csrf_protection</code></td>
-                    <td>Protection contre les attaques CSRF</td>
-                    <td>Session</td>
-                    <td>Sécurité</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <h3>2.2 Cookies analytiques</h3>
-          <div class="analytics-cookies">
-            <p class="cookie-notice">
-              📊 Ces cookies nécessitent votre consentement et nous aident à améliorer l'application
-            </p>
-            
-            <div class="cookie-table-container">
-              <table class="cookie-table">
-                <thead>
-                  <tr>
-                    <th>Nom du cookie</th>
-                    <th>Finalité</th>
-                    <th>Durée</th>
-                    <th>Fournisseur</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><code>tatikati_analytics</code></td>
-                    <td>Mesure d'audience anonymisée</td>
-                    <td>2 ans</td>
-                    <td>Tatikati (interne)</td>
-                  </tr>
-                  <tr>
-                    <td><code>usage_stats</code></td>
-                    <td>Statistiques d'utilisation des fonctionnalités</td>
-                    <td>13 mois</td>
-                    <td>Tatikati (interne)</td>
-                  </tr>
-                  <tr>
-                    <td><code>performance_metrics</code></td>
-                    <td>Mesure des performances de l'application</td>
-                    <td>6 mois</td>
-                    <td>Tatikati (interne)</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <div class="privacy-info">
-              <h4>🛡️ Protection de votre vie privée</h4>
-              <ul>
-                <li>Aucune donnée personnelle n'est collectée via ces cookies analytiques</li>
-                <li>Les données sont anonymisées avant analyse</li>
-                <li>Aucun profilage ou ciblage publicitaire</li>
-                <li>Les adresses IP sont tronquées pour préserver l'anonymat</li>
-              </ul>
-            </div>
-          </div>
-
-          <h3>2.3 Cookies publicitaires</h3>
-          <div class="advertising-notice">
-            <h4>🚫 Aucun cookie publicitaire</h4>
-            <p>
-              Tatikati ne dépose <strong>aucun cookie publicitaire</strong> et ne pratique 
-              <strong>aucun ciblage publicitaire</strong>. Notre modèle économique respecte 
-              votre vie privée et celle de vos enfants.
-            </p>
-          </div>
-        </section>
-
-        <section class="content-section">
-          <h2>3. Cookies de nos partenaires</h2>
-          
-          <h3>3.1 Services tiers utilisés</h3>
-          <div class="partners-grid">
-            <div class="partner-item">
-              <h4>🏗️ Railway (Hébergement)</h4>
-              <p><strong>Finalité :</strong> Hébergement et performance</p>
-              <p><strong>Cookies :</strong> Cookies techniques de load balancing</p>
-              <p><strong>Durée :</strong> Session</p>
-              <p><strong>Base légale :</strong> Intérêt légitime (fonctionnement du service)</p>
-            </div>
-            
-            <div class="partner-item">
-              <h4>📊 Tally (Formulaires)</h4>
-              <p><strong>Finalité :</strong> Fonctionnement des formulaires de contact</p>
-              <p><strong>Cookies :</strong> Cookies de session et préférences</p>
-              <p><strong>Durée :</strong> 30 jours</p>
-              <p><strong>Base légale :</strong> Consentement</p>
-            </div>
-            
-            <div class="partner-item">
-              <h4>✉️ Brevo (Email)</h4>
-              <p><strong>Finalité :</strong> Suivi des campagnes email (si consentement)</p>
-              <p><strong>Cookies :</strong> Tracking des ouvertures/clics</p>
-              <p><strong>Durée :</strong> 13 mois</p>
-              <p><strong>Base légale :</strong> Consentement explicite</p>
-            </div>
-          </div>
-
-          <h3>3.2 Transferts internationaux</h3>
-          <div class="transfer-info">
-            <p>
-              Certains de nos partenaires peuvent être situés en dehors de l'Union européenne. 
-              Dans ce cas, nous nous assurons que des garanties appropriées sont mises en place :
-            </p>
-            <ul>
-              <li>Clauses contractuelles types de la Commission européenne</li>
-              <li>Certifications Privacy Framework</li>
-              <li>Décisions d'adéquation</li>
-            </ul>
-          </div>
-        </section>
-
-        <section class="content-section">
-          <h2>4. Vos choix et contrôles</h2>
-          
-          <h3>4.1 Gestion du consentement</h3>
-          <div class="consent-controls">
-            <div class="consent-option">
-              <h4>✅ Accepter tous les cookies</h4>
-              <p>Autorise tous les cookies pour une expérience optimale</p>
-              <button class="consent-btn accept-all" onclick="handleCookieConsent('all')">
-                Accepter tous les cookies
-              </button>
-            </div>
-            
-            <div class="consent-option">
-              <h4>🛠️ Paramétrer vos préférences</h4>
-              <p>Choisissez précisément quels cookies autoriser</p>
-              <button class="consent-btn customize" onclick="openCookieSettings()">
-                Paramétrer les cookies
-              </button>
-            </div>
-            
-            <div class="consent-option">
-              <h4>❌ Refuser les cookies non essentiels</h4>
-              <p>Seuls les cookies nécessaires au fonctionnement</p>
-              <button class="consent-btn reject" onclick="handleCookieConsent('essential')">
-                Cookies essentiels uniquement
-              </button>
-            </div>
-          </div>
-
-          <h3>4.2 Paramétrage dans votre navigateur</h3>
-          <div class="browser-settings">
-            <h4>Configuration par navigateur :</h4>
-            
-            <div class="browser-grid">
-              <div class="browser-item">
-                <h5>🔵 Google Chrome</h5>
-                <p>Paramètres → Confidentialité et sécurité → Cookies</p>
-              </div>
-              
-              <div class="browser-item">
-                <h5>🦊 Firefox</h5>
-                <p>Options → Vie privée et sécurité → Cookies</p>
-              </div>
-              
-              <div class="browser-item">
-                <h5>🧭 Safari</h5>
-                <p>Préférences → Confidentialité → Cookies</p>
-              </div>
-              
-              <div class="browser-item">
-                <h5>📘 Microsoft Edge</h5>
-                <p>Paramètres → Cookies et autorisations de site</p>
-              </div>
-            </div>
-            
-            <div class="browser-warning">
-              <h4>⚠️ Important</h4>
-              <p>
-                La désactivation de certains cookies peut affecter le fonctionnement de l'application. 
-                Les cookies essentiels ne peuvent pas être désactivés.
-              </p>
-            </div>
-          </div>
-
-          <h3>4.3 Applications mobiles</h3>
-          <div class="mobile-settings">
-            <h4>Paramètres sur mobile :</h4>
-            
-            <div class="mobile-grid">
-              <div class="mobile-item">
-                <h5>📱 iOS (iPhone/iPad)</h5>
-                <ul>
-                  <li>Réglages → Confidentialité → Suivi</li>
-                  <li>Réglages → Safari → Confidentialité</li>
-                  <li>Dans l'app : Paramètres → Confidentialité</li>
-                </ul>
-              </div>
-              
-              <div class="mobile-item">
-                <h5>🤖 Android</h5>
-                <ul>
-                  <li>Paramètres → Google → Annonces</li>
-                  <li>Paramètres → Confidentialité → Activité sur le Web</li>
-                  <li>Dans l'app : Paramètres → Cookies et trackers</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section class="content-section">
-          <h2>5. Durées de conservation</h2>
-          
-          <div class="retention-table-container">
-            <table class="retention-table">
-              <thead>
-                <tr>
-                  <th>Catégorie</th>
-                  <th>Durée maximale</th>
-                  <th>Suppression</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Cookies essentiels</td>
-                  <td>13 mois maximum</td>
-                  <td>Automatique à l'expiration</td>
-                </tr>
-                <tr>
-                  <td>Cookies analytiques</td>
-                  <td>25 mois maximum</td>
-                  <td>Renouvellement du consentement requis</td>
-                </tr>
-                <tr>
-                  <td>Cookies de partenaires</td>
-                  <td>Variable selon le partenaire</td>
-                  <td>Selon politique du partenaire</td>
-                </tr>
-                <tr>
-                  <td>Données de consentement</td>
-                  <td>25 mois</td>
-                  <td>Renouvellement automatique demandé</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div class="retention-notice">
-            <h4>📅 Renouvellement du consentement</h4>
-            <p>
-              Conformément à la réglementation, nous vous demanderons de renouveler votre consentement 
-              pour les cookies non essentiels tous les 25 mois maximum.
-            </p>
-          </div>
-        </section>
-
-        <section class="content-section">
-          <h2>6. Protection des mineurs</h2>
-          
-          <div class="minors-protection">
-            <h3>🧒 Engagement spécial pour les enfants</h3>
-            
-            <div class="protection-measures">
-              <div class="measure-item">
-                <h4>🚫 Aucun tracking enfant</h4>
-                <p>Aucun cookie ne suit spécifiquement l'activité des enfants en mode enfant</p>
-              </div>
-              
-              <div class="measure-item">
-                <h4>👪 Contrôle parental</h4>
-                <p>Seuls les parents peuvent modifier les paramètres de cookies</p>
-              </div>
-              
-              <div class="measure-item">
-                <h4>📊 Données anonymes</h4>
-                <p>Toutes les données analytiques sont anonymisées</p>
-              </div>
-              
-              <div class="measure-item">
-                <h4>🛡️ RGPD enfants</h4>
-                <p>Conformité stricte avec l'article 8 du RGPD (moins de 15 ans)</p>
-              </div>
-            </div>
-            
-            <div class="parents-info">
-              <h4>ℹ️ Information aux parents</h4>
-              <p>
-                En tant que parent, vous avez le contrôle total sur les cookies utilisés 
-                lorsque votre enfant utilise l'application. Vous pouvez à tout moment :
-              </p>
-              <ul>
-                <li>Consulter les cookies actifs</li>
-                <li>Modifier vos préférences</li>
-                <li>Supprimer tous les cookies non essentiels</li>
-                <li>Demander un rapport détaillé sur les données collectées</li>
-              </ul>
-            </div>
-          </div>
-        </section>
-
-        <section class="content-section">
-          <h2>7. Vos droits</h2>
-          
-          <div class="rights-overview">
-            <p>Concernant les cookies et les données qu'ils collectent, vous disposez des droits suivants :</p>
-            
-            <div class="rights-grid">
-              <div class="right-card">
-                <h4>🔍 Droit d'information</h4>
-                <p>Être informé de l'utilisation des cookies avant leur dépôt</p>
-              </div>
-              
-              <div class="right-card">
-                <h4>✋ Droit d'opposition</h4>
-                <p>Refuser les cookies non essentiels à tout moment</p>
-              </div>
-              
-              <div class="right-card">
-                <h4>🗑️ Droit d'effacement</h4>
-                <p>Demander la suppression des données collectées via cookies</p>
-              </div>
-              
-              <div class="right-card">
-                <h4>⚙️ Droit de paramétrage</h4>
-                <p>Configurer précisément vos préférences de cookies</p>
-              </div>
-              
-              <div class="right-card">
-                <h4>📋 Droit d'accès</h4>
-                <p>Connaître les cookies déposés et leurs finalités</p>
-              </div>
-              
-              <div class="right-card">
-                <h4>🔄 Droit de modification</h4>
-                <p>Changer vos préférences à tout moment</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="exercise-rights">
-            <h4>Comment exercer vos droits ?</h4>
-            <ul>
-              <li><strong>Dans l'application :</strong> Paramètres → Confidentialité → Cookies</li>
-              <li><strong>Par email :</strong> <a href="mailto:contact@helby.studio">contact@helby.studio</a></li>
-              <li><strong>Via notre formulaire :</strong> Section contact de notre site web</li>
-            </ul>
-          </div>
-        </section>
-
-        <section class="content-section">
-          <h2>8. Modifications de cette politique</h2>
-          
-          <div class="updates-info">
-            <h3>🔄 Évolution de notre politique cookies</h3>
-            <p>
-              Cette politique peut être modifiée pour s'adapter aux évolutions techniques, 
-              légales ou de nos services. En cas de modification substantielle :
-            </p>
-            
-            <div class="notification-methods">
-              <div class="method-item">
-                <h4>📧 Notification email</h4>
-                <p>Information des utilisateurs enregistrés</p>
-              </div>
-              
-              <div class="method-item">
-                <h4>🔔 Notification in-app</h4>
-                <p>Bannière d'information dans l'application</p>
-              </div>
-              
-              <div class="method-item">
-                <h4>🌐 Publication web</h4>
-                <p>Mise à jour de cette page avec nouvelle date</p>
-              </div>
-            </div>
-            
-            <p class="version-info">
-              <strong>Version actuelle :</strong> 1.0 - Dernière mise à jour : 12 septembre 2025<br>
-              <strong>Prochaine révision prévue :</strong> Septembre 2026
-            </p>
-          </div>
-        </section>
-
-        <section class="content-section">
-          <h2>9. Contact et réclamations</h2>
-          
-          <div class="contact-options">
-            <div class="contact-method">
-              <h4>📧 Questions RGPD et Cookies</h4>
-              <p>
-                <strong>Email :</strong> <a href="mailto:contact@helby.studio">contact@helby.studio</a><br>
-                <strong>Réponse :</strong> Sous 72 heures maximum<br>
-                <strong>Spécialité :</strong> Questions techniques sur les cookies et protection des données
-              </p>
-            </div>
-            
-            <div class="contact-method">
-              <h4>🏢 Service Client</h4>
-              <p>
-                <strong>Email :</strong> <a href="mailto:support@tatikati.app">support@tatikati.app</a><br>
-                <strong>Réponse :</strong> Sous 24 heures en semaine<br>
-                <strong>Spécialité :</strong> Aide à la configuration des préférences
-              </p>
-            </div>
-            
-            <div class="contact-method">
-              <h4>🏛️ Autorité de contrôle (CNIL)</h4>
-              <p>
-                <strong>Site :</strong> <a href="https://www.cnil.fr/fr/cookies-et-autres-traceurs" target="_blank" rel="noopener">cnil.fr/cookies</a><br>
-                <strong>Téléphone :</strong> 01 53 73 22 22<br>
-                <strong>En cas :</strong> Désaccord sur le traitement de votre réclamation
-              </p>
-            </div>
-          </div>
-        </section>
-
-        <div class="legal-footer">
-          <p>
-            Cette politique de cookies est conforme au Règlement ePrivacy, au RGPD 
-            et aux recommandations de la CNIL sur les cookies et autres traceurs.
-          </p>
-        </div>
+        <Content />
       </div>
     </div>
   </main>
   
-  <Footer locale="fr" />
+  <Footer />
 </BaseLayout>
 
 <style>
@@ -528,10 +47,10 @@ const description = "Découvrez comment Tatikati utilise les cookies et traceurs
 
   .page-header {
     text-align: center;
-    padding: var(--space-4xl) 0;
-    background: linear-gradient(135deg, var(--color-bg) 0%, var(--color-gray-25) 100%);
-    border-radius: var(--radius-2xl);
-    margin-bottom: var(--space-4xl);
+    padding: var(--space-4xl, 3rem) 0;
+    background: linear-gradient(135deg, var(--color-bg) 0%, var(--color-gray-25, #f8f9fa) 100%);
+    border-radius: var(--radius-2xl, 1.5rem);
+    margin-bottom: var(--space-4xl, 3rem);
   }
 
   .page-title {
@@ -539,608 +58,104 @@ const description = "Découvrez comment Tatikati utilise les cookies et traceurs
     font-size: clamp(2.5rem, 5vw, 4rem);
     font-weight: 700;
     color: var(--color-fg);
-    margin-bottom: var(--space-lg);
-  }
-
-  .page-subtitle {
-    font-size: clamp(1.1rem, 2vw, 1.25rem);
-    color: var(--color-gray-600);
-    line-height: 1.6;
-    max-width: 700px;
-    margin: 0 auto var(--space-xl);
-  }
-
-  .last-updated {
-    display: inline-flex;
-    align-items: center;
-    padding: var(--space-sm) var(--space-lg);
-    background: var(--color-accent-1);
-    color: white;
-    border-radius: var(--radius-full);
-    font-size: 0.9rem;
-    font-weight: 500;
+    margin-bottom: var(--space-lg, 1.5rem);
   }
 
   .content {
-    max-width: 900px;
+    max-width: 800px;
     margin: 0 auto;
-    padding-bottom: var(--space-4xl);
+    padding-bottom: var(--space-4xl, 3rem);
   }
 
-  .content-section {
-    margin-bottom: var(--space-3xl);
-    padding: var(--space-2xl);
+  /* MDX content styling */
+  .content :global(section),
+  .content :global(.content-section) {
+    margin-bottom: var(--space-3xl, 2.5rem);
+    padding: var(--space-2xl, 2rem);
     background: white;
-    border-radius: var(--radius-xl);
+    border-radius: var(--radius-xl, 1rem);
     box-shadow: var(--shadow-card);
-    border: 1px solid var(--color-gray-200);
+    border: 1px solid var(--color-gray-200, #e9ecef);
   }
 
-  .content-section h2 {
+  .content :global(h2) {
     font-family: var(--font-heading);
     font-size: 1.75rem;
     font-weight: 600;
     color: var(--color-fg);
-    margin-bottom: var(--space-lg);
-    padding-bottom: var(--space-sm);
+    margin-bottom: var(--space-lg, 1.5rem);
+    padding-bottom: var(--space-sm, 0.5rem);
     border-bottom: 2px solid var(--color-accent-1);
   }
 
-  .content-section h3 {
+  .content :global(h3) {
     font-family: var(--font-heading);
     font-size: 1.25rem;
     font-weight: 600;
     color: var(--color-fg);
-    margin: var(--space-xl) 0 var(--space-md) 0;
+    margin: var(--space-xl, 2rem) 0 var(--space-md, 1rem) 0;
   }
 
-  .content-section h4 {
+  .content :global(h4) {
     font-family: var(--font-heading);
     font-size: 1.1rem;
     font-weight: 600;
     color: var(--color-fg);
-    margin: var(--space-lg) 0 var(--space-sm) 0;
+    margin: var(--space-lg, 1.5rem) 0 var(--space-sm, 0.5rem) 0;
   }
 
-  .content-section p {
-    color: var(--color-gray-700);
+  .content :global(p) {
+    color: var(--color-gray-700, #495057);
     line-height: 1.7;
-    margin-bottom: var(--space-lg);
+    margin-bottom: var(--space-lg, 1.5rem);
   }
 
-  .content-section ul {
-    margin: var(--space-lg) 0;
-    padding-left: var(--space-xl);
+  .content :global(ul),
+  .content :global(ol) {
+    margin: var(--space-lg, 1.5rem) 0;
+    padding-left: var(--space-xl, 2rem);
   }
 
-  .content-section li {
-    color: var(--color-gray-700);
+  .content :global(li) {
+    color: var(--color-gray-700, #495057);
     line-height: 1.6;
-    margin-bottom: var(--space-sm);
+    margin-bottom: var(--space-sm, 0.5rem);
   }
 
-  .content-section a {
+  .content :global(a) {
     color: var(--color-accent-1);
     text-decoration: underline;
     text-underline-offset: 2px;
     transition: color 0.2s ease;
   }
 
-  .content-section a:hover {
+  .content :global(a:hover) {
     color: var(--color-accent-2);
   }
 
-  /* Cookie-specific components */
-  .definition-box {
-    background: linear-gradient(135deg, #6366f1, #8b5cf6);
-    color: white;
-    padding: var(--space-xl);
-    border-radius: var(--radius-lg);
-    margin: var(--space-lg) 0;
-  }
-
-  .definition-box h3 {
-    color: white;
-    margin-top: 0;
-  }
-
-  .definition-box p {
-    color: rgba(255, 255, 255, 0.95);
-    margin-bottom: 0;
-  }
-
-  .cookie-types-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: var(--space-md);
-    margin: var(--space-lg) 0;
-  }
-
-  .cookie-type {
-    padding: var(--space-lg);
-    background: var(--color-gray-25);
-    border-radius: var(--radius-md);
-    border-top: 3px solid var(--color-accent-2);
-    text-align: center;
-  }
-
-  .cookie-type h4 {
-    margin-top: 0;
-    margin-bottom: var(--space-sm);
-    font-size: 1rem;
-  }
-
-  .cookie-type p {
-    margin-bottom: 0;
-    font-size: 0.9rem;
-    color: var(--color-gray-600);
-  }
-
-  .necessary-cookies, .analytics-cookies {
-    margin: var(--space-xl) 0;
-  }
-
-  .cookie-notice {
-    background: #f0f9ff;
-    border: 1px solid #0ea5e9;
-    color: #0c4a6e;
-    padding: var(--space-lg);
-    border-radius: var(--radius-md);
-    margin: var(--space-lg) 0;
-    font-weight: 500;
-  }
-
-  .cookie-table-container {
-    overflow-x: auto;
-    margin: var(--space-lg) 0;
-  }
-
-  .cookie-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.9rem;
-  }
-
-  .cookie-table th {
-    background: var(--color-accent-1);
-    color: white;
-    padding: var(--space-md);
-    text-align: left;
+  .content :global(strong) {
     font-weight: 600;
-  }
-
-  .cookie-table td {
-    padding: var(--space-md);
-    border-bottom: 1px solid var(--color-gray-200);
-    vertical-align: top;
-  }
-
-  .cookie-table code {
-    background: var(--color-gray-100);
-    padding: 2px 6px;
-    border-radius: var(--radius-xs);
-    font-family: 'Monaco', 'Menlo', monospace;
-    font-size: 0.8rem;
-  }
-
-  .cookie-table tr:nth-child(even) {
-    background: var(--color-gray-25);
-  }
-
-  .privacy-info {
-    background: #f0fdf4;
-    border: 1px solid #22c55e;
-    padding: var(--space-xl);
-    border-radius: var(--radius-md);
-    margin: var(--space-lg) 0;
-  }
-
-  .privacy-info h4 {
-    color: #166534;
-    margin-top: 0;
-  }
-
-  .privacy-info ul {
-    color: #166534;
-    margin-bottom: 0;
-  }
-
-  .advertising-notice {
-    background: #fef2f2;
-    border: 1px solid #ef4444;
-    padding: var(--space-xl);
-    border-radius: var(--radius-md);
-    margin: var(--space-lg) 0;
-  }
-
-  .advertising-notice h4 {
-    color: #dc2626;
-    margin-top: 0;
-    display: flex;
-    align-items: center;
-    gap: var(--space-sm);
-  }
-
-  .advertising-notice p {
-    color: #991b1b;
-    margin-bottom: 0;
-  }
-
-  .partners-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: var(--space-lg);
-    margin: var(--space-lg) 0;
-  }
-
-  .partner-item {
-    padding: var(--space-lg);
-    background: var(--color-gray-25);
-    border-radius: var(--radius-md);
-    border-left: 4px solid var(--color-accent-2);
-  }
-
-  .partner-item h4 {
-    margin-top: 0;
     color: var(--color-fg);
   }
 
-  .partner-item p {
-    margin-bottom: var(--space-sm);
-    font-size: 0.9rem;
+  .content :global(em) {
+    font-style: italic;
   }
 
-  .partner-item p:last-child {
-    margin-bottom: 0;
-  }
-
-  .transfer-info {
-    background: #fffbeb;
-    border: 1px solid #f59e0b;
-    padding: var(--space-xl);
-    border-radius: var(--radius-md);
-    margin: var(--space-lg) 0;
-  }
-
-  .consent-controls {
-    display: grid;
-    gap: var(--space-lg);
-    margin: var(--space-xl) 0;
-  }
-
-  .consent-option {
-    padding: var(--space-xl);
-    background: var(--color-gray-25);
-    border-radius: var(--radius-md);
-    border: 2px solid transparent;
-    transition: all 0.2s ease;
-  }
-
-  .consent-option:hover {
-    border-color: var(--color-accent-2);
-    background: white;
-  }
-
-  .consent-option h4 {
-    margin-top: 0;
-    margin-bottom: var(--space-md);
-  }
-
-  .consent-btn {
-    background: var(--color-accent-1);
-    color: white;
+  .content :global(hr) {
     border: none;
-    padding: var(--space-md) var(--space-xl);
-    border-radius: var(--radius-md);
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    margin-top: var(--space-md);
-  }
-
-  .consent-btn:hover {
-    background: var(--color-accent-2);
-    transform: translateY(-2px);
-  }
-
-  .consent-btn.customize {
-    background: #6366f1;
-  }
-
-  .consent-btn.reject {
-    background: #6b7280;
-  }
-
-  .browser-settings, .mobile-settings {
-    margin: var(--space-lg) 0;
-  }
-
-  .browser-grid, .mobile-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: var(--space-md);
-    margin: var(--space-lg) 0;
-  }
-
-  .browser-item, .mobile-item {
-    padding: var(--space-lg);
-    background: var(--color-gray-25);
-    border-radius: var(--radius-md);
-    border-top: 3px solid var(--color-accent-2);
-  }
-
-  .browser-item h5, .mobile-item h5 {
-    margin-top: 0;
-    margin-bottom: var(--space-sm);
-    color: var(--color-fg);
-  }
-
-  .browser-item p {
-    margin-bottom: 0;
-    font-size: 0.9rem;
-    color: var(--color-gray-600);
-  }
-
-  .browser-warning {
-    background: #fef3c7;
-    border: 1px solid #f59e0b;
-    padding: var(--space-lg);
-    border-radius: var(--radius-md);
-    margin: var(--space-lg) 0;
-  }
-
-  .browser-warning h4 {
-    color: #92400e;
-    margin-top: 0;
-  }
-
-  .browser-warning p {
-    color: #92400e;
-    margin-bottom: 0;
-  }
-
-  .retention-table-container {
-    overflow-x: auto;
-    margin: var(--space-lg) 0;
-  }
-
-  .retention-table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-
-  .retention-table th {
-    background: var(--color-accent-1);
-    color: white;
-    padding: var(--space-lg);
-    text-align: left;
-    font-weight: 600;
-  }
-
-  .retention-table td {
-    padding: var(--space-lg);
-    border-bottom: 1px solid var(--color-gray-200);
-  }
-
-  .retention-table tr:nth-child(even) {
-    background: var(--color-gray-25);
-  }
-
-  .retention-notice {
-    background: #f0f9ff;
-    border: 1px solid #0ea5e9;
-    padding: var(--space-lg);
-    border-radius: var(--radius-md);
-    margin: var(--space-lg) 0;
-  }
-
-  .retention-notice h4 {
-    color: #0c4a6e;
-    margin-top: 0;
-  }
-
-  .retention-notice p {
-    color: #0c4a6e;
-    margin-bottom: 0;
-  }
-
-  .minors-protection {
-    background: linear-gradient(135deg, #fef3c7, #fde68a);
-    padding: var(--space-xl);
-    border-radius: var(--radius-lg);
-    margin: var(--space-lg) 0;
-  }
-
-  .minors-protection h3 {
-    color: #92400e;
-    margin-top: 0;
-  }
-
-  .protection-measures {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: var(--space-md);
-    margin: var(--space-lg) 0;
-  }
-
-  .measure-item {
-    background: white;
-    padding: var(--space-lg);
-    border-radius: var(--radius-md);
-    border-left: 4px solid #f59e0b;
-  }
-
-  .measure-item h4 {
-    margin-top: 0;
-    margin-bottom: var(--space-sm);
-    color: #92400e;
-    font-size: 1rem;
-  }
-
-  .measure-item p {
-    margin-bottom: 0;
-    font-size: 0.9rem;
-    color: #78350f;
-  }
-
-  .parents-info {
-    background: white;
-    padding: var(--space-xl);
-    border-radius: var(--radius-md);
-    border: 1px solid #f59e0b;
-    margin: var(--space-lg) 0;
-  }
-
-  .parents-info h4 {
-    color: #92400e;
-    margin-top: 0;
-  }
-
-  .parents-info p, .parents-info ul {
-    color: #78350f;
-  }
-
-  .rights-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: var(--space-lg);
-    margin: var(--space-lg) 0;
-  }
-
-  .right-card {
-    padding: var(--space-lg);
-    background: var(--color-gray-25);
-    border-radius: var(--radius-md);
-    border-left: 4px solid var(--color-accent-2);
-  }
-
-  .right-card h4 {
-    margin-top: 0;
-    margin-bottom: var(--space-sm);
-    color: var(--color-fg);
-  }
-
-  .right-card p {
-    margin-bottom: 0;
-    font-size: 0.9rem;
-    color: var(--color-gray-600);
-  }
-
-  .exercise-rights {
-    background: var(--color-gray-25);
-    padding: var(--space-xl);
-    border-radius: var(--radius-md);
-    margin: var(--space-lg) 0;
-  }
-
-  .exercise-rights h4 {
-    margin-top: 0;
-    color: var(--color-fg);
-  }
-
-  .updates-info {
-    margin: var(--space-lg) 0;
-  }
-
-  .notification-methods {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: var(--space-md);
-    margin: var(--space-lg) 0;
-  }
-
-  .method-item {
-    padding: var(--space-lg);
-    background: var(--color-gray-25);
-    border-radius: var(--radius-md);
-    border-top: 3px solid var(--color-accent-2);
-    text-align: center;
-  }
-
-  .method-item h4 {
-    margin-top: 0;
-    margin-bottom: var(--space-sm);
-  }
-
-  .method-item p {
-    margin-bottom: 0;
-    font-size: 0.9rem;
-    color: var(--color-gray-600);
-  }
-
-  .version-info {
-    background: var(--color-gray-50);
-    padding: var(--space-lg);
-    border-radius: var(--radius-md);
-    border-left: 4px solid var(--color-accent-1);
-    margin: var(--space-lg) 0;
-    font-size: 0.9rem;
-    color: var(--color-gray-700);
-  }
-
-  .contact-options {
-    display: grid;
-    gap: var(--space-lg);
-    margin: var(--space-lg) 0;
-  }
-
-  .contact-method {
-    padding: var(--space-xl);
-    background: var(--color-gray-25);
-    border-radius: var(--radius-md);
-    border-left: 4px solid var(--color-accent-2);
-  }
-
-  .contact-method h4 {
-    margin-top: 0;
-    color: var(--color-fg);
-  }
-
-  .contact-method p {
-    margin-bottom: 0;
-    font-size: 0.95rem;
-  }
-
-  .legal-footer {
-    text-align: center;
-    padding-top: var(--space-xl);
-    margin-top: var(--space-2xl);
-    border-top: 1px solid var(--color-gray-200);
-  }
-
-  .legal-footer p {
-    color: var(--color-gray-500);
-    font-size: 0.9rem;
-    margin: 0;
+    border-top: 1px solid var(--color-gray-200, #e9ecef);
+    margin: var(--space-2xl, 2rem) 0;
   }
 
   /* Responsive Design */
   @media (max-width: 767px) {
-    .cookie-types-grid,
-    .partners-grid,
-    .browser-grid,
-    .mobile-grid,
-    .protection-measures,
-    .rights-grid,
-    .notification-methods {
-      grid-template-columns: 1fr;
-    }
-
-    .content-section {
-      padding: var(--space-xl);
-      margin-bottom: var(--space-xl);
-    }
-
-    .cookie-table {
-      font-size: 0.8rem;
-    }
-
-    .cookie-table th,
-    .cookie-table td {
-      padding: var(--space-sm);
+    .content :global(section),
+    .content :global(.content-section) {
+      padding: var(--space-xl, 1.5rem);
+      margin-bottom: var(--space-xl, 1.5rem);
     }
   }
-
 
   /* Print Styles */
   @media print {
@@ -1148,70 +163,17 @@ const description = "Découvrez comment Tatikati utilise les cookies et traceurs
       padding-top: 0;
     }
 
-    .content-section {
+    .content :global(section),
+    .content :global(.content-section) {
       break-inside: avoid;
       box-shadow: none;
       border: 1px solid #ddd;
-    }
-
-    .consent-controls {
-      display: none;
-    }
-
-    .cookie-types-grid,
-    .partners-grid,
-    .rights-grid {
-      break-inside: avoid;
     }
   }
 </style>
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    // Cookie consent functionality
-    window.handleCookieConsent = function(type) {
-      console.log(`Cookie consent: ${type}`);
-      
-      // Here you would implement actual cookie consent logic
-      if (type === 'all') {
-        // Enable all cookies
-        localStorage.setItem('cookie-consent', 'all');
-        showConsentMessage('Tous les cookies ont été acceptés.');
-      } else if (type === 'essential') {
-        // Only essential cookies
-        localStorage.setItem('cookie-consent', 'essential');
-        showConsentMessage('Seuls les cookies essentiels sont actifs.');
-      }
-    };
-
-    window.openCookieSettings = function() {
-      console.log('Opening cookie settings...');
-      showConsentMessage('Fonctionnalité de paramétrage en cours de développement.');
-    };
-
-    function showConsentMessage(message) {
-      // Create temporary notification
-      const notification = document.createElement('div');
-      notification.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        background: var(--color-accent-1);
-        color: white;
-        padding: var(--space-lg);
-        border-radius: var(--radius-md);
-        z-index: 1000;
-        animation: slideIn 0.3s ease;
-      `;
-      notification.textContent = message;
-
-      document.body.appendChild(notification);
-
-      setTimeout(() => {
-        notification.remove();
-      }, 3000);
-    }
-
     // Smooth scroll for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       anchor.addEventListener('click', function (e) {
@@ -1225,21 +187,5 @@ const description = "Découvrez comment Tatikati utilise les cookies et traceurs
         }
       });
     });
-
-    // Add animation styles
-    const style = document.createElement('style');
-    style.textContent = `
-      @keyframes slideIn {
-        from {
-          transform: translateX(100%);
-          opacity: 0;
-        }
-        to {
-          transform: translateX(0);
-          opacity: 1;
-        }
-      }
-    `;
-    document.head.appendChild(style);
   });
 </script>

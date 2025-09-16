@@ -1,548 +1,42 @@
 ---
+import { getEntry } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import NavBar from '../components/NavBar.astro';
 import Footer from '../components/Footer.astro';
+import LastUpdated from '../components/mdx/LastUpdated.astro';
 
-const title = "Mentions Légales | Tatikati";
-const description = "Mentions légales de Tatikati. Informations sur l'éditeur, l'hébergement, la propriété intellectuelle et les contacts officiels.";
+// Détecter la langue courante (fr par défaut, en pour les URLs /en/)
+const currentLocale = Astro.currentLocale || 'fr';
+const pageId = `${currentLocale}/legal`;
+
+const page = await getEntry('pages', pageId);
+if (!page) {
+  return Astro.redirect('/404');
+}
+
+const { Content } = await page.render();
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout 
+  title={`${page.data.title} | Tatikati`}
+  description={page.data.description}
+>
   <NavBar />
   
   <main id="main" class="legal-page">
     <div class="container">
       <header class="page-header">
-        <h1 class="page-title">Mentions Légales</h1>
-        <p class="page-subtitle">
-          Informations légales obligatoires concernant l'éditeur, l'hébergement et l'exploitation du service Tatikati.
-        </p>
-        <div class="last-updated">
-          <span>Dernière mise à jour : 12 septembre 2025</span>
-        </div>
+        <h1 class="page-title">{page.data.title}</h1>
+        <LastUpdated date={page.data.lastUpdated} />
       </header>
-
+      
       <div class="content">
-        <section class="content-section">
-          <h2>1. Identification de l'éditeur</h2>
-          
-          <div class="company-card">
-            <div class="company-header">
-              <h3>Helby Studio SAS</h3>
-              <span class="company-status">Société par Actions Simplifiée</span>
-            </div>
-            
-            <div class="company-details">
-              <div class="detail-grid">
-                <div class="detail-item">
-                  <strong>Siège social :</strong>
-                  <p>61 rue de Lyon<br>75012 Paris, France</p>
-                </div>
-                
-                <div class="detail-item">
-                  <strong>Immatriculation :</strong>
-                  <p>RCS Paris<br>SIREN : 928 684 323<br>SIRET : 928 684 323 00019</p>
-                </div>
-                
-                <div class="detail-item">
-                  <strong>Capital social :</strong>
-                  <p>1 000,00 € (mille euros)</p>
-                </div>
-                
-                <div class="detail-item">
-                  <strong>TVA intracommunautaire :</strong>
-                  <p>FR66928684323</p>
-                </div>
-                
-                <div class="detail-item">
-                  <strong>Code APE :</strong>
-                  <p>6201Z - Programmation informatique</p>
-                </div>
-                
-                <div class="detail-item">
-                  <strong>Date de création :</strong>
-                  <p>2023</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="management-info">
-            <h4>Direction et représentation légale</h4>
-            <div class="management-card">
-              <p><strong>Directeur de la publication :</strong> [Nom du Président/Directeur Général]</p>
-              <p><strong>Qualité :</strong> Président de Helby Studio SAS</p>
-              <p><strong>Responsabilité :</strong> Responsable éditorial du contenu publié</p>
-            </div>
-          </div>
-        </section>
-
-        <section class="content-section">
-          <h2>2. Coordonnées et contact</h2>
-          
-          <div class="contact-grid">
-            <div class="contact-card">
-              <h4>📧 Contact général</h4>
-              <p><strong>Email :</strong> <a href="mailto:contact@helby.studio">contact@helby.studio</a></p>
-              <p><strong>Objet :</strong> Informations générales sur Tatikati</p>
-            </div>
-            
-            <div class="contact-card">
-              <h4>🛠️ Support technique</h4>
-              <p><strong>Email :</strong> <a href="mailto:support@tatikati.app">support@tatikati.app</a></p>
-              <p><strong>Objet :</strong> Assistance et problèmes techniques</p>
-            </div>
-            
-            <div class="contact-card">
-              <h4>🛡️ Protection des données</h4>
-              <p><strong>Email :</strong> <a href="mailto:contact@helby.studio">contact@helby.studio</a></p>
-              <p><strong>Objet :</strong> Questions RGPD, confidentialité et aspects légaux</p>
-            </div>
-            
-            <div class="contact-card">
-              <h4>📰 Presse et média</h4>
-              <p><strong>Email :</strong> <a href="mailto:contact@tatikati.app">contact@tatikati.app</a></p>
-              <p><strong>Objet :</strong> Demandes presse, partenariats et accessibilité</p>
-            </div>
-            
-            
-            <div class="contact-card">
-              <h4>📮 Adresse postale</h4>
-              <p><strong>Courrier :</strong></p>
-              <address>
-                Helby Studio SAS<br>
-                61 rue de Lyon<br>
-                75012 Paris<br>
-                France
-              </address>
-            </div>
-          </div>
-
-          <div class="response-times">
-            <h4>⏱️ Délais de réponse indicatifs</h4>
-            <ul>
-              <li><strong>Support technique :</strong> 24h en jours ouvrés</li>
-              <li><strong>Questions RGPD et légales :</strong> 72h maximum</li>
-              <li><strong>Presse et partenariats :</strong> 48h en jours ouvrés</li>
-              <li><strong>Courrier postal :</strong> 15 jours maximum</li>
-            </ul>
-          </div>
-        </section>
-
-        <section class="content-section">
-          <h2>3. Hébergement et infrastructure technique</h2>
-          
-          <h3>3.1 Hébergeur principal</h3>
-          <div class="hosting-card">
-            <div class="host-header">
-              <h4>🚄 Railway Corp.</h4>
-              <span class="host-location">États-Unis</span>
-            </div>
-            
-            <div class="host-details">
-              <p><strong>Site web :</strong> <a href="https://railway.app" target="_blank" rel="noopener">railway.app</a></p>
-              <p><strong>Type de service :</strong> Platform-as-a-Service (PaaS)</p>
-              <p><strong>Infrastructure :</strong> Services cloud distribués</p>
-              <p><strong>Sécurité :</strong> Chiffrement en transit et au repos</p>
-              <p><strong>Conformité :</strong> SOC 2 Type II, certifications de sécurité</p>
-            </div>
-            
-            <div class="gdpr-info">
-              <h5>🛡️ Garanties RGPD</h5>
-              <ul>
-                <li>Contrat de sous-traitance conforme RGPD</li>
-                <li>Clauses contractuelles types (SCC)</li>
-                <li>Mesures de sécurité techniques et organisationnelles</li>
-                <li>Engagement de confidentialité des données</li>
-              </ul>
-            </div>
-          </div>
-
-          <h3>3.2 Services tiers intégrés</h3>
-          <div class="services-grid">
-            <div class="service-card">
-              <h4>📊 Tally (Formulaires)</h4>
-              <p><strong>Localisation :</strong> Belgique (UE)</p>
-              <p><strong>Finalité :</strong> Gestion des formulaires de contact</p>
-              <p><strong>Conformité :</strong> RGPD natif</p>
-            </div>
-            
-            <div class="service-card">
-              <h4>✉️ Brevo (Email)</h4>
-              <p><strong>Localisation :</strong> France (UE)</p>
-              <p><strong>Finalité :</strong> Envoi d'emails transactionnels et marketing</p>
-              <p><strong>Conformité :</strong> RGPD et certifications ISO</p>
-            </div>
-          </div>
-
-          <h3>3.3 Localisation des données</h3>
-          <div class="data-location">
-            <h4>🌍 Répartition géographique</h4>
-            <div class="location-grid">
-              <div class="location-item">
-                <h5>🇪🇺 Union européenne</h5>
-                <p>Données personnelles, préférences utilisateurs, données de profil</p>
-              </div>
-              
-              <div class="location-item">
-                <h5>🇺🇸 États-Unis</h5>
-                <p>Données techniques, logs applicatifs, métriques de performance</p>
-              </div>
-            </div>
-            
-            <div class="protection-measures">
-              <h5>🔒 Mesures de protection</h5>
-              <ul>
-                <li>Chiffrement AES-256 pour toutes les données sensibles</li>
-                <li>Transmissions sécurisées via HTTPS/TLS 1.3</li>
-                <li>Accès restreint sur principe du moindre privilège</li>
-                <li>Surveillance continue des accès et modifications</li>
-                <li>Sauvegardes chiffrées avec rétention sécurisée</li>
-              </ul>
-            </div>
-          </div>
-        </section>
-
-        <section class="content-section">
-          <h2>4. Propriété intellectuelle</h2>
-          
-          <h3>4.1 Droits sur l'application Tatikati</h3>
-          <div class="ip-overview">
-            <p>
-              L'application mobile Tatikati, incluant mais sans se limiter à son design, 
-              son architecture logicielle, ses interfaces utilisateur, sa marque et ses fonctionnalités, 
-              constitue une œuvre originale protégée par :
-            </p>
-            
-            <div class="protection-types">
-              <div class="protection-item">
-                <h4>©️ Droit d'auteur</h4>
-                <p>Code source, design graphique, documentation technique</p>
-                <p><strong>Titulaire :</strong> Helby Studio SAS</p>
-              </div>
-              
-              <div class="protection-item">
-                <h4>🏷️ Marques</h4>
-                <p>Nom "Tatikati", logo, éléments graphiques distinctifs</p>
-                <p><strong>Statut :</strong> Marque déposée ou en cours de dépôt</p>
-              </div>
-              
-              <div class="protection-item">
-                <h4>🎨 Dessins et modèles</h4>
-                <p>Interfaces utilisateur, éléments de design</p>
-                <p><strong>Protection :</strong> Droits d'auteur et droits sui generis</p>
-              </div>
-            </div>
-          </div>
-
-          <h3>4.2 Contenus tiers - Podcasts</h3>
-          <div class="third-party-content">
-            <h4>🎧 Nature des contenus audio</h4>
-            <p>
-              <strong>Important :</strong> Tatikati est un agrégateur de podcasts. Les contenus audio diffusés 
-              dans l'application <strong>ne sont pas la propriété d'Helby Studio SAS</strong> et <strong>ne sont pas 
-              hébergés sur nos serveurs</strong>.
-            </p>
-            
-            <div class="licensing-info">
-              <h5>📡 Origine et hébergement des contenus</h5>
-              <ul>
-                <li><strong>Propriété :</strong> Les podcasts appartiennent exclusivement à leurs créateurs/producteurs</li>
-                <li><strong>Hébergement :</strong> Assuré par des plateformes tierces choisies par les producteurs (Spotify, Apple Podcasts, Acast, Podbean, etc.)</li>
-                <li><strong>Distribution :</strong> Via flux RSS publics mis à disposition par les créateurs</li>
-                <li><strong>Licences :</strong> Définies individuellement par chaque créateur de contenu</li>
-              </ul>
-              
-              <h5>⚖️ Cadre légal d'utilisation</h5>
-              <p>
-                Notre utilisation de ces contenus s'effectue dans le cadre du <strong>"fair use"</strong> (usage équitable) et se limite à :
-              </p>
-              <ul>
-                <li>L'agrégation de flux RSS publiquement disponibles</li>
-                <li>L'affichage des métadonnées fournies (titres, descriptions, images)</li>
-                <li>La redirection vers les contenus hébergés par les tiers</li>
-                <li>Le respect intégral des attributions et crédits originaux</li>
-              </ul>
-              
-              <p class="licensing-note">
-                <strong>Droits des créateurs :</strong> Les noms, logos, images de couverture et autres éléments 
-                distinctifs des podcasts restent la propriété exclusive de leurs titulaires respectifs. Ces éléments 
-                sont utilisés uniquement à des fins d'identification et de référencement dans notre service d'agrégation.
-              </p>
-              
-              <p class="licensing-note">
-                <strong>Contact créateurs :</strong> Si vous êtes propriétaire d'un podcast et souhaitez modifier 
-                son référencement ou le retirer de notre application, contactez-nous à : 
-                <a href="mailto:contact@tatikati.app">contact@tatikati.app</a>
-              </p>
-            </div>
-          </div>
-
-          <h3>4.3 Utilisation autorisée</h3>
-          <div class="usage-rights">
-            <h4>✅ Utilisations permises</h4>
-            <ul>
-              <li>Usage personnel et familial de l'application</li>
-              <li>Écoute des contenus dans le cadre du service</li>
-              <li>Capture d'écran à des fins de support technique</li>
-              <li>Citation courte avec attribution dans un contexte éditorial</li>
-            </ul>
-            
-            <h4>❌ Utilisations interdites</h4>
-            <ul>
-              <li>Reproduction, distribution ou modification de l'application</li>
-              <li>Extraction ou rediffusion des contenus audio</li>
-              <li>Rétro-ingénierie du code source</li>
-              <li>Usage commercial sans autorisation écrite</li>
-              <li>Suppression ou modification des mentions de propriété</li>
-            </ul>
-          </div>
-        </section>
-
-        <section class="content-section">
-          <h2>5. Conditions d'utilisation</h2>
-          
-          <div class="terms-summary">
-            <h3>📋 Documents contractuels</h3>
-            <p>L'utilisation de Tatikati est régie par les documents suivants, par ordre de priorité :</p>
-            
-            <div class="document-hierarchy">
-              <div class="doc-level">
-                <h4>1️⃣ Conditions Générales d'Utilisation (CGU)</h4>
-                <p>Contrat principal définissant les droits et obligations</p>
-                <a href="/terms" class="doc-link">Consulter les CGU →</a>
-              </div>
-              
-              <div class="doc-level">
-                <h4>2️⃣ Politique de Confidentialité</h4>
-                <p>Traitement des données personnelles et protection de la vie privée</p>
-                <a href="/privacy" class="doc-link">Consulter la Politique →</a>
-              </div>
-              
-              <div class="doc-level">
-                <h4>3️⃣ Politique de Cookies</h4>
-                <p>Utilisation des cookies et traceurs</p>
-                <a href="/cookies" class="doc-link">Consulter la Politique Cookies →</a>
-              </div>
-              
-              <div class="doc-level">
-                <h4>4️⃣ Mentions Légales</h4>
-                <p>Informations légales obligatoires (document actuel)</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="legal-hierarchy">
-            <h4>⚖️ Hiérarchie des normes</h4>
-            <ol>
-              <li><strong>Réglementation européenne :</strong> RGPD, Directive ePrivacy</li>
-              <li><strong>Lois françaises :</strong> Code de la consommation, Loi Informatique et Libertés</li>
-              <li><strong>Conditions contractuelles :</strong> CGU, Politique de Confidentialité</li>
-              <li><strong>Mentions informatives :</strong> Présentes mentions légales</li>
-            </ol>
-          </div>
-        </section>
-
-        <section class="content-section">
-          <h2>6. Responsabilité et limitation</h2>
-          
-          <h3>6.1 Responsabilité de l'éditeur</h3>
-          <div class="liability-framework">
-            <div class="liability-item">
-              <h4>✅ Engagements</h4>
-              <ul>
-                <li>Fourniture du service avec diligence professionnelle</li>
-                <li>Protection des données personnelles</li>
-                <li>Respect des obligations légales</li>
-                <li>Information transparente des utilisateurs</li>
-              </ul>
-            </div>
-            
-            <div class="liability-item">
-              <h4>⚠️ Limitations</h4>
-              <ul>
-                <li>Service fourni "en l'état" sans garantie de fonctionnement parfait</li>
-                <li>Aucune garantie sur la disponibilité continue</li>
-                <li>Responsabilité limitée aux dommages directs</li>
-                <li>Exclusion des dommages indirects ou consécutifs</li>
-              </ul>
-            </div>
-          </div>
-
-          <h3>6.2 Cas de force majeure</h3>
-          <div class="force-majeure">
-            <p>
-              Helby Studio SAS ne saurait être tenu responsable de tout retard ou inexécution 
-              lorsque la cause du retard ou de l'inexécution est liée à un cas de force majeure 
-              tel que défini par la jurisprudence française.
-            </p>
-            
-            <h4>Exemples de cas de force majeure :</h4>
-            <ul>
-              <li>Catastrophes naturelles, pandémies, événements climatiques</li>
-              <li>Grèves, conflits sociaux, troubles politiques</li>
-              <li>Défaillances d'infrastructures internet ou de télécommunications</li>
-              <li>Attaques informatiques, cyberattaques majeures</li>
-              <li>Modifications réglementaires imposant l'arrêt du service</li>
-            </ul>
-          </div>
-        </section>
-
-        <section class="content-section">
-          <h2>7. Droit applicable et juridictions</h2>
-          
-          <h3>7.1 Loi applicable</h3>
-          <div class="applicable-law">
-            <p>
-              Les présentes mentions légales et l'ensemble des relations entre Helby Studio SAS 
-              et les utilisateurs sont régies par le <strong>droit français</strong>.
-            </p>
-            
-            <div class="law-details">
-              <h4>📚 Principales références légales :</h4>
-              <ul>
-                <li><strong>Code civil :</strong> Droit des contrats, responsabilité</li>
-                <li><strong>Code de la consommation :</strong> Protection des consommateurs</li>
-                <li><strong>Code de la propriété intellectuelle :</strong> Droits d'auteur, marques</li>
-                <li><strong>Loi Informatique et Libertés :</strong> Protection des données</li>
-                <li><strong>RGPD :</strong> Règlement européen sur la protection des données</li>
-              </ul>
-            </div>
-          </div>
-
-          <h3>7.2 Juridictions compétentes</h3>
-          <div class="jurisdiction-info">
-            <h4>🏛️ Compétence territoriale</h4>
-            <p>
-              En cas de litige, les tribunaux de <strong>Paris</strong> sont seuls compétents, 
-              nonobstant pluralité de défendeurs ou appel en garantie.
-            </p>
-            
-            <div class="dispute-resolution">
-              <h5>🤝 Résolution amiable privilégiée</h5>
-              <p>
-                Avant tout recours judiciaire, les parties s'engagent à rechercher une solution amiable. 
-                Les utilisateurs peuvent contacter notre service juridique : 
-                <a href="mailto:contact@helby.studio">contact@helby.studio</a>
-              </p>
-              
-              <h5>🕊️ Médiation</h5>
-              <p>
-                En application de l'article L. 616-1 du Code de la consommation, 
-                le consommateur peut recourir gratuitement au service de médiation :
-              </p>
-              <div class="mediator-contact">
-                <p><strong>Médiateur de la consommation</strong></p>
-                <p>Centre de médiation et d'arbitrage de Paris</p>
-                <p>Site : <a href="https://www.mediateurdeconso.fr" target="_blank" rel="noopener">mediateurdeconso.fr</a></p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section class="content-section">
-          <h2>8. Informations réglementaires</h2>
-          
-          <h3>8.1 Conformité RGPD</h3>
-          <div class="gdpr-compliance">
-            <h4>🛡️ Mesures de conformité</h4>
-            <ul>
-              <li><strong>Délégué à la Protection des Données (DPO) :</strong> Désigné et accessible</li>
-              <li><strong>Registre des traitements :</strong> Tenu à jour conformément à l'article 30 RGPD</li>
-              <li><strong>Analyse d'impact (DPIA) :</strong> Réalisée pour les traitements à risque</li>
-              <li><strong>Sécurité by design :</strong> Mesures techniques et organisationnelles</li>
-              <li><strong>Formation :</strong> Personnel sensibilisé à la protection des données</li>
-            </ul>
-            
-            <div class="dpo-contact">
-              <h5>👤 Contact DPO</h5>
-              <p>
-                <strong>Email :</strong> <a href="mailto:contact@helby.studio">contact@helby.studio</a><br>
-                <strong>Adresse :</strong> DPO - Helby Studio SAS, 61 rue de Lyon, 75012 Paris
-              </p>
-            </div>
-          </div>
-
-          <h3>8.2 Accessibilité numérique</h3>
-          <div class="accessibility-info">
-            <h4>♿ Engagement accessibilité</h4>
-            <p>
-              Helby Studio SAS s'engage à rendre l'application Tatikati accessible au plus grand nombre, 
-              conformément aux standards d'accessibilité numérique.
-            </p>
-            
-            <div class="accessibility-standards">
-              <h5>📋 Standards appliqués :</h5>
-              <ul>
-                <li><strong>WCAG 2.1 :</strong> Niveau AA visé</li>
-                <li><strong>RGAA :</strong> Référentiel Général d'Amélioration de l'Accessibilité</li>
-                <li><strong>EN 301 549 :</strong> Norme européenne d'accessibilité</li>
-              </ul>
-              
-              <p class="accessibility-contact">
-                <strong>Signaler un problème d'accessibilité :</strong>
-                <a href="mailto:contact@tatikati.app">contact@tatikati.app</a>
-              </p>
-            </div>
-          </div>
-
-          <h3>8.3 Code de conduite</h3>
-          <div class="conduct-code">
-            <h4>🤝 Engagement éthique</h4>
-            <p>
-              Helby Studio SAS adhère aux principes suivants dans le développement 
-              et l'exploitation de Tatikati :
-            </p>
-            
-            <div class="principles-grid">
-              <div class="principle-item">
-                <h5>👶 Protection de l'enfance</h5>
-                <p>Contenus adaptés, contrôle parental, sécurité renforcée</p>
-              </div>
-              
-              <div class="principle-item">
-                <h5>🌱 Responsabilité sociale</h5>
-                <p>Éducation, diversité culturelle, inclusion numérique</p>
-              </div>
-              
-              <div class="principle-item">
-                <h5>🌍 Respect environnemental</h5>
-                <p>Optimisation énergétique, hébergement responsable</p>
-              </div>
-              
-              <div class="principle-item">
-                <h5>🔒 Éthique des données</h5>
-                <p>Transparence, minimisation, sécurité par conception</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <div class="legal-footer">
-          <div class="footer-info">
-            <p>
-              <strong>Document légal officiel</strong> - Les présentes mentions légales constituent 
-              un document contractuel. Toute utilisation de l'application Tatikati implique 
-              l'acceptation de ces dispositions.
-            </p>
-            
-            <p class="update-info">
-              <strong>Mise à jour :</strong> 12 septembre 2025 - Version 1.0<br>
-              <strong>Prochaine révision :</strong> Septembre 2026 ou en cas de modification substantielle
-            </p>
-          </div>
-          
-          <div class="validation-info">
-            <p class="validation-stamp">
-              ✓ Document vérifié pour conformité légale - Conseil juridique spécialisé
-            </p>
-          </div>
-        </div>
+        <Content />
       </div>
     </div>
   </main>
   
-  <Footer locale="fr" />
+  <Footer />
 </BaseLayout>
 
 <style>
@@ -553,10 +47,10 @@ const description = "Mentions légales de Tatikati. Informations sur l'éditeur,
 
   .page-header {
     text-align: center;
-    padding: var(--space-4xl) 0;
-    background: linear-gradient(135deg, var(--color-bg) 0%, var(--color-gray-25) 100%);
-    border-radius: var(--radius-2xl);
-    margin-bottom: var(--space-4xl);
+    padding: var(--space-4xl, 3rem) 0;
+    background: linear-gradient(135deg, var(--color-bg) 0%, var(--color-gray-25, #f8f9fa) 100%);
+    border-radius: var(--radius-2xl, 1.5rem);
+    margin-bottom: var(--space-4xl, 3rem);
   }
 
   .page-title {
@@ -564,746 +58,104 @@ const description = "Mentions légales de Tatikati. Informations sur l'éditeur,
     font-size: clamp(2.5rem, 5vw, 4rem);
     font-weight: 700;
     color: var(--color-fg);
-    margin-bottom: var(--space-lg);
-  }
-
-  .page-subtitle {
-    font-size: clamp(1.1rem, 2vw, 1.25rem);
-    color: var(--color-gray-600);
-    line-height: 1.6;
-    max-width: 700px;
-    margin: 0 auto var(--space-xl);
-  }
-
-  .last-updated {
-    display: inline-flex;
-    align-items: center;
-    padding: var(--space-sm) var(--space-lg);
-    background: var(--color-accent-1);
-    color: white;
-    border-radius: var(--radius-full);
-    font-size: 0.9rem;
-    font-weight: 500;
+    margin-bottom: var(--space-lg, 1.5rem);
   }
 
   .content {
-    max-width: 900px;
+    max-width: 800px;
     margin: 0 auto;
-    padding-bottom: var(--space-4xl);
+    padding-bottom: var(--space-4xl, 3rem);
   }
 
-  .content-section {
-    margin-bottom: var(--space-3xl);
-    padding: var(--space-2xl);
+  /* MDX content styling */
+  .content :global(section),
+  .content :global(.content-section) {
+    margin-bottom: var(--space-3xl, 2.5rem);
+    padding: var(--space-2xl, 2rem);
     background: white;
-    border-radius: var(--radius-xl);
+    border-radius: var(--radius-xl, 1rem);
     box-shadow: var(--shadow-card);
-    border: 1px solid var(--color-gray-200);
+    border: 1px solid var(--color-gray-200, #e9ecef);
   }
 
-  .content-section h2 {
+  .content :global(h2) {
     font-family: var(--font-heading);
     font-size: 1.75rem;
     font-weight: 600;
     color: var(--color-fg);
-    margin-bottom: var(--space-lg);
-    padding-bottom: var(--space-sm);
+    margin-bottom: var(--space-lg, 1.5rem);
+    padding-bottom: var(--space-sm, 0.5rem);
     border-bottom: 2px solid var(--color-accent-1);
   }
 
-  .content-section h3 {
+  .content :global(h3) {
     font-family: var(--font-heading);
     font-size: 1.25rem;
     font-weight: 600;
     color: var(--color-fg);
-    margin: var(--space-xl) 0 var(--space-md) 0;
+    margin: var(--space-xl, 2rem) 0 var(--space-md, 1rem) 0;
   }
 
-  .content-section h4 {
+  .content :global(h4) {
     font-family: var(--font-heading);
     font-size: 1.1rem;
     font-weight: 600;
     color: var(--color-fg);
-    margin: var(--space-lg) 0 var(--space-sm) 0;
+    margin: var(--space-lg, 1.5rem) 0 var(--space-sm, 0.5rem) 0;
   }
 
-  .content-section h5 {
-    font-family: var(--font-heading);
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--color-fg);
-    margin: var(--space-md) 0 var(--space-sm) 0;
-  }
-
-  .content-section p {
-    color: var(--color-gray-700);
+  .content :global(p) {
+    color: var(--color-gray-700, #495057);
     line-height: 1.7;
-    margin-bottom: var(--space-lg);
+    margin-bottom: var(--space-lg, 1.5rem);
   }
 
-  .content-section ul, .content-section ol {
-    margin: var(--space-lg) 0;
-    padding-left: var(--space-xl);
+  .content :global(ul),
+  .content :global(ol) {
+    margin: var(--space-lg, 1.5rem) 0;
+    padding-left: var(--space-xl, 2rem);
   }
 
-  .content-section li {
-    color: var(--color-gray-700);
+  .content :global(li) {
+    color: var(--color-gray-700, #495057);
     line-height: 1.6;
-    margin-bottom: var(--space-sm);
+    margin-bottom: var(--space-sm, 0.5rem);
   }
 
-  .content-section a {
+  .content :global(a) {
     color: var(--color-accent-1);
     text-decoration: underline;
     text-underline-offset: 2px;
     transition: color 0.2s ease;
   }
 
-  .content-section a:hover {
+  .content :global(a:hover) {
     color: var(--color-accent-2);
   }
 
-  /* Company Information Components */
-  .company-card {
-    background: linear-gradient(135deg, #f8fafc, #e2e8f0);
-    border: 2px solid var(--color-accent-1);
-    border-radius: var(--radius-lg);
-    padding: var(--space-xl);
-    margin: var(--space-lg) 0;
-  }
-
-  .company-header {
-    text-align: center;
-    margin-bottom: var(--space-xl);
-    padding-bottom: var(--space-lg);
-    border-bottom: 1px solid var(--color-gray-300);
-  }
-
-  .company-header h3 {
-    margin: 0 0 var(--space-sm) 0;
-    font-size: 1.5rem;
-    color: var(--color-fg);
-  }
-
-  .company-status {
-    background: var(--color-accent-1);
-    color: white;
-    padding: var(--space-xs) var(--space-md);
-    border-radius: var(--radius-full);
-    font-size: 0.9rem;
-    font-weight: 500;
-  }
-
-  .detail-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: var(--space-lg);
-  }
-
-  .detail-item {
-    background: white;
-    padding: var(--space-lg);
-    border-radius: var(--radius-md);
-    border-left: 4px solid var(--color-accent-2);
-  }
-
-  .detail-item strong {
-    display: block;
-    color: var(--color-fg);
-    margin-bottom: var(--space-sm);
+  .content :global(strong) {
     font-weight: 600;
-  }
-
-  .detail-item p {
-    margin: 0;
-    color: var(--color-gray-700);
-    line-height: 1.5;
-  }
-
-  .management-info {
-    margin-top: var(--space-xl);
-  }
-
-  .management-card {
-    background: var(--color-gray-25);
-    padding: var(--space-xl);
-    border-radius: var(--radius-md);
-    border: 1px solid var(--color-gray-300);
-  }
-
-  .management-card p {
-    margin-bottom: var(--space-sm);
-  }
-
-  .management-card p:last-child {
-    margin-bottom: 0;
-  }
-
-  /* Contact Components */
-  .contact-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: var(--space-lg);
-    margin: var(--space-lg) 0;
-  }
-
-  .contact-card {
-    padding: var(--space-xl);
-    background: var(--color-gray-25);
-    border-radius: var(--radius-md);
-    border-top: 4px solid var(--color-accent-2);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  }
-
-  .contact-card:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
-    background: white;
-  }
-
-  .contact-card h4 {
-    margin-top: 0;
-    margin-bottom: var(--space-md);
-    color: var(--color-fg);
-    display: flex;
-    align-items: center;
-    gap: var(--space-sm);
-  }
-
-  .contact-card p {
-    margin-bottom: var(--space-sm);
-    font-size: 0.95rem;
-  }
-
-  .contact-card p:last-child {
-    margin-bottom: 0;
-  }
-
-  .contact-card address {
-    font-style: normal;
-    line-height: 1.5;
-  }
-
-  .response-times {
-    background: #f0f9ff;
-    border: 1px solid #0ea5e9;
-    padding: var(--space-xl);
-    border-radius: var(--radius-md);
-    margin: var(--space-xl) 0;
-  }
-
-  .response-times h4 {
-    color: #0c4a6e;
-    margin-top: 0;
-  }
-
-  .response-times ul {
-    color: #0c4a6e;
-    margin-bottom: 0;
-  }
-
-  /* Hosting and Technical Components */
-  .hosting-card {
-    background: var(--color-gray-25);
-    padding: var(--space-xl);
-    border-radius: var(--radius-lg);
-    border: 1px solid var(--color-gray-300);
-    margin: var(--space-lg) 0;
-  }
-
-  .host-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: var(--space-lg);
-    padding-bottom: var(--space-md);
-    border-bottom: 1px solid var(--color-gray-300);
-  }
-
-  .host-header h4 {
-    margin: 0;
     color: var(--color-fg);
   }
 
-  .host-location {
-    background: #dc2626;
-    color: white;
-    padding: var(--space-xs) var(--space-sm);
-    border-radius: var(--radius-sm);
-    font-size: 0.8rem;
-    font-weight: 500;
+  .content :global(em) {
+    font-style: italic;
   }
 
-  .host-details p {
-    margin-bottom: var(--space-sm);
-    color: var(--color-gray-700);
-  }
-
-  .gdpr-info {
-    background: #f0fdf4;
-    border: 1px solid #22c55e;
-    padding: var(--space-lg);
-    border-radius: var(--radius-md);
-    margin: var(--space-lg) 0;
-  }
-
-  .gdpr-info h5 {
-    color: #166534;
-    margin-top: 0;
-  }
-
-  .gdpr-info ul {
-    color: #166534;
-    margin-bottom: 0;
-  }
-
-  .services-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: var(--space-lg);
-    margin: var(--space-lg) 0;
-  }
-
-  .service-card {
-    padding: var(--space-lg);
-    background: white;
-    border-radius: var(--radius-md);
-    border: 1px solid var(--color-gray-300);
-    border-left: 4px solid var(--color-accent-2);
-  }
-
-  .service-card h4 {
-    margin-top: 0;
-    color: var(--color-fg);
-  }
-
-  .service-card p {
-    margin-bottom: var(--space-sm);
-    font-size: 0.9rem;
-  }
-
-  .service-card p:last-child {
-    margin-bottom: 0;
-  }
-
-  .data-location {
-    margin: var(--space-lg) 0;
-  }
-
-  .location-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: var(--space-lg);
-    margin: var(--space-lg) 0;
-  }
-
-  .location-item {
-    padding: var(--space-xl);
-    background: var(--color-gray-25);
-    border-radius: var(--radius-md);
-    border-left: 4px solid var(--color-accent-2);
-  }
-
-  .location-item h5 {
-    margin-top: 0;
-    color: var(--color-fg);
-  }
-
-  .protection-measures {
-    background: #fef2f2;
-    border: 1px solid #ef4444;
-    padding: var(--space-xl);
-    border-radius: var(--radius-md);
-    margin: var(--space-lg) 0;
-  }
-
-  .protection-measures h5 {
-    color: #dc2626;
-    margin-top: 0;
-  }
-
-  .protection-measures ul {
-    color: #991b1b;
-    margin-bottom: 0;
-  }
-
-  /* Intellectual Property Components */
-  .ip-overview {
-    margin: var(--space-lg) 0;
-  }
-
-  .protection-types {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: var(--space-lg);
-    margin: var(--space-lg) 0;
-  }
-
-  .protection-item {
-    padding: var(--space-lg);
-    background: var(--color-gray-25);
-    border-radius: var(--radius-md);
-    border-top: 4px solid var(--color-accent-2);
-  }
-
-  .protection-item h4 {
-    margin-top: 0;
-    margin-bottom: var(--space-md);
-    color: var(--color-fg);
-  }
-
-  .protection-item p {
-    margin-bottom: var(--space-sm);
-    font-size: 0.9rem;
-  }
-
-  .protection-item p:last-child {
-    margin-bottom: 0;
-  }
-
-  .third-party-content {
-    background: #fffbeb;
-    border: 1px solid #f59e0b;
-    padding: var(--space-xl);
-    border-radius: var(--radius-lg);
-    margin: var(--space-lg) 0;
-  }
-
-  .licensing-info {
-    margin-top: var(--space-lg);
-  }
-
-  .licensing-info h5 {
-    color: #92400e;
-    margin-top: 0;
-  }
-
-  .licensing-info ul {
-    color: #78350f;
-  }
-
-  .licensing-note {
-    background: #fef3c7;
-    border: 1px solid #f59e0b;
-    padding: var(--space-md);
-    border-radius: var(--radius-sm);
-    margin: var(--space-lg) 0;
-    font-size: 0.9rem;
-    color: #92400e;
-  }
-
-  .usage-rights {
-    margin: var(--space-lg) 0;
-  }
-
-  .usage-rights h4 {
-    display: flex;
-    align-items: center;
-    gap: var(--space-sm);
-  }
-
-  /* Terms and Legal Components */
-  .terms-summary {
-    margin: var(--space-lg) 0;
-  }
-
-  .document-hierarchy {
-    display: grid;
-    gap: var(--space-md);
-    margin: var(--space-lg) 0;
-  }
-
-  .doc-level {
-    padding: var(--space-lg);
-    background: var(--color-gray-25);
-    border-radius: var(--radius-md);
-    border-left: 4px solid var(--color-accent-2);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .doc-level div {
-    flex: 1;
-  }
-
-  .doc-level h4 {
-    margin: 0 0 var(--space-sm) 0;
-    color: var(--color-fg);
-  }
-
-  .doc-level p {
-    margin: 0;
-    font-size: 0.9rem;
-    color: var(--color-gray-600);
-  }
-
-  .doc-link {
-    background: var(--color-accent-1);
-    color: white !important;
-    padding: var(--space-sm) var(--space-md);
-    border-radius: var(--radius-sm);
-    text-decoration: none !important;
-    font-weight: 500;
-    font-size: 0.9rem;
-    transition: all 0.2s ease;
-    margin-left: var(--space-lg);
-  }
-
-  .doc-link:hover {
-    background: var(--color-accent-2);
-    transform: translateX(4px);
-  }
-
-  .legal-hierarchy {
-    background: var(--color-gray-25);
-    padding: var(--space-xl);
-    border-radius: var(--radius-md);
-    margin: var(--space-lg) 0;
-  }
-
-  .legal-hierarchy h4 {
-    margin-top: 0;
-    color: var(--color-fg);
-  }
-
-  .legal-hierarchy ol {
-    color: var(--color-gray-700);
-    margin-bottom: 0;
-  }
-
-  /* Liability and Legal Framework */
-  .liability-framework {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: var(--space-lg);
-    margin: var(--space-lg) 0;
-  }
-
-  .liability-item {
-    padding: var(--space-xl);
-    background: var(--color-gray-25);
-    border-radius: var(--radius-md);
-    border-top: 4px solid var(--color-accent-2);
-  }
-
-  .liability-item h4 {
-    margin-top: 0;
-    color: var(--color-fg);
-  }
-
-  .force-majeure {
-    background: #f8f9fa;
-    border: 1px solid var(--color-gray-300);
-    padding: var(--space-xl);
-    border-radius: var(--radius-md);
-    margin: var(--space-lg) 0;
-  }
-
-  .force-majeure h4 {
-    color: var(--color-fg);
-    margin-top: var(--space-lg);
-  }
-
-  .applicable-law {
-    margin: var(--space-lg) 0;
-  }
-
-  .law-details {
-    background: var(--color-gray-25);
-    padding: var(--space-xl);
-    border-radius: var(--radius-md);
-    margin: var(--space-lg) 0;
-  }
-
-  .law-details h4 {
-    margin-top: 0;
-    color: var(--color-fg);
-  }
-
-  .jurisdiction-info {
-    margin: var(--space-lg) 0;
-  }
-
-  .dispute-resolution {
-    background: var(--color-gray-25);
-    padding: var(--space-xl);
-    border-radius: var(--radius-md);
-    margin: var(--space-lg) 0;
-  }
-
-  .mediator-contact {
-    background: #f0f9ff;
-    border: 1px solid #0ea5e9;
-    padding: var(--space-lg);
-    border-radius: var(--radius-sm);
-    margin: var(--space-md) 0;
-  }
-
-  .mediator-contact p {
-    margin-bottom: var(--space-xs);
-    color: #0c4a6e;
-  }
-
-  .mediator-contact p:last-child {
-    margin-bottom: 0;
-  }
-
-  /* Regulatory Information */
-  .gdpr-compliance {
-    margin: var(--space-lg) 0;
-  }
-
-  .gdpr-compliance h4 {
-    color: var(--color-fg);
-    margin-bottom: var(--space-md);
-  }
-
-  .dpo-contact {
-    background: #f0fdf4;
-    border: 1px solid #22c55e;
-    padding: var(--space-lg);
-    border-radius: var(--radius-sm);
-    margin: var(--space-lg) 0;
-  }
-
-  .dpo-contact h5 {
-    color: #166534;
-    margin-top: 0;
-  }
-
-  .dpo-contact p {
-    color: #166534;
-    margin-bottom: 0;
-  }
-
-  .accessibility-info {
-    margin: var(--space-lg) 0;
-  }
-
-  .accessibility-standards {
-    background: var(--color-gray-25);
-    padding: var(--space-xl);
-    border-radius: var(--radius-md);
-    margin: var(--space-lg) 0;
-  }
-
-  .accessibility-standards h5 {
-    margin-top: 0;
-    color: var(--color-fg);
-  }
-
-  .accessibility-contact {
-    background: #fef3c7;
-    border: 1px solid #f59e0b;
-    padding: var(--space-md);
-    border-radius: var(--radius-sm);
-    margin: var(--space-lg) 0;
-    font-size: 0.9rem;
-    color: #92400e;
-  }
-
-  .conduct-code {
-    margin: var(--space-lg) 0;
-  }
-
-  .principles-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: var(--space-md);
-    margin: var(--space-lg) 0;
-  }
-
-  .principle-item {
-    padding: var(--space-lg);
-    background: var(--color-gray-25);
-    border-radius: var(--radius-md);
-    border-top: 3px solid var(--color-accent-2);
-    text-align: center;
-  }
-
-  .principle-item h5 {
-    margin-top: 0;
-    margin-bottom: var(--space-sm);
-    color: var(--color-fg);
-  }
-
-  .principle-item p {
-    margin-bottom: 0;
-    font-size: 0.9rem;
-    color: var(--color-gray-600);
-  }
-
-  /* Legal Footer */
-  .legal-footer {
-    background: linear-gradient(135deg, var(--color-gray-50), var(--color-gray-100));
-    border: 1px solid var(--color-gray-300);
-    border-radius: var(--radius-lg);
-    padding: var(--space-xl);
-    margin-top: var(--space-4xl);
-    text-align: center;
-  }
-
-  .footer-info p {
-    color: var(--color-gray-700);
-    font-weight: 500;
-    margin-bottom: var(--space-lg);
-    font-size: 0.95rem;
-  }
-
-  .update-info {
-    color: var(--color-gray-600) !important;
-    font-size: 0.9rem !important;
-    margin-bottom: var(--space-lg) !important;
-  }
-
-  .validation-info {
-    border-top: 1px solid var(--color-gray-300);
-    padding-top: var(--space-lg);
-  }
-
-  .validation-stamp {
-    color: #166534 !important;
-    font-size: 0.9rem !important;
-    font-weight: 600 !important;
-    margin: 0 !important;
+  .content :global(hr) {
+    border: none;
+    border-top: 1px solid var(--color-gray-200, #e9ecef);
+    margin: var(--space-2xl, 2rem) 0;
   }
 
   /* Responsive Design */
   @media (max-width: 767px) {
-    .detail-grid,
-    .contact-grid,
-    .services-grid,
-    .location-grid,
-    .protection-types,
-    .liability-framework,
-    .principles-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .content-section {
-      padding: var(--space-xl);
-      margin-bottom: var(--space-xl);
-    }
-
-    .doc-level {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: var(--space-md);
-    }
-
-    .doc-link {
-      margin-left: 0;
-      align-self: flex-start;
-    }
-
-    .host-header {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: var(--space-sm);
+    .content :global(section),
+    .content :global(.content-section) {
+      padding: var(--space-xl, 1.5rem);
+      margin-bottom: var(--space-xl, 1.5rem);
     }
   }
-
 
   /* Print Styles */
   @media print {
@@ -1311,21 +163,11 @@ const description = "Mentions légales de Tatikati. Informations sur l'éditeur,
       padding-top: 0;
     }
 
-    .content-section {
+    .content :global(section),
+    .content :global(.content-section) {
       break-inside: avoid;
       box-shadow: none;
       border: 1px solid #ddd;
-    }
-
-    .detail-grid,
-    .contact-grid,
-    .protection-types,
-    .principles-grid {
-      break-inside: avoid;
-    }
-
-    .doc-link {
-      display: none;
     }
   }
 </style>
@@ -1344,52 +186,6 @@ const description = "Mentions légales de Tatikati. Informations sur l'éditeur,
           });
         }
       });
-    });
-
-    // Add hover effects to contact cards
-    const contactCards = document.querySelectorAll('.contact-card');
-    contactCards.forEach(card => {
-      card.addEventListener('mouseenter', function() {
-        this.style.transform = 'translateY(-4px)';
-      });
-      
-      card.addEventListener('mouseleave', function() {
-        this.style.transform = 'translateY(-2px)';
-      });
-    });
-
-    // Email protection (simple obfuscation)
-    const emailLinks = document.querySelectorAll('a[href^="mailto:"]');
-    emailLinks.forEach(link => {
-      const email = link.href.replace('mailto:', '');
-      if (email.includes('@helby.studio')) {
-        link.addEventListener('click', function(e) {
-          // Could add analytics or protection here
-          console.log('Email link clicked:', email);
-        });
-      }
-    });
-
-    // Add reading progress for long document
-    const progressBar = document.createElement('div');
-    progressBar.id = 'reading-progress';
-    progressBar.style.cssText = `
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 0%;
-      height: 3px;
-      background: var(--color-accent-1);
-      z-index: 1001;
-      transition: width 0.1s ease;
-    `;
-    document.body.appendChild(progressBar);
-
-    window.addEventListener('scroll', function() {
-      const scrolled = window.pageYOffset;
-      const maxHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = (scrolled / maxHeight) * 100;
-      progressBar.style.width = Math.min(progress, 100) + '%';
     });
   });
 </script>
