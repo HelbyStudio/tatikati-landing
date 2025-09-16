@@ -1,37 +1,37 @@
 ---
-import { getEntry } from 'astro:content';
-import BaseLayout from '../layouts/BaseLayout.astro';
+import BaseLayout from './BaseLayout.astro';
 import NavBar from '../components/NavBar.astro';
 import Footer from '../components/Footer.astro';
 import LastUpdated from '../components/mdx/LastUpdated.astro';
 
-// Détecter la langue courante (fr par défaut, en pour les URLs /en/)
-const currentLocale = Astro.currentLocale || 'fr';
-const pageId = `${currentLocale}/privacy`;
-
-const page = await getEntry('pages', pageId);
-if (!page) {
-  return Astro.redirect('/404');
+export interface Props {
+  frontmatter: {
+    title: string;
+    description: string;
+    lastUpdated: string | Date;
+    locale?: string;
+  };
 }
 
-const { Content } = await page.render();
+const { frontmatter } = Astro.props;
+const { title, description, lastUpdated, locale } = frontmatter;
 ---
 
 <BaseLayout 
-  title={`${page.data.title} | Tatikati`}
-  description={page.data.description}
+  title={`${title} | Tatikati`}
+  description={description}
 >
   <NavBar />
   
   <main id="main" class="legal-page">
     <div class="container">
       <header class="page-header">
-        <h1 class="page-title">{page.data.title}</h1>
-        <LastUpdated date={page.data.lastUpdated} />
+        <h1 class="page-title">{title}</h1>
+        <LastUpdated date={lastUpdated} />
       </header>
       
       <div class="content">
-        <Content />
+        <slot />
       </div>
     </div>
   </main>

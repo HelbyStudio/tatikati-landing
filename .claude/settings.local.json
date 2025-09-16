@@ -27,7 +27,8 @@
       "Bash(for page in legal privacy terms)",
       "Bash(do)",
       "Bash(sed:*)",
-      "Bash(done)"
+      "Bash(done)",
+      "WebFetch(domain:docs.astro.build)"
     ],
     "deny": [],
     "ask": []
