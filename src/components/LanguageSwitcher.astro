@@ -1,0 +1,131 @@
+---
+import { useTranslations } from '../i18n/utils.js';
+import { getLocaleFromUrl } from '../i18n/utils.js';
+
+interface Props {
+  locale: 'fr' | 'en';
+  currentPath: string;
+}
+
+const { locale, currentPath } = Astro.props;
+const t = useTranslations(locale);
+
+// Generate alternate URL
+function getAlternateUrl(currentPath: string, currentLocale: string): string {
+  if (currentLocale === 'fr') {
+    // French is default, add /en prefix
+    return `/en${currentPath === '/' ? '' : currentPath}`;
+  } else {
+    // English has /en prefix, remove it
+    return currentPath.replace(/^\/en/, '') || '/';
+  }
+}
+
+const alternateUrl = getAlternateUrl(currentPath, locale);
+const otherLocale = locale === 'fr' ? 'en' : 'fr';
+---
+
+<div class="language-switcher">
+  <button 
+    class="language-button"
+    data-current-locale={locale}
+    data-alternate-url={alternateUrl}
+    aria-label={t('footer.language.switch')}
+    title={t('footer.language.switch')}
+  >
+    <span class="language-icon">🌐</span>
+    <span class="language-text">{t('footer.language.other')}</span>
+  </button>
+</div>
+
+<style>
+  .language-switcher {
+    display: flex;
+    align-items: center;
+  }
+
+  .language-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius-md);
+    color: var(--color-gray-300);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+  }
+
+  .language-button:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+    color: var(--color-bg);
+    transform: translateY(-1px);
+  }
+
+  .language-button:focus {
+    outline: 2px solid var(--color-accent-1);
+    outline-offset: 2px;
+  }
+
+  .language-icon {
+    font-size: 1rem;
+  }
+
+  .language-text {
+    font-family: var(--font-sans);
+  }
+
+  /* High Contrast Mode */
+  @media (prefers-contrast: high) {
+    .language-button {
+      border-width: 2px;
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    .language-button:hover {
+      border-color: rgba(255, 255, 255, 0.6);
+    }
+  }
+
+  /* Reduced Motion */
+  @media (prefers-reduced-motion: reduce) {
+    .language-button {
+      transition: none;
+    }
+
+    .language-button:hover {
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const languageButtons = document.querySelectorAll('.language-button');
+    
+    languageButtons.forEach(button => {
+      button.addEventListener('click', function(e) {
+        e.preventDefault();
+        const alternateUrl = this.getAttribute('data-alternate-url');
+        const currentLocale = this.getAttribute('data-current-locale');
+        
+        // Analytics tracking
+        console.log('Language switch:', {
+          from: currentLocale,
+          to: currentLocale === 'fr' ? 'en' : 'fr',
+          url: alternateUrl
+        });
+        
+        // Navigate to alternate language
+        if (alternateUrl) {
+          window.location.href = alternateUrl;
+        }
+      });
+    });
+  });
+</script>

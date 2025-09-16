@@ -1,0 +1,26 @@
+[
+  {
+    "id": "review1",
+    "name": "Sophie M.",
+    "rating": 5,
+    "quote": "Tatikati has revolutionized our car trips! My 6-year-old daughter loves the stories and I'm delighted she can listen to them without screens."
+  },
+  {
+    "id": "review2",
+    "name": "Mark D.",
+    "rating": 5,
+    "quote": "The child mode is perfect! My 4-year-old son uses the app completely independently. The content quality is exceptional."
+  },
+  {
+    "id": "review3",
+    "name": "Julia L.",
+    "rating": 4,
+    "quote": "Finally an alternative to screens! The thematic playlists are well thought out and my 5-year-old twins argue less about what to choose."
+  },
+  {
+    "id": "review4",
+    "name": "Thomas R.",
+    "rating": 5,
+    "quote": "The auto-resume feature is brilliant for long episodes. My daughter can pick up her story exactly where she left off."
+  }
+]

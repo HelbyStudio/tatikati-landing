@@ -1,0 +1,229 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import NavBar from '../../../components/NavBar.astro';
+import Footer from '../../../components/Footer.astro';
+import { useTranslations } from '../../../i18n/utils.js';
+
+const t = useTranslations('en');
+
+// Get English blog posts
+const posts = await getCollection('blog', ({ data }) => {
+  return data.draft !== true && data.locale === 'en';
+});
+
+// Sort posts by publication date
+const sortedPosts = posts.sort((a, b) => 
+  new Date(b.data.pubDate).getTime() - new Date(a.data.pubDate).getTime()
+);
+
+const title = 'Blog - Tatikati';
+const description = 'Discover articles about children\'s development, education tips, and the benefits of audio content for kids.';
+---
+
+<BaseLayout 
+  title={title}
+  description={description}
+  locale="en"
+>
+  <NavBar locale="en" />
+  
+  <main id="main" class="blog-index">
+    <div class="container">
+      <div class="blog-header">
+        <h1 class="page-title">Our Blog</h1>
+        <p class="page-description">
+          Discover articles about children's development, education tips, and the benefits of audio content for kids.
+        </p>
+      </div>
+
+      <div class="blog-grid">
+        {sortedPosts.length > 0 ? (
+          sortedPosts.map((post) => (
+            <article class="blog-card">
+              <a href={`/en/blog/${post.slug}`} class="blog-link">
+                {post.data.heroImage && (
+                  <div class="blog-image">
+                    <img 
+                      src={post.data.heroImage} 
+                      alt={post.data.heroImageAlt || post.data.title}
+                      loading="lazy"
+                    />
+                  </div>
+                )}
+                
+                <div class="blog-content">
+                  <div class="blog-meta">
+                    <time datetime={post.data.pubDate.toISOString()}>
+                      {post.data.pubDate.toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                      })}
+                    </time>
+                    {post.data.readingTime && (
+                      <span class="reading-time">{post.data.readingTime} min read</span>
+                    )}
+                  </div>
+                  
+                  <h2 class="blog-title">{post.data.title}</h2>
+                  <p class="blog-description">{post.data.description}</p>
+                  
+                  {post.data.tags.length > 0 && (
+                    <div class="blog-tags">
+                      {post.data.tags.slice(0, 3).map((tag) => (
+                        <span class="tag">{tag}</span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </a>
+            </article>
+          ))
+        ) : (
+          <div class="no-posts">
+            <p>No English articles available yet. Check back soon!</p>
+          </div>
+        )}
+      </div>
+    </div>
+  </main>
+
+  <Footer locale="en" />
+</BaseLayout>
+
+<style>
+  .blog-index {
+    padding: 120px 0 80px;
+    min-height: 80vh;
+  }
+
+  .blog-header {
+    text-align: center;
+    margin-bottom: 4rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .page-title {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    color: var(--color-fg);
+    margin-bottom: 1rem;
+  }
+
+  .page-description {
+    font-size: 1.125rem;
+    color: var(--color-gray-600);
+    line-height: 1.6;
+  }
+
+  .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+
+  .blog-card {
+    background: var(--color-bg-secondary);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid var(--color-border);
+  }
+
+  .blog-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lift);
+  }
+
+  .blog-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .blog-image {
+    aspect-ratio: 16/9;
+    overflow: hidden;
+  }
+
+  .blog-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .blog-content {
+    padding: 1.5rem;
+  }
+
+  .blog-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+    color: var(--color-gray-500);
+  }
+
+  .reading-time {
+    position: relative;
+  }
+
+  .reading-time::before {
+    content: '•';
+    margin-right: 1rem;
+  }
+
+  .blog-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--color-fg);
+    line-height: 1.4;
+  }
+
+  .blog-description {
+    color: var(--color-gray-600);
+    line-height: 1.5;
+    margin-bottom: 1rem;
+  }
+
+  .blog-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .tag {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    background: var(--color-accent-1-light);
+    color: var(--color-accent-1);
+    border-radius: 12px;
+    font-weight: 500;
+  }
+
+  .no-posts {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 3rem;
+    color: var(--color-gray-500);
+    font-size: 1.125rem;
+  }
+
+  @media (max-width: 768px) {
+    .blog-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+    
+    .blog-index {
+      padding: 100px 0 60px;
+    }
+  }
+</style>

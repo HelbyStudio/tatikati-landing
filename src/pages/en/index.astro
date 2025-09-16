@@ -1,17 +1,17 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import NavBar from '../components/NavBar.astro';
-import Hero from '../components/Hero.astro';
-import Features from '../components/Features.astro';
-import PodcastScroller from '../components/PodcastScroller.astro';
-import Reviews from '../components/Reviews.astro';
-import FAQ from '../components/FAQ.astro';
-import Download from '../components/Download.astro';
-import Footer from '../components/Footer.astro';
-import { useTranslations } from '../i18n/utils.js';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import NavBar from '../../components/NavBar.astro';
+import Hero from '../../components/Hero.astro';
+import Features from '../../components/Features.astro';
+import PodcastScroller from '../../components/PodcastScroller.astro';
+import Reviews from '../../components/Reviews.astro';
+import FAQ from '../../components/FAQ.astro';
+import Download from '../../components/Download.astro';
+import Footer from '../../components/Footer.astro';
+import { useTranslations } from '../../i18n/utils.js';
 
-// Get translations for French (default locale)
-const t = useTranslations('fr');
+// Get translations for English
+const t = useTranslations('en');
 
 // Page metadata
 const title = t('meta.title');
@@ -25,13 +25,13 @@ const description = t('meta.description');
   structuredData={{
     "potentialAction": {
       "@type": "SearchAction",
-      "target": `https://tatikati.app/blog?search={search_term_string}`,
+      "target": `https://tatikati.app/en/blog?search={search_term_string}`,
       "query-input": "required name=search_term_string"
     }
   }}
 >
   <!-- Navigation -->
-  <NavBar locale="fr" />
+  <NavBar locale="en" />
   
   <!-- Main Content -->
   <main id="main">
@@ -44,50 +44,50 @@ const description = t('meta.description');
       ctaLink="#download"
       heroImage="https://images.unsplash.com/photo-1544717297-fa95b6ee9643?w=600&h=400&fit=crop&crop=center"
       heroImageAlt={t('hero.heroImageAlt')}
-      locale="fr"
+      locale="en"
     />
 
     <!-- Features Section -->
     <Features 
       title={t('features.title')}
       subtitle={t('features.subtitle')}
-      locale="fr"
+      locale="en"
     />
 
     <!-- Podcast Scroller Section -->
     <PodcastScroller 
       title={t('podcasts.title')}
       subtitle={t('podcasts.subtitle')}
-      locale="fr"
+      locale="en"
     />
 
     <!-- Reviews Section -->
     <Reviews 
       title={t('reviews.title')}
       subtitle={t('reviews.subtitle')}
-      locale="fr"
+      locale="en"
     />
 
     <!-- FAQ Section -->
     <FAQ 
       title={t('faq.title')}
       subtitle={t('faq.subtitle')}
-      locale="fr"
+      locale="en"
     />
 
     <!-- Download Section -->
     <Download 
       title={t('download.title')}
       description={t('download.description')}
-      locale="fr"
+      locale="en"
     />
   </main>
 
   <!-- Footer -->
-  <Footer locale="fr" />
+  <Footer locale="en" />
 
   <!-- Load PodcastScroller JavaScript -->
   <script>
-    import('../components/PodcastScroller.ts');
+    import('../../components/PodcastScroller.ts');
   </script>
 </BaseLayout>

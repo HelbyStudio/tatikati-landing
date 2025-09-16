@@ -1,0 +1,50 @@
+[
+  {
+    "id": "content1",
+    "category": "content",
+    "question": "Quel type de contenu proposez-vous ?",
+    "answer": "Tatikati propose des histoires originales, des contes classiques, des podcasts éducatifs et des berceuses. Tout le contenu est soigneusement sélectionné pour être adapté à l'âge et stimuler l'imagination des enfants."
+  },
+  {
+    "id": "features1",
+    "category": "features",
+    "question": "Quelles sont les fonctionnalités principales de l'application ?",
+    "answer": "Tatikati propose un mode enfant avec navigation audio, un écran noir pendant l'écoute pour éviter les distractions, des playlists thématiques, une reprise facile des épisodes et un accès gratuit à de nombreux podcasts."
+  },
+  {
+    "id": "features2",
+    "category": "features",
+    "question": "Comment fonctionne le mode enfant ?",
+    "answer": "Le mode enfant utilise une interface simplifiée avec des commandes vocales et une navigation adaptée aux enfants. Ils peuvent utiliser l'application en toute autonomie sans risquer de sortir du contenu approprié à leur âge."
+  },
+  {
+    "id": "pricing1",
+    "category": "pricing",
+    "question": "L'application est-elle gratuite ?",
+    "answer": "Oui, Tatikati propose un large catalogue gratuit de podcasts et histoires. Une version premium avec des playlists exclusives et des fonctionnalités avancées est également disponible."
+  },
+  {
+    "id": "pricing2",
+    "category": "pricing",
+    "question": "Que comprend l'abonnement premium ?",
+    "answer": "L'abonnement premium donne accès à des playlists exclusives, du contenu premium, des fonctionnalités avancées comme les téléchargements hors-ligne et la synchronisation entre appareils."
+  },
+  {
+    "id": "privacy1",
+    "category": "privacy",
+    "question": "Mes données sont-elles protégées ?",
+    "answer": "Absolument. Tatikati respecte la vie privée des familles et ne collecte aucune donnée personnelle sur les enfants. Nous sommes conformes au RGPD et aux réglementations sur la protection des données des mineurs."
+  },
+  {
+    "id": "usage1",
+    "category": "usage",
+    "question": "À partir de quel âge peut-on utiliser l'application ?",
+    "answer": "Tatikati est conçue pour les enfants de 3 à 12 ans. Le contenu est organisé par tranches d'âge pour garantir que chaque enfant trouve des histoires adaptées à son développement."
+  },
+  {
+    "id": "usage2",
+    "category": "usage",
+    "question": "Peut-on utiliser l'application sans connexion internet ?",
+    "answer": "Avec l'abonnement premium, vous pouvez télécharger les contenus pour les écouter hors-ligne. La version gratuite nécessite une connexion internet pour diffuser les podcasts."
+  }
+]

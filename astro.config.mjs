@@ -12,6 +12,14 @@ export default defineConfig({
   adapter: node({
     mode: 'standalone'
   }),
+  i18n: {
+    locales: ['fr', 'en'],
+    defaultLocale: 'fr',
+    routing: {
+      prefixDefaultLocale: false,
+      redirectToDefaultLocale: true
+    }
+  },
   integrations: [
     tailwind(),
     mdx(),

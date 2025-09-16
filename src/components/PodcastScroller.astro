@@ -1,5 +1,5 @@
 ---
-import { podcasts } from '../data/podcasts.ts';
+import { getCollection } from 'astro:content';
 
 interface Props {
   title?: string;
@@ -13,6 +13,8 @@ const {
   showAll = true
 } = Astro.props;
 
+// Get podcasts from Content Collection
+const podcasts = await getCollection('podcasts-fr');
 const displayPodcasts = showAll ? podcasts : podcasts.slice(0, 8);
 ---
 
@@ -56,16 +58,16 @@ const displayPodcasts = showAll ? podcasts : podcasts.slice(0, 8);
           {displayPodcasts.map((podcast, index) => (
             <div 
               class="podcast-card" 
-              data-podcast-id={podcast.id}
+              data-podcast-id={podcast.data.id}
               data-podcast-index={index}
               tabindex="0"
               role="button"
-              aria-label={`Écouter ${podcast.title}`}
+              aria-label={`Écouter ${podcast.data.title}`}
             >
               <div class="podcast-cover">
                 <img 
-                  src={podcast.cover}
-                  alt={`Couverture de ${podcast.title}`}
+                  src={podcast.data.cover}
+                  alt={`Couverture de ${podcast.data.title}`}
                   loading="lazy"
                   width="200"
                   height="200"
@@ -78,7 +80,7 @@ const displayPodcasts = showAll ? podcasts : podcasts.slice(0, 8);
               </div>
               
               <div class="podcast-info">
-                <h3 class="podcast-title">{podcast.title}</h3>
+                <h3 class="podcast-title">{podcast.data.title}</h3>
               </div>
             </div>
           ))}

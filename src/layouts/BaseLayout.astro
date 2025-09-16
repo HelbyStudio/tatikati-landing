@@ -1,6 +1,8 @@
 ---
 import '../styles/global.css';
 import StructuredData from '../components/StructuredData.astro';
+import { getLocaleFromUrl, getAlternateUrls } from '../i18n/utils.js';
+import type { Locale } from '../i18n/translations.js';
 
 export interface Props {
   title?: string;
@@ -10,6 +12,7 @@ export interface Props {
   noindex?: boolean;
   structuredDataType?: 'WebSite' | 'MobileApplication' | 'BlogPosting' | 'Organization';
   structuredData?: Record<string, any>;
+  locale?: Locale;
 }
 
 const {
@@ -20,14 +23,17 @@ const {
   noindex = false,
   structuredDataType = 'WebSite',
   structuredData = {},
+  locale,
 } = Astro.props;
 
+const currentLocale = locale || getLocaleFromUrl(Astro.url.pathname);
 const canonicalURL = canonical || new URL(Astro.url.pathname, Astro.site);
 const socialImageURL = new URL(image, Astro.site);
+const alternateUrls = getAlternateUrls(Astro.url.pathname);
 ---
 
 <!doctype html>
-<html lang="fr">
+<html lang={currentLocale}>
   <head>
     <!-- Meta Tags -->
     <meta charset="UTF-8" />
@@ -40,6 +46,11 @@ const socialImageURL = new URL(image, Astro.site);
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL} />
     {noindex && <meta name="robots" content="noindex" />}
+    
+    <!-- Alternate Language Links -->
+    <link rel="alternate" hreflang="fr" href={new URL(alternateUrls.fr, Astro.site)} />
+    <link rel="alternate" hreflang="en" href={new URL(alternateUrls.en, Astro.site)} />
+    <link rel="alternate" hreflang="x-default" href={new URL(alternateUrls.fr, Astro.site)} />
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />

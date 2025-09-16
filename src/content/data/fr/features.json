@@ -1,0 +1,38 @@
+[
+  {
+    "id": "feature1",
+    "title": "Histoires captivantes",
+    "description": "Des centaines d'histoires originales et de contes classiques, parfaitement adaptés à chaque âge pour stimuler l'imagination des enfants.",
+    "icon": "fa-solid fa-play"
+  },
+  {
+    "id": "feature2",
+    "title": "Mode enfant sécurisé",
+    "description": "Interface intuitive avec navigation audio et commandes vocales, permettant aux enfants d'utiliser l'app en toute autonomie.",
+    "icon": "fa-solid fa-child-reaching"
+  },
+  {
+    "id": "feature3",
+    "title": "Écran noir apaisant",
+    "description": "Mode audio pur sans distraction visuelle pour une immersion totale dans l'univers sonore et favoriser la concentration.",
+    "icon": "fa-solid fa-moon"
+  },
+  {
+    "id": "feature4",
+    "title": "Playlists intelligentes",
+    "description": "Collections organisées par âge, thème et durée avec des recommandations personnalisées pour chaque moment de la journée.",
+    "icon": "fa-solid fa-list"
+  },
+  {
+    "id": "feature5",
+    "title": "Reprise automatique",
+    "description": "Mémorisation intelligente de la position d'écoute pour reprendre exactement là où vous vous êtes arrêtés, même entre différents appareils.",
+    "icon": "fa-solid fa-clock-rotate-left"
+  },
+  {
+    "id": "feature6",
+    "title": "Qualité garantie",
+    "description": "Contenus soigneusement sélectionnés par des experts, sans algorithme de recommandation intrusif ni contenu généré par IA.",
+    "icon": "fa-solid fa-heart"
+  }
+]

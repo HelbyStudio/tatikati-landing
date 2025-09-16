@@ -1,19 +1,44 @@
 ---
-import { reviews } from '../data/reviews.ts';
+import { useTranslations } from '../i18n/utils.js';
+import { translations, type Locale } from '../i18n/translations.js';
+import { getCollection } from 'astro:content';
 
 interface Props {
   title?: string;
   subtitle?: string;
   showAll?: boolean;
+  locale?: Locale;
 }
 
 const {
-  title = "Ce que disent les parents",
-  subtitle = "Des milliers de familles font déjà confiance à Tatikati",
-  showAll = true
+  title,
+  subtitle,
+  showAll = true,
+  locale = 'fr'
 } = Astro.props;
 
-const displayReviews = showAll ? reviews : reviews.slice(0, 3);
+const t = useTranslations(locale);
+
+// Use translations for titles with fallback
+const finalTitle = title || t('reviews.title');
+const finalSubtitle = subtitle || t('reviews.subtitle');
+
+// Get reviews data from locale-specific collection
+const collectionName = `reviews-${locale}` as 'reviews-fr' | 'reviews-en';
+const allReviews = await getCollection(collectionName);
+
+// Transform reviews data with avatars (using natural array order)
+const reviewsWithAvatars = allReviews.map((review, index) => ({
+  ...review.data,
+  avatar: [
+    'https://images.unsplash.com/photo-1494790108755-2616b612b098?w=64&h=64&fit=crop&crop=face',
+    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=64&h=64&fit=crop&crop=face',
+    'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=64&h=64&fit=crop&crop=face',
+    'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=64&h=64&fit=crop&crop=face'
+  ][index] || 'https://images.unsplash.com/photo-1494790108755-2616b612b098?w=64&h=64&fit=crop&crop=face'
+}));
+
+const displayReviews = showAll ? reviewsWithAvatars : reviewsWithAvatars.slice(0, 3);
 
 // Generate star ratings
 function generateStars(rating: number) {
@@ -54,8 +79,8 @@ function getMonogramColor(name: string): string {
   <div class="container">
     <!-- Section Header -->
     <div class="reviews-header">
-      <h2 class="section-title">{title}</h2>
-      <p class="section-subtitle">{subtitle}</p>
+      <h2 class="section-title">{finalTitle}</h2>
+      <p class="section-subtitle">{finalSubtitle}</p>
       
       <!-- Trust Indicators -->
       <div class="trust-indicators">
@@ -146,13 +171,6 @@ function getMonogramColor(name: string): string {
             <blockquote class="review-quote">
               "{review.quote}"
             </blockquote>
-          </div>
-          
-          <!-- Review Footer -->
-          <div class="review-footer">
-            <time class="review-date" datetime="2024-01-15">
-              Il y a {Math.floor(Math.random() * 30) + 1} jours
-            </time>
           </div>
         </div>
       ))}
@@ -394,13 +412,6 @@ function getMonogramColor(name: string): string {
     opacity: 0.3;
   }
 
-  .review-footer {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    font-size: 0.85rem;
-    color: var(--color-gray-500);
-  }
 
   /* Reviews CTA */
   .reviews-cta {

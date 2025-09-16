@@ -1,29 +1,58 @@
 ---
 import logo from '../assets/logo_logotype_colored.svg';
+import { useTranslations, getAlternateUrls } from '../i18n/utils.js';
+import type { Locale } from '../i18n/translations.js';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'fr' } = Astro.props;
+const t = useTranslations(locale);
+const alternateUrls = getAlternateUrls(Astro.url.pathname);
 ---
 
 <nav class="navbar" aria-label="Navigation principale">
   <div class="container">
     <div class="navbar-content">
       <!-- Logo -->
-      <a href="/" class="navbar-brand">
+      <a href={locale === 'fr' ? '/' : '/en'} class="navbar-brand">
         <img src={logo.src} alt="Tatikati" class="brand-logo" width="120" height="40" />
       </a>
 
       <!-- Desktop Navigation -->
       <div class="navbar-menu">
-        <a href="/" class="navbar-link">Accueil</a>
-        <a href="/blog" class="navbar-link">Blog</a>
-        <a href="#features" class="navbar-link">Fonctionnalités</a>
-        <a href="#podcasts" class="navbar-link">Podcasts</a>
-        <a href="#avis" class="navbar-link">Avis</a>
-        <a href="#faq" class="navbar-link">FAQ</a>
+        <a href={locale === 'fr' ? '/' : '/en'} class="navbar-link">{t('nav.home')}</a>
+        <a href={locale === 'fr' ? '/blog' : '/en/blog'} class="navbar-link">{t('nav.blog')}</a>
+        <a href="#features" class="navbar-link">{t('nav.features')}</a>
+        <a href="#podcasts" class="navbar-link">{t('nav.podcasts')}</a>
+        <a href="#avis" class="navbar-link">{t('nav.reviews')}</a>
+        <a href="#faq" class="navbar-link">{t('nav.faq')}</a>
       </div>
 
-      <!-- CTA Button -->
+      <!-- Language Switcher & CTA Button -->
       <div class="navbar-actions">
+        <!-- Language switcher -->
+        <div class="language-switcher">
+          <a 
+            href={alternateUrls.fr} 
+            class={`lang-link ${locale === 'fr' ? 'active' : ''}`}
+            aria-label="Français"
+          >
+            FR
+          </a>
+          <span class="lang-separator">|</span>
+          <a 
+            href={alternateUrls.en} 
+            class={`lang-link ${locale === 'en' ? 'active' : ''}`}
+            aria-label="English"
+          >
+            EN
+          </a>
+        </div>
+        
         <a href="#download" class="btn btn-primary navbar-cta">
-          Télécharger l'app
+          {t('nav.download')}
         </a>
       </div>
 
@@ -43,14 +72,14 @@ import logo from '../assets/logo_logotype_colored.svg';
     <!-- Mobile Navigation -->
     <div class="mobile-menu" data-mobile-menu>
       <div class="mobile-menu-content">
-        <a href="/" class="mobile-menu-link">Accueil</a>
-        <a href="/blog" class="mobile-menu-link">Blog</a>
-        <a href="#features" class="mobile-menu-link">Fonctionnalités</a>
-        <a href="#podcasts" class="mobile-menu-link">Podcasts</a>
-        <a href="#avis" class="mobile-menu-link">Avis</a>
-        <a href="#faq" class="mobile-menu-link">FAQ</a>
+        <a href={locale === 'fr' ? '/' : '/en'} class="mobile-menu-link">{t('nav.home')}</a>
+        <a href={locale === 'fr' ? '/blog' : '/en/blog'} class="mobile-menu-link">{t('nav.blog')}</a>
+        <a href="#features" class="mobile-menu-link">{t('nav.features')}</a>
+        <a href="#podcasts" class="mobile-menu-link">{t('nav.podcasts')}</a>
+        <a href="#avis" class="mobile-menu-link">{t('nav.reviews')}</a>
+        <a href="#faq" class="mobile-menu-link">{t('nav.faq')}</a>
         <a href="#download" class="btn btn-primary mobile-cta">
-          Télécharger l'app
+          {t('nav.download')}
         </a>
       </div>
     </div>
@@ -133,6 +162,39 @@ import logo from '../assets/logo_logotype_colored.svg';
 
   .navbar-actions {
     display: none;
+    align-items: center;
+    gap: var(--space-lg);
+  }
+
+  .language-switcher {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+  }
+
+  .lang-link {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-gray-600);
+    text-decoration: none;
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: 4px;
+    transition: all 0.2s ease;
+  }
+
+  .lang-link:hover {
+    color: var(--color-accent-1);
+    background: var(--color-gray-100);
+  }
+
+  .lang-link.active {
+    color: var(--color-accent-1);
+    background: var(--color-accent-1-light);
+  }
+
+  .lang-separator {
+    color: var(--color-gray-400);
+    font-size: 0.875rem;
   }
 
   .navbar-cta {

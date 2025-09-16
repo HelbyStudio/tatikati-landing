@@ -42,8 +42,7 @@ const faqFrCollection = defineCollection({
     id: z.string(),
     category: z.string(),
     question: z.string(),
-    answer: z.string(),
-    order: z.number()
+    answer: z.string()
   })
 });
 
@@ -53,8 +52,7 @@ const faqEnCollection = defineCollection({
     id: z.string(),
     category: z.string(),
     question: z.string(),
-    answer: z.string(),
-    order: z.number()
+    answer: z.string()
   })
 });
 
@@ -64,8 +62,7 @@ const featuresFrCollection = defineCollection({
     id: z.string(),
     title: z.string(),
     description: z.string(),
-    icon: z.string(),
-    order: z.number()
+    icon: z.string()
   })
 });
 
@@ -75,8 +72,7 @@ const featuresEnCollection = defineCollection({
     id: z.string(),
     title: z.string(),
     description: z.string(),
-    icon: z.string(),
-    order: z.number()
+    icon: z.string()
   })
 });
 
@@ -86,8 +82,7 @@ const reviewsFrCollection = defineCollection({
     id: z.string(),
     name: z.string(),
     rating: z.number(),
-    quote: z.string(),
-    order: z.number()
+    quote: z.string()
   })
 });
 
@@ -97,8 +92,18 @@ const reviewsEnCollection = defineCollection({
     id: z.string(),
     name: z.string(),
     rating: z.number(),
-    quote: z.string(),
-    order: z.number()
+    quote: z.string()
+  })
+});
+
+const podcastsFrCollection = defineCollection({
+  loader: file('src/content/data/fr/podcasts.json'),
+  schema: z.object({
+    id: z.string(),
+    title: z.string(),
+    cover: z.string(),
+    episodeEmbedId: z.string(),
+    description: z.string().optional()
   })
 });
 
@@ -110,4 +115,5 @@ export const collections = {
   'features-en': featuresEnCollection,
   'reviews-fr': reviewsFrCollection,
   'reviews-en': reviewsEnCollection,
+  'podcasts-fr': podcastsFrCollection,
 };

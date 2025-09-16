@@ -1,48 +1,73 @@
 ---
+import { useTranslations } from '../i18n/utils.js';
+
 interface Props {
   title?: string;
   description?: string;
   variant?: 'footer' | 'blog' | 'inline';
   maxWidth?: string;
+  locale: 'fr' | 'en';
 }
 
 const {
-  title = "Restez informés des nouveautés",
-  description = "Recevez nos conseils d'experts et découvrez en avant-première les nouveaux podcasts pour enfants.",
+  title,
+  description,
   variant = 'footer',
-  maxWidth = '500px'
+  maxWidth = '500px',
+  locale = 'fr'
 } = Astro.props;
+
+const t = useTranslations(locale);
+
+// Use translations as default values if not provided
+const finalTitle = title || t('newsletter.title');
+const finalDescription = description || t('newsletter.description');
 ---
 
 <div class={`newsletter-section ${variant}`}>
   <div class="newsletter-content">
     <div class="newsletter-text">
-      <h3 class="newsletter-title">{title}</h3>
-      <p class="newsletter-description">{description}</p>
+      <h3 class="newsletter-title">{finalTitle}</h3>
+      <p class="newsletter-description">{finalDescription}</p>
     </div>
     
     <form class="newsletter-form" data-newsletter-form>
       <div class="form-group">
-        <label for={`newsletter-email-${variant}`} class="sr-only">Adresse email</label>
+        <label for={`newsletter-email-${variant}`} class="sr-only">{t('newsletter.placeholder')}</label>
         <input 
           type="email" 
           id={`newsletter-email-${variant}`}
           name="email"
-          placeholder="Votre adresse email"
+          placeholder={t('newsletter.placeholder')}
           class="newsletter-input"
           required
           aria-describedby={`email-error-${variant}`}
         />
-        <button type="submit" class="newsletter-submit">
-          <span>S'abonner</span>
+        <button 
+          type="submit" 
+          class="newsletter-submit" 
+          data-subscribe-text={t('newsletter.subscribe')}
+          data-loading-text={t('newsletter.loading')}
+          data-success-text={t('newsletter.success')}
+          data-locale={locale}
+        >
+          <span>{t('newsletter.subscribe')}</span>
           {variant === 'footer' && <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>}
         </button>
       </div>
-      <div id={`email-error-${variant}`} class="error-message" role="alert" aria-live="polite"></div>
+      <div 
+        id={`email-error-${variant}`} 
+        class="error-message" 
+        role="alert" 
+        aria-live="polite"
+        data-error-required={t('newsletter.emailRequired')}
+        data-error-invalid={t('newsletter.emailInvalid')}
+        data-error-general={t('newsletter.error')}
+      ></div>
       {variant === 'footer' && (
         <p class="newsletter-privacy">
-          En vous abonnant, vous acceptez de recevoir nos emails. 
-          <a href="/privacy">Politique de confidentialité</a>
+          {t('newsletter.privacyText')} 
+          <a href={locale === 'fr' ? '/privacy' : '/en/privacy'}>{t('newsletter.privacyLink')}</a>
         </p>
       )}
     </form>
@@ -260,18 +285,19 @@ const {
 
           // Validate email
           if (!email) {
-            showError('Veuillez saisir votre adresse email.');
+            showError(errorMessage.getAttribute('data-error-required'));
             return;
           }
 
           if (!emailRegex.test(email)) {
-            showError('Veuillez saisir une adresse email valide.');
+            showError(errorMessage.getAttribute('data-error-invalid'));
             return;
           }
 
           // Show loading state
           const originalText = submitButton.innerHTML;
-          submitButton.innerHTML = '<span>Inscription...</span>';
+          const loadingText = submitButton.getAttribute('data-loading-text');
+          submitButton.innerHTML = `<span>${loadingText}</span>`;
           submitButton.disabled = true;
 
           try {
@@ -288,7 +314,8 @@ const {
 
             if (response.ok && result.success) {
               // Success state
-              submitButton.innerHTML = '<span>✓ Inscrit !</span>';
+              const successText = submitButton.getAttribute('data-success-text');
+              submitButton.innerHTML = `<span>✓ ${successText}</span>`;
               submitButton.style.background = 'var(--color-accent-4)';
               emailInput.value = '';
               
@@ -304,14 +331,16 @@ const {
               }, 3000);
             } else {
               // Show error from API or default message
-              showError(result.error || 'Une erreur est survenue. Veuillez réessayer.');
+              const defaultError = errorMessage.getAttribute('data-error-general');
+              showError(result.error || defaultError);
               submitButton.innerHTML = originalText;
               submitButton.disabled = false;
             }
 
           } catch (error) {
             console.error('Newsletter error:', error);
-            showError('Une erreur est survenue. Veuillez réessayer.');
+            const defaultError = errorMessage.getAttribute('data-error-general');
+            showError(defaultError);
             submitButton.innerHTML = originalText;
             submitButton.disabled = false;
           }

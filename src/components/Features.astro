@@ -1,21 +1,29 @@
 ---
-import { features } from '../data/features.ts';
+import { getCollection } from 'astro:content';
+import type { Locale } from '../i18n/translations.js';
 
 interface Props {
   title?: string;
   subtitle?: string;
   showAll?: boolean;
   layout?: 'grid' | 'list';
+  locale?: Locale;
 }
 
 const {
-  title = "Pourquoi choisir Tatikati ?",
-  subtitle = "Des fonctionnalités pensées pour les enfants et leurs parents",
+  title,
+  subtitle,
   showAll = true,
-  layout = 'grid'
+  layout = 'grid',
+  locale = 'fr'
 } = Astro.props;
 
-const displayFeatures = showAll ? features : features.slice(0, 3);
+// Get features data from locale-specific collection
+const collectionName = `features-${locale}` as 'features-fr' | 'features-en';
+const allFeatures = await getCollection(collectionName);
+
+// Use natural array order
+const displayFeatures = showAll ? allFeatures : allFeatures.slice(0, 3);
 ---
 
 <section class="features" id="features">
@@ -33,11 +41,13 @@ const displayFeatures = showAll ? features : features.slice(0, 3);
           class="feature-card"
           data-feature-index={index}
         >
-          <div class="feature-icon" set:html={feature.icon} />
+          <div class="feature-icon">
+            <i class={feature.data.icon}></i>
+          </div>
           
           <div class="feature-content">
-            <h3 class="feature-title">{feature.title}</h3>
-            <p class="feature-description">{feature.description}</p>
+            <h3 class="feature-title">{feature.data.title}</h3>
+            <p class="feature-description">{feature.data.description}</p>
           </div>
           
           <div class="feature-decoration" aria-hidden="true">

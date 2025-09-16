@@ -1,5 +1,6 @@
 ---
 import logoCombinedWhite from '../assets/logo_combined_white.svg';
+import type { Locale } from '../i18n/translations.js';
 
 interface Props {
   title?: string;
@@ -9,13 +10,18 @@ interface Props {
   ctaLink?: string;
   heroImage?: string;
   heroImageAlt?: string;
+  locale?: Locale;
 }
 
 const {
-  title = "Des podcasts pour enfants sans écran",
-  description = "Découvrez l'application qui révolutionne l'écoute de podcasts pour les enfants. Mode enfant sécurisé, navigation audio, et des contenus soigneusement sélectionnés sans algorithme intrusif.",
-  ctaText = "Télécharger gratuitement",
-  ctaLink = "#download"
+  title,
+  subtitle,
+  description,
+  ctaText,
+  ctaLink = "#download",
+  heroImage,
+  heroImageAlt,
+  locale = 'fr'
 } = Astro.props;
 ---
 

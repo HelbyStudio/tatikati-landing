@@ -1,4 +1,8 @@
 ---
+import { useTranslations } from '../i18n/utils.js';
+import { translations, type Locale } from '../i18n/translations.js';
+import { getCollection } from 'astro:content';
+
 interface FAQItem {
   id: string;
   question: string;
@@ -6,81 +10,51 @@ interface FAQItem {
   category?: string;
 }
 
-const faqData: FAQItem[] = [
-  {
-    id: 'gratuit',
-    question: 'Tatikati est-il vraiment gratuit ?',
-    answer: 'Oui, Tatikati propose un large catalogue de podcasts totalement gratuit. Nous proposons également des playlists premium avec des contenus exclusifs pour les familles qui souhaitent aller plus loin.',
-    category: 'pricing'
-  },
-  {
-    id: 'age',
-    question: 'Pour quels âges Tatikati est-il adapté ?',
-    answer: 'Tatikati s\'adresse aux enfants de 3 à 12 ans. Nos contenus sont organisés par tranche d\'âge et nos playlists thématiques permettent de trouver facilement les podcasts adaptés à chaque enfant.',
-    category: 'usage'
-  },
-  {
-    id: 'mode-enfant',
-    question: 'Comment fonctionne le mode enfant ?',
-    answer: 'Le mode enfant propose une interface simplifiée avec navigation audio, commandes vocales, et aucune publicité. Les enfants peuvent utiliser l\'application en toute autonomie et sécurité, sans risque d\'accéder à du contenu inapproprié.',
-    category: 'features'
-  },
-  {
-    id: 'hors-ligne',
-    question: 'Peut-on écouter les podcasts hors ligne ?',
-    answer: 'Oui, vous pouvez télécharger vos podcasts favoris pour les écouter sans connexion internet. Parfait pour les voyages en voiture ou les moments sans réseau.',
-    category: 'features'
-  },
-  {
-    id: 'contenu',
-    question: 'Qui sélectionne les contenus ?',
-    answer: 'Je sélectionne soigneusement chaque contenu avec l\'aide de parents et d\'experts en développement de l\'enfant. Nous privilégions la qualité éditoriale et évitons les algorithmes de recommandation intrusifs.',
-    category: 'content'
-  },
-  {
-    id: 'ecrans',
-    question: 'Pourquoi pas d\'écran pendant l\'écoute ?',
-    answer: 'L\'écoute sans écran favorise l\'imagination, la concentration et limite l\'exposition aux écrans. Le mode "écran noir" permet une immersion totale dans les histoires et développe l\'écoute active.',
-    category: 'features'
-  },
-  {
-    id: 'donnees',
-    question: 'Mes données sont-elles protégées ?',
-    answer: 'Absolument. Nous respectons scrupuleusement le RGPD et ne collectons que les données strictement nécessaires au fonctionnement de l\'application. Aucune donnée n\'est vendue à des tiers.',
-    category: 'privacy'
-  },
-  {
-    id: 'support',
-    question: 'Comment contacter le support ?',
-    answer: 'Notre équipe support est disponible par email à support@tatikati.app. Nous nous engageons à répondre dans les 24h et sommes là pour vous aider avec toutes vos questions.',
-    category: 'support'
-  }
-];
-
 interface Props {
   title?: string;
   subtitle?: string;
   showCategories?: boolean;
   maxItems?: number;
+  locale?: Locale;
 }
 
 const {
-  title = "Questions fréquentes",
-  subtitle = "Tout ce que vous devez savoir sur Tatikati",
+  title,
+  subtitle,
   showCategories = true,
-  maxItems
+  maxItems,
+  locale = 'fr'
 } = Astro.props;
+
+const t = useTranslations(locale);
+
+// Use translations for titles and subtitles with fallback
+const finalTitle = title || t('faq.title');
+const finalSubtitle = subtitle || t('faq.subtitle');
+
+// Get FAQ data from locale-specific collection
+const collectionName = `faq-${locale}` as 'faq-fr' | 'faq-en';
+const allFAQs = await getCollection(collectionName);
+
+// Transform to our FAQItem format (using natural array order)
+const faqData: FAQItem[] = allFAQs.map(faq => ({
+  id: faq.data.id,
+  question: faq.data.question,
+  answer: faq.data.answer,
+  category: faq.data.category
+}));
 
 const displayFAQ = maxItems ? faqData.slice(0, maxItems) : faqData;
 
-// Group FAQ by category if needed
+// Group FAQ by category if needed using translations
+const currentTranslations = translations[locale] || translations.fr;
 const categories = showCategories ? {
-  'pricing': 'Tarifs & Abonnement',
-  'usage': 'Utilisation',
-  'features': 'Fonctionnalités', 
-  'content': 'Contenus',
-  'privacy': 'Confidentialité',
-  'support': 'Support'
+  'pricing': currentTranslations.faqContent.categories.pricing,
+  'usage': currentTranslations.faqContent.categories.usage,
+  'features': currentTranslations.faqContent.categories.features,
+  'content': currentTranslations.faqContent.categories.content,
+  'privacy': currentTranslations.faqContent.categories.privacy,
+  'support': currentTranslations.faqContent.categories.support
 } : {};
 
 const groupedFAQ = showCategories 
@@ -95,8 +69,8 @@ const groupedFAQ = showCategories
   <div class="container">
     <!-- Section Header -->
     <div class="faq-header">
-      <h2 class="section-title">{title}</h2>
-      <p class="section-subtitle">{subtitle}</p>
+      <h2 class="section-title">{finalTitle}</h2>
+      <p class="section-subtitle">{finalSubtitle}</p>
     </div>
 
     <!-- FAQ Content -->
@@ -105,7 +79,7 @@ const groupedFAQ = showCategories
         items.length > 0 && (
           <div class="faq-category" data-category={categoryKey}>
             {showCategories && categoryKey !== 'all' && (
-              <h3 class="category-title">{categories[categoryKey]}</h3>
+              <h3 class="category-title">{categories[categoryKey as keyof typeof categories]}</h3>
             )}
             
             <div class="faq-list">
@@ -147,23 +121,23 @@ const groupedFAQ = showCategories
     <!-- FAQ Footer -->
     <div class="faq-footer">
       <div class="faq-contact">
-        <h3 class="contact-title">Une autre question ?</h3>
+        <h3 class="contact-title">{currentTranslations.faqContent.contact.title}</h3>
         <p class="contact-description">
-          Notre équipe est là pour vous aider. N'hésitez pas à nous contacter pour toute question supplémentaire.
+          {currentTranslations.faqContent.contact.description} {currentTranslations.faqContent.contact.email}
         </p>
         <div class="contact-actions">
           <a 
-            href="mailto:support@tatikati.app" 
+            href={`mailto:${currentTranslations.faqContent.contact.email}`}
             class="btn btn-primary"
-            aria-label="Contacter le support par email"
+            aria-label={locale === 'fr' ? 'Contacter le support par email' : 'Contact support by email'}
           >
             <i class="fa-solid fa-envelope"></i>
-            Nous contacter
+            {locale === 'fr' ? 'Nous contacter' : 'Contact us'}
           </a>
           
-          <a href="/blog" class="btn btn-secondary">
+          <a href={locale === 'fr' ? '/blog' : '/en/blog'} class="btn btn-secondary">
             <i class="fa-solid fa-book-open"></i>
-            Lire nos guides
+            {locale === 'fr' ? 'Lire nos guides' : 'Read our guides'}
           </a>
         </div>
       </div>

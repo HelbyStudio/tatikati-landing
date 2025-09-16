@@ -1,0 +1,38 @@
+[
+  {
+    "id": "feature1",
+    "title": "Captivating Stories",
+    "description": "Hundreds of original stories and classic tales, perfectly adapted to each age to stimulate children's imagination.",
+    "icon": "fa-solid fa-play"
+  },
+  {
+    "id": "feature2",
+    "title": "Secure Child Mode",
+    "description": "Intuitive interface with audio navigation and voice commands, allowing children to use the app independently.",
+    "icon": "fa-solid fa-child-reaching"
+  },
+  {
+    "id": "feature3",
+    "title": "Soothing Black Screen",
+    "description": "Pure audio mode without visual distractions for complete immersion in the sound universe and better concentration.",
+    "icon": "fa-solid fa-moon"
+  },
+  {
+    "id": "feature4",
+    "title": "Smart Playlists",
+    "description": "Collections organized by age, theme and duration with personalized recommendations for every moment of the day.",
+    "icon": "fa-solid fa-list"
+  },
+  {
+    "id": "feature5",
+    "title": "Auto Resume",
+    "description": "Smart playback position memory to resume exactly where you left off, even across different devices.",
+    "icon": "fa-solid fa-clock-rotate-left"
+  },
+  {
+    "id": "feature6",
+    "title": "Guaranteed Quality",
+    "description": "Content carefully selected by experts, without intrusive recommendation algorithms or AI-generated content.",
+    "icon": "fa-solid fa-heart"
+  }
+]

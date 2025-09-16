@@ -1,16 +1,24 @@
 ---
 import logoWhite from '../assets/logo_logotype_white.svg';
 import NewsletterForm from './NewsletterForm.astro';
+import LanguageSwitcher from './LanguageSwitcher.astro';
+import { useTranslations } from '../i18n/utils.js';
 
 interface Props {
   showNewsletter?: boolean;
+  locale: 'fr' | 'en';
 }
 
 const {
-  showNewsletter = true
+  showNewsletter = true,
+  locale = 'fr'
 } = Astro.props;
 
+const t = useTranslations(locale);
 const currentYear = new Date().getFullYear();
+
+// Get current path for language switcher
+const currentPath = Astro.url.pathname;
 ---
 
 <footer class="footer">
@@ -18,7 +26,7 @@ const currentYear = new Date().getFullYear();
   {showNewsletter && (
     <div class="newsletter-wrapper">
       <div class="container">
-        <NewsletterForm variant="footer" />
+        <NewsletterForm variant="footer" locale={locale} />
       </div>
     </div>
   )}
@@ -32,7 +40,7 @@ const currentYear = new Date().getFullYear();
           <div class="brand-logo">
             <img 
               src={logoWhite.src}
-              alt="Logo Tatikati"
+              alt={t('hero.logoAlt')}
               width="120"
               height="40"
               loading="lazy"
@@ -40,15 +48,14 @@ const currentYear = new Date().getFullYear();
           </div>
           
           <p class="brand-description">
-            L'application de podcasts pour enfants qui privilégie l'imagination à l'écran. 
-            Des contenus soigneusement sélectionnés pour éveiller la curiosité des plus jeunes.
+            {t('footer.description')}
           </p>
           
           <div class="social-links">
             <a 
               href="https://twitter.com/tatikati_app" 
               class="social-link" 
-              aria-label="Suivre Tatikati sur Twitter"
+              aria-label={t('footer.socialLinks.twitter')}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -60,7 +67,7 @@ const currentYear = new Date().getFullYear();
             <a 
               href="https://www.facebook.com/tatikati.app" 
               class="social-link" 
-              aria-label="Suivre Tatikati sur Facebook"
+              aria-label={t('footer.socialLinks.facebook')}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -72,7 +79,7 @@ const currentYear = new Date().getFullYear();
             <a 
               href="https://www.instagram.com/tatikati_app" 
               class="social-link" 
-              aria-label="Suivre Tatikati sur Instagram"
+              aria-label={t('footer.socialLinks.instagram')}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -86,7 +93,7 @@ const currentYear = new Date().getFullYear();
             <a 
               href="https://www.linkedin.com/company/tatikati" 
               class="social-link" 
-              aria-label="Suivre Tatikati sur LinkedIn"
+              aria-label={t('footer.socialLinks.linkedin')}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -100,40 +107,40 @@ const currentYear = new Date().getFullYear();
         <!-- Navigation Links -->
         <div class="footer-nav">
           <div class="nav-group">
-            <h4 class="nav-title">Produit</h4>
+            <h4 class="nav-title">{t('footer.nav.product')}</h4>
             <ul class="nav-list">
-              <li><a href="#features">Fonctionnalités</a></li>
-              <li><a href="#podcasts">Podcasts</a></li>
-              <li><a href="#download">Télécharger</a></li>
+              <li><a href="#features">{t('footer.links.features')}</a></li>
+              <li><a href="#podcasts">{t('footer.links.podcasts')}</a></li>
+              <li><a href="#download">{t('footer.links.download')}</a></li>
             </ul>
           </div>
           
           <div class="nav-group">
-            <h4 class="nav-title">Ressources</h4>
+            <h4 class="nav-title">{t('footer.nav.resources')}</h4>
             <ul class="nav-list">
-              <li><a href="/blog">Blog</a></li>
-              <li><a href="#faq">FAQ</a></li>
-              <li><a href="/support">Support</a></li>
-              <li><a href="/guides">Guides parents</a></li>
+              <li><a href={locale === 'fr' ? '/blog' : '/en/blog'}>{t('footer.links.blog')}</a></li>
+              <li><a href="#faq">{t('footer.links.faq')}</a></li>
+              <li><a href={locale === 'fr' ? '/support' : '/en/support'}>{t('footer.links.support')}</a></li>
+              <li><a href={locale === 'fr' ? '/guides' : '/en/guides'}>{t('footer.links.guides')}</a></li>
             </ul>
           </div>
           
           <div class="nav-group">
-            <h4 class="nav-title">Entreprise</h4>
+            <h4 class="nav-title">{t('footer.nav.company')}</h4>
             <ul class="nav-list">
-              <li><a href="/about">À propos</a></li>
-              <li><a href="/contact">Contact</a></li>
-              <li><a href="/press">Presse</a></li>
+              <li><a href={locale === 'fr' ? '/about' : '/en/about'}>{t('footer.links.about')}</a></li>
+              <li><a href={locale === 'fr' ? '/contact' : '/en/contact'}>{t('footer.links.contact')}</a></li>
+              <li><a href={locale === 'fr' ? '/press' : '/en/press'}>{t('footer.links.press')}</a></li>
             </ul>
           </div>
           
           <div class="nav-group">
-            <h4 class="nav-title">Légal</h4>
+            <h4 class="nav-title">{t('footer.nav.legal')}</h4>
             <ul class="nav-list">
-              <li><a href="/privacy">Confidentialité</a></li>
-              <li><a href="/terms">Conditions</a></li>
-              <li><a href="/cookies">Cookies</a></li>
-              <li><a href="/legal">Mentions légales</a></li>
+              <li><a href={locale === 'fr' ? '/privacy' : '/en/privacy'}>{t('footer.links.privacy')}</a></li>
+              <li><a href={locale === 'fr' ? '/terms' : '/en/terms'}>{t('footer.links.terms')}</a></li>
+              <li><a href={locale === 'fr' ? '/cookies' : '/en/cookies'}>{t('footer.links.cookies')}</a></li>
+              <li><a href={locale === 'fr' ? '/legal' : '/en/legal'}>{t('footer.links.legal')}</a></li>
             </ul>
           </div>
         </div>
@@ -145,21 +152,29 @@ const currentYear = new Date().getFullYear();
   <div class="footer-bottom">
     <div class="container">
       <div class="bottom-content">
-        <p class="copyright">
-          © {currentYear} Tatikati. Tous droits réservés. 
-          Fait avec ❤️ pour les familles.
-        </p>
-        
-        <div class="footer-badges">
-          <div class="badge-item">
-            <span class="badge-text">🇫🇷 Entreprise française</span>
+        <div class="bottom-left">
+          <p class="copyright">
+            © {currentYear} Tatikati. {t('footer.copyright')}
+            {t('footer.madeWith')}
+          </p>
+        </div>
+
+        <div class="bottom-center">
+          <div class="footer-badges">
+            <div class="badge-item">
+              <span class="badge-text">{t('footer.badges.french')}</span>
+            </div>
+            <div class="badge-item">
+              <span class="badge-text">{t('footer.badges.gdpr')}</span>
+            </div>
+            <div class="badge-item">
+              <span class="badge-text">{t('footer.badges.accessible')}</span>
+            </div>
           </div>
-          <div class="badge-item">
-            <span class="badge-text">🔒 RGPD compliant</span>
-          </div>
-          <div class="badge-item">
-            <span class="badge-text">♿ Accessible</span>
-          </div>
+        </div>
+
+        <div class="bottom-right">
+          <LanguageSwitcher locale={locale} currentPath={currentPath} />
         </div>
       </div>
     </div>
@@ -283,11 +298,22 @@ const currentYear = new Date().getFullYear();
   }
 
   .bottom-content {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
     gap: var(--space-lg);
-    flex-wrap: wrap;
+  }
+
+  .bottom-left {
+    justify-self: start;
+  }
+
+  .bottom-center {
+    justify-self: center;
+  }
+
+  .bottom-right {
+    justify-self: end;
   }
 
   .copyright {
@@ -317,23 +343,32 @@ const currentYear = new Date().getFullYear();
     }
   }
 
-  @media (max-width: 767px) {
+  @media (max-width: 1024px) {
+    .bottom-content {
+      grid-template-columns: 1fr;
+      justify-items: center;
+      text-align: center;
+      gap: var(--space-md);
+    }
 
+    .bottom-left,
+    .bottom-center, 
+    .bottom-right {
+      justify-self: center;
+    }
+  }
+
+  @media (max-width: 767px) {
     .footer-nav {
       grid-template-columns: repeat(2, 1fr);
       gap: var(--space-md);
     }
 
-    .bottom-content {
-      flex-direction: column;
-      text-align: center;
-    }
-
     .footer-badges {
       justify-content: center;
+      gap: var(--space-md);
     }
   }
-
 
   /* High Contrast Mode */
   @media (prefers-contrast: high) {
