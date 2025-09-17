@@ -1,6 +1,4 @@
 ---
-import { getCollection } from 'astro:content';
-
 interface Props {
   title?: string;
   subtitle?: string;
@@ -13,9 +11,19 @@ const {
   showAll = true
 } = Astro.props;
 
-// Get podcasts from Content Collection
-const podcasts = await getCollection('podcasts-fr');
-const displayPodcasts = showAll ? podcasts : podcasts.slice(0, 8);
+// Fetch podcasts from API
+let episodes = [];
+try {
+  const response = await fetch(import.meta.env.FEATURED_PLAYLIST_URL);
+  if (response.ok) {
+    const data = await response.json();
+    episodes = data.episodes || [];
+  }
+} catch (error) {
+  console.error('Failed to fetch playlist:', error);
+}
+
+const displayPodcasts = showAll ? episodes : episodes.slice(0, 8);
 ---
 
 <section class="podcasts" id="podcasts">
@@ -32,7 +40,8 @@ const displayPodcasts = showAll ? podcasts : podcasts.slice(0, 8);
       <div class="iphone-preview">
         <div class="iframe-container">
           <iframe 
-            src="https://share.tatikati.app/embed/e/nTyvW0HFluWs"
+            id="podcast-iframe"
+            src={displayPodcasts.length > 0 ? displayPodcasts[0].embedURL : "https://share.tatikati.app/embed/e/nTyvW0HFluWs"}
             title="Aperçu de l'épisode Tatikati"
             loading="lazy"
             allowfullscreen
@@ -58,16 +67,17 @@ const displayPodcasts = showAll ? podcasts : podcasts.slice(0, 8);
           {displayPodcasts.map((podcast, index) => (
             <div 
               class="podcast-card" 
-              data-podcast-id={podcast.data.id}
+              data-podcast-id={podcast.publicId}
               data-podcast-index={index}
+              data-embed-url={podcast.embedURL}
               tabindex="0"
               role="button"
-              aria-label={`Écouter ${podcast.data.title}`}
+              aria-label={`Écouter ${podcast.title}`}
             >
               <div class="podcast-cover">
                 <img 
-                  src={podcast.data.cover}
-                  alt={`Couverture de ${podcast.data.title}`}
+                  src={podcast.imageURL}
+                  alt={`Couverture de ${podcast.title}`}
                   loading="lazy"
                   width="200"
                   height="200"
@@ -80,7 +90,7 @@ const displayPodcasts = showAll ? podcasts : podcasts.slice(0, 8);
               </div>
               
               <div class="podcast-info">
-                <h3 class="podcast-title">{podcast.data.title}</h3>
+                <h3 class="podcast-title">{podcast.title}</h3>
               </div>
             </div>
           ))}

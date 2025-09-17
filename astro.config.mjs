@@ -25,6 +25,20 @@ export default defineConfig({
     mdx(),
     sitemap()
   ],
+  env: {
+    schema: {
+      BREVO_API_KEY: {
+        context: 'server',
+        access: 'secret',
+        type: 'string'
+      },
+      FEATURED_PLAYLIST_URL: {
+        context: 'server',
+        access: 'public',
+        type: 'string'
+      }
+    }
+  },
   vite: {
     optimizeDeps: {
       exclude: ['@resvg/resvg-js']

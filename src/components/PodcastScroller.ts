@@ -161,6 +161,10 @@ class PodcastScroller {
       this.updatePosition();
     }
 
+    // Reset touch coordinates to prevent false drag detection on next clicks
+    this.state.touchStartX = 0;
+    this.state.touchCurrentX = 0;
+
     this.startAutoplay();
   }
 
@@ -202,6 +206,10 @@ class PodcastScroller {
     } else {
       this.updatePosition();
     }
+
+    // Reset touch coordinates to prevent false drag detection on next clicks
+    this.state.touchStartX = 0;
+    this.state.touchCurrentX = 0;
 
     this.startAutoplay();
   }
@@ -255,18 +263,18 @@ class PodcastScroller {
   }
 
   private handleCardClick(e: MouseEvent, index: number): void {
-    // Don't open if dragging
+    // Don't update if dragging
     if (Math.abs(this.state.touchCurrentX - this.state.touchStartX) > 10) {
       return;
     }
 
-    this.openFeaturedPlayer(index);
+    this.updateIframeWithIndex(index);
   }
 
   private handleCardKeydown(e: KeyboardEvent, index: number): void {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
-      this.openFeaturedPlayer(index);
+      this.updateIframeWithIndex(index);
     }
   }
 
@@ -383,6 +391,26 @@ class PodcastScroller {
     this.indicators.forEach((indicator, index) => {
       indicator.classList.toggle('active', index === this.state.currentIndex);
     });
+  }
+
+  private updateIframeWithIndex(index: number): void {
+    const iframe = document.getElementById('podcast-iframe') as HTMLIFrameElement;
+    if (!iframe || !this.cards[index]) return;
+
+    const targetCard = this.cards[index];
+    const embedUrl = targetCard.dataset.embedUrl;
+    
+    if (embedUrl && iframe.src !== embedUrl) {
+      iframe.src = embedUrl;
+      console.log('Updated iframe to:', embedUrl);
+      
+      // Analytics for iframe update
+      this.trackEvent('podcast_iframe_update', { 
+        index: index, 
+        embedUrl: embedUrl,
+        podcastId: targetCard.dataset.podcastId 
+      });
+    }
   }
 
   private announceSlideChange(): void {

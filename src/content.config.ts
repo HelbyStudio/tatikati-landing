@@ -96,16 +96,6 @@ const reviewsEnCollection = defineCollection({
   })
 });
 
-const podcastsFrCollection = defineCollection({
-  loader: file('src/content/data/fr/podcasts.json'),
-  schema: z.object({
-    id: z.string(),
-    title: z.string(),
-    cover: z.string(),
-    episodeEmbedId: z.string(),
-    description: z.string().optional()
-  })
-});
 
 export const collections = {
   'blog': blogCollection,
@@ -115,5 +105,4 @@ export const collections = {
   'features-en': featuresEnCollection,
   'reviews-fr': reviewsFrCollection,
   'reviews-en': reviewsEnCollection,
-  'podcasts-fr': podcastsFrCollection,
 };
