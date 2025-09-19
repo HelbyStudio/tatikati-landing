@@ -82,6 +82,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Fixed navbar compensation - structural solution */
+main {
+    margin-top: 80px;
+}
+
 /* Headings */
 h1,
 h2,

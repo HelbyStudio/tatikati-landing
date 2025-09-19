@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(/Users/jeromealves/Downloads/Tatikati Press Kit/Captures d'Écran/**)",
+      "Read(/Users/jeromealves/Downloads/Tatikati Press Kit/Captures d'Écran/**)",
+      "Read(/Users/jeromealves/Downloads/Tatikati Press Kit/Captures d'Écran/**)",
+      "Read(/Users/jeromealves/Downloads/Tatikati Press Kit/Captures d'Écran/**)",
+      "Read(/Users/jeromealves/Downloads/Tatikati Press Kit/Captures d'Écran/**)",
+      "Read(/Users/jeromealves/Downloads/Tatikati Press Kit/Captures d'Écran/**)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

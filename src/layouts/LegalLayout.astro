@@ -21,7 +21,6 @@ const { title, description, lastUpdated, locale } = frontmatter;
   title={`${title} | Tatikati`}
   description={description}
 >
-  <NavBar />
   
   <main id="main" class="legal-page">
     <div class="container">
@@ -36,12 +35,10 @@ const { title, description, lastUpdated, locale } = frontmatter;
     </div>
   </main>
   
-  <Footer />
 </BaseLayout>
 
 <style>
   .legal-page {
-    padding-top: 80px;
     min-height: 100vh;
   }
 

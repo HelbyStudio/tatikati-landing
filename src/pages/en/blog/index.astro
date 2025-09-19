@@ -7,9 +7,9 @@ import { useTranslations } from '../../../i18n/utils.js';
 
 const t = useTranslations('en');
 
-// Get English blog posts
-const posts = await getCollection('blog', ({ data }) => {
-  return data.draft !== true && data.locale === 'en';
+// Get English blog posts - only those in 'en/' folder
+const posts = await getCollection('blog', ({ data, slug }) => {
+  return !data.draft && slug.startsWith('en/');
 });
 
 // Sort posts by publication date
@@ -26,7 +26,6 @@ const description = 'Discover articles about children\'s development, education 
   description={description}
   locale="en"
 >
-  <NavBar locale="en" />
   
   <main id="main" class="blog-index">
     <div class="container">
@@ -41,7 +40,7 @@ const description = 'Discover articles about children\'s development, education 
         {sortedPosts.length > 0 ? (
           sortedPosts.map((post) => (
             <article class="blog-card">
-              <a href={`/en/blog/${post.slug}`} class="blog-link">
+              <a href={`/en/blog/${post.slug.replace('en/', '')}`} class="blog-link">
                 {post.data.heroImage && (
                   <div class="blog-image">
                     <img 
@@ -89,7 +88,6 @@ const description = 'Discover articles about children\'s development, education 
     </div>
   </main>
 
-  <Footer locale="en" />
 </BaseLayout>
 
 <style>

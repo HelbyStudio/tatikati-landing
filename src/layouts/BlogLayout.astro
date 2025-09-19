@@ -1,5 +1,7 @@
 ---
 import BaseLayout from './BaseLayout.astro';
+import NavBar from '../components/NavBar.astro';
+import Footer from '../components/Footer.astro';
 import type { CollectionEntry } from 'astro:content';
 
 export interface Props {
@@ -7,10 +9,13 @@ export interface Props {
 }
 
 const { post } = Astro.props;
-const { title, description, pubDate, heroImage } = post.data;
+const { title, description, pubDate, heroImage, locale } = post.data;
 
-// Format date
-const formattedDate = new Intl.DateTimeFormat('fr-FR', {
+// Get the locale from the post data, default to 'fr'
+const currentLocale = locale || 'fr';
+
+// Format date according to locale
+const formattedDate = new Intl.DateTimeFormat(currentLocale === 'fr' ? 'fr-FR' : 'en-US', {
   year: 'numeric',
   month: 'long',
   day: 'numeric',
@@ -25,16 +30,18 @@ const blogDescription = description || `Découvrez ${title} sur le blog Tatikati
   title={blogTitle}
   description={blogDescription}
   image={heroImage}
+  locale={currentLocale}
 >
+
   <main id="main" class="blog-content">
     <div class="container">
       <!-- Back to blog link -->
       <nav aria-label="Navigation du blog" class="blog-nav">
-        <a href="/blog" class="back-link">
+        <a href={currentLocale === 'fr' ? '/blog' : '/en/blog'} class="back-link">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
             <path d="M10 14L4 8l6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
-          Retour au blog
+          {currentLocale === 'fr' ? 'Retour au blog' : 'Back to blog'}
         </a>
       </nav>
 
@@ -67,17 +74,18 @@ const blogDescription = description || `Découvrez ${title} sur le blog Tatikati
 
       <!-- Back to blog CTA -->
       <footer class="blog-footer">
-        <a href="/blog" class="btn btn-secondary">
-          Voir tous les articles
+        <a href={currentLocale === 'fr' ? '/blog' : '/en/blog'} class="btn btn-secondary">
+          {currentLocale === 'fr' ? 'Voir tous les articles' : 'View all articles'}
         </a>
       </footer>
     </div>
   </main>
+
 </BaseLayout>
 
 <style>
   .blog-content {
-    padding: var(--space-3xl) 0;
+    padding: calc(80px + var(--space-3xl)) 0 var(--space-3xl) 0;
     min-height: 100vh;
   }
 

@@ -1,23 +1,5 @@
 [
   {
-    "id": "content1",
-    "category": "content",
-    "question": "What type of content do you offer?",
-    "answer": "Tatikati offers original stories, classic tales, educational podcasts, and lullabies. All content is carefully selected to be age-appropriate and stimulate children's imagination."
-  },
-  {
-    "id": "features1",
-    "category": "features",
-    "question": "What are the main features of the app?",
-    "answer": "Tatikati offers child mode with audio navigation, black screen during listening to avoid distractions, thematic playlists, easy episode resumption, and free access to many podcasts."
-  },
-  {
-    "id": "features2",
-    "category": "features",
-    "question": "How does child mode work?",
-    "answer": "Child mode uses a simplified interface with voice commands and child-friendly navigation. Children can use the app independently without risking access to inappropriate content for their age."
-  },
-  {
     "id": "pricing1",
     "category": "pricing",
     "question": "Is the app free?",
@@ -27,7 +9,7 @@
     "id": "pricing2",
     "category": "pricing",
     "question": "What does the premium subscription include?",
-    "answer": "The premium subscription gives access to exclusive playlists, premium content, advanced features like offline downloads and cross-device synchronization."
+    "answer": "The premium subscription gives access to exclusive playlists, premium content and advanced features."
   },
   {
     "id": "privacy1",
@@ -42,9 +24,21 @@
     "answer": "Tatikati is designed for children aged 3 to 12. Content is organized by age groups to ensure each child finds stories appropriate for their development."
   },
   {
-    "id": "usage2",
+    "id": "usage3",
     "category": "usage",
-    "question": "Can the app be used without internet connection?",
-    "answer": "With the premium subscription, you can download content for offline listening. The free version requires an internet connection to stream podcasts."
+    "question": "What are the main features of the app?",
+    "answer": "Tatikati offers child mode with audio navigation, black screen during listening to avoid distractions, thematic playlists, easy episode resumption, and free access to many podcasts."
+  },
+  {
+    "id": "usage4",
+    "category": "usage",
+    "question": "How does child mode work?",
+    "answer": "Child mode uses a simplified interface with voice commands and child-friendly navigation. Children can use the app independently without risking access to inappropriate content for their age."
+  },
+  {
+    "id": "usage5",
+    "category": "usage",
+    "question": "What type of content do you offer?",
+    "answer": "Tatikati offers original stories, classic tales, educational podcasts, and lullabies. All content is carefully selected to be age-appropriate and stimulate children's imagination."
   }
 ]

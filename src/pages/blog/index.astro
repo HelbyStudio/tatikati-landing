@@ -5,9 +5,10 @@ import NavBar from '../../components/NavBar.astro';
 import Footer from '../../components/Footer.astro';
 import NewsletterForm from '../../components/NewsletterForm.astro';
 
-// Get all blog posts
-const allPosts = await getCollection('blog', ({ data }) => {
-  return !data.draft;
+// Get all blog posts - filter out English posts (those in 'en/' folder)
+const allPosts = await getCollection('blog', ({ data, slug }) => {
+  // Exclude drafts and English posts
+  return !data.draft && !slug.startsWith('en/');
 });
 
 // Sort posts by publication date (most recent first)
@@ -50,7 +51,6 @@ function formatDate(date: Date): string {
   title="Blog Tatikati - Conseils et actualités pour parents" 
   description="Découvrez nos conseils d'experts, guides pratiques et actualités sur les podcasts pour enfants, le développement de l'enfant et l'éducation sans écran."
 >
-  <NavBar />
   
   <main id="main" class="blog-page">
     <div class="container">
@@ -244,12 +244,10 @@ function formatDate(date: Date): string {
     </div>
   </main>
   
-  <Footer showNewsletter={false} locale="fr" />
 </BaseLayout>
 
 <style>
   .blog-page {
-    padding-top: 80px; /* Account for fixed navbar */
     min-height: 100vh;
   }
 

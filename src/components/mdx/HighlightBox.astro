@@ -14,35 +14,37 @@ const { title, variant = 'primary' } = Astro.props;
 
 <style>
   .highlight-box {
-    color: white;
-    padding: var(--space-xl, 2rem);
-    border-radius: var(--radius-lg, 1rem);
-    margin: var(--space-xl, 2rem) 0;
+    background-color: var(--color-bg-secondary, #f8f9fa);
+    padding: 1.5rem;
+    border-radius: var(--radius-md, 0.5rem);
+    margin: 1.5rem 0;
   }
   
   .highlight-box--primary {
-    background: linear-gradient(135deg, var(--color-accent-4), var(--color-accent-3));
+    background-color: var(--color-bg-secondary, #f8f9fa);
   }
   
   .highlight-box--warning {
-    background: linear-gradient(135deg, #ff6b6b, #ff8787);
+    background-color: #fff5f5;
   }
   
   .highlight-box--info {
-    background: linear-gradient(135deg, #4dabf7, #74c0fc);
+    background-color: #f0f9ff;
   }
 
   .highlight-box h4 {
-    color: white;
     margin-top: 0;
     margin-bottom: 1rem;
+    color: var(--color-text-primary, var(--color-fg));
     font-size: 1.25rem;
     font-weight: 600;
   }
 
   .highlight-box p,
   .highlight-box li {
-    color: rgba(255, 255, 255, 0.95);
+    margin: 0.5rem 0;
+    color: var(--color-text-secondary, var(--color-gray-600));
+    line-height: 1.6;
   }
 
   .highlight-box p:last-child {
@@ -56,19 +58,31 @@ const { title, variant = 'primary' } = Astro.props;
 
   .highlight-box li {
     margin: 0.5rem 0;
+    color: var(--color-text-secondary, var(--color-gray-600));
   }
 
   .highlight-box strong {
-    color: white;
     font-weight: 600;
+    color: var(--color-text-primary, var(--color-fg));
   }
 
   .highlight-box em {
     font-style: italic;
-    opacity: 0.95;
   }
 
   .highlight-box ul ul {
     margin-top: 0.5rem;
+  }
+
+  .highlight-box a {
+    color: var(--color-accent-3);
+    font-weight: 500;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: opacity 0.2s;
+  }
+
+  .highlight-box a:hover {
+    opacity: 0.8;
   }
 </style>

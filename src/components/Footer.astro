@@ -2,18 +2,18 @@
 import logoWhite from '../assets/logo_logotype_white.svg';
 import NewsletterForm from './NewsletterForm.astro';
 import LanguageSwitcher from './LanguageSwitcher.astro';
-import { useTranslations } from '../i18n/utils.js';
+import { useTranslations, getLocaleFromUrl } from '../i18n/utils.js';
 
 interface Props {
   showNewsletter?: boolean;
-  locale: 'fr' | 'en';
+  locale?: 'fr' | 'en';
 }
 
 const {
-  showNewsletter = true,
-  locale = 'fr'
+  showNewsletter = true
 } = Astro.props;
 
+const locale = getLocaleFromUrl(Astro.url.pathname);
 const t = useTranslations(locale);
 const currentYear = new Date().getFullYear();
 

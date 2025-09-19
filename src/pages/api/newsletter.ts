@@ -14,7 +14,7 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
     
-    const { email } = data;
+    const { email, listId } = data;
 
     // Validate email
     if (!email || !email.includes('@')) {
@@ -36,6 +36,21 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
 
+    // Prepare contact data with optional list ID
+    const contactData: any = {
+      email: email,
+      attributes: {
+        SOURCE: 'tatikati-landing',
+        SIGNUP_DATE: new Date().toISOString()
+      },
+      updateEnabled: true // Update if contact already exists
+    };
+
+    // Add list ID if provided (e.g., for Android waitlist)
+    if (listId) {
+      contactData.listIds = [listId];
+    }
+
     // Create contact in Brevo
     const brevoResponse = await fetch('https://api.brevo.com/v3/contacts', {
       method: 'POST',
@@ -44,14 +59,7 @@ export const POST: APIRoute = async ({ request }) => {
         'Content-Type': 'application/json',
         'api-key': apiKey
       },
-      body: JSON.stringify({
-        email: email,
-        attributes: {
-          SOURCE: 'tatikati-landing',
-          SIGNUP_DATE: new Date().toISOString()
-        },
-        updateEnabled: true // Update if contact already exists
-      })
+      body: JSON.stringify(contactData)
     });
 
     // Check if contact was created or updated

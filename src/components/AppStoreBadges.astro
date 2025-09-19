@@ -1,0 +1,130 @@
+---
+import AndroidWaitlistPopup from './AndroidWaitlistPopup.astro';
+
+interface Props {
+  iosUrl?: string;
+  androidUrl?: string;
+  size?: 'small' | 'medium' | 'large';
+  direction?: 'horizontal' | 'vertical';
+  className?: string;
+}
+
+const {
+  iosUrl = "https://apps.apple.com/fr/app/podcasts-histoires-tatikati/id6739883651",
+  androidUrl = "https://play.google.com/store/apps/details?id=com.tatikati.app",
+  size = 'medium',
+  direction = 'horizontal',
+  className = ''
+} = Astro.props;
+
+// Define max width based on size
+const maxWidthMap = {
+  small: '400px',
+  medium: '450px', 
+  large: '500px'
+};
+---
+
+<div class={`app-store-badges ${direction} ${size} ${className}`} style={`--max-width: ${maxWidthMap[size]}`}>
+  <a 
+    href={iosUrl}
+    class="app-badge ios-badge"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Télécharger sur l'App Store"
+  >
+    <img 
+      src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/fr-fr?size=250x83&releaseDate=1609459200"
+      alt="Télécharger sur l'App Store"
+      loading="lazy"
+    />
+  </a>
+  
+  <button 
+    class="app-badge android-badge"
+    onclick="openAndroidWaitlist()"
+    aria-label="Disponible sur Google Play"
+  >
+    <img 
+      src="https://play.google.com/intl/en_us/badges/static/images/badges/fr_badge_web_generic.png"
+      alt="Disponible sur Google Play"
+      loading="lazy"
+    />
+  </button>
+</div>
+
+<!-- Android Waitlist Popup -->
+<AndroidWaitlistPopup />
+
+<style>
+  .app-store-badges {
+    display: flex;
+    gap: var(--space-lg);
+    max-width: var(--max-width);
+  }
+
+  .app-store-badges.horizontal {
+    flex-direction: row;
+    align-items: stretch;
+  }
+
+  .app-store-badges.vertical {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .app-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    min-width: 0;
+    transition: transform 0.2s ease;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .app-badge:hover {
+    transform: scale(1.05);
+  }
+
+  .app-badge img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+
+  /* Size adjustments */
+  .app-store-badges.small .app-badge img {
+    max-height: 60px;
+  }
+
+  .app-store-badges.medium .app-badge img {
+    max-height: 65px;
+  }
+
+  .app-store-badges.large .app-badge img {
+    max-height: 75px;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 767px) {
+    .app-store-badges {
+      justify-content: center;
+    }
+
+    .app-store-badges.vertical {
+      align-items: center;
+    }
+  }
+
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    .app-badge:hover {
+      transform: none;
+    }
+  }
+</style>

@@ -61,11 +61,10 @@ const {
 <style>
   .hero {
     position: relative;
-    min-height: 100vh + 80;
+    min-height: 100vh;
     display: flex;
     align-items: center;
     padding: var(--space-3xl) 0;
-    margin-top: 80px; /* Account for fixed navbar */
     overflow: hidden;
     background-image: url('https://images.unsplash.com/photo-1637572466977-b570655e21e7?w=1920&h=1080&fit=crop&crop=center');
     background-size: cover;
@@ -268,7 +267,6 @@ const {
 
   @media (min-width: 1024px) {
     .hero {
-      margin-top: 0;
       min-height: calc(100vh - 80px);
     }
   }

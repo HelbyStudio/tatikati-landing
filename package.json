@@ -5,12 +5,14 @@
   "description": "Landing page pour l'application Tatikati - Podcasts pour enfants",
   "scripts": {
     "dev": "astro dev",
+    "prebuild": "node scripts/create-press-kit-zip.js",
     "build": "astro build",
     "start": "node ./dist/server/entry.mjs",
     "preview": "astro preview",
     "astro": "astro",
     "lint": "astro check",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "create-zip": "node scripts/create-press-kit-zip.js"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
@@ -25,6 +27,8 @@
     "typescript": "^5.9.2"
   },
   "devDependencies": {
+    "@types/archiver": "^6.0.3",
+    "archiver": "^7.0.1",
     "prettier": "^3.4.0",
     "prettier-plugin-astro": "^0.14.1"
   }

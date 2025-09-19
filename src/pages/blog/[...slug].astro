@@ -1,19 +1,23 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, getEntry } from 'astro:content';
 import BlogLayout from '../../layouts/BlogLayout.astro';
 
-export async function getStaticPaths() {
-  const blogEntries = await getCollection('blog', ({ data }) => {
-    return !data.draft;
-  });
-  
-  return blogEntries.map(entry => ({
-    params: { slug: entry.slug }, 
-    props: { entry },
-  }));
+// In SSR mode, we get the slug from the URL params and fetch the entry dynamically
+const { slug } = Astro.params;
+
+// Get the blog entry by its slug
+const entry = await getEntry('blog', slug);
+
+// If no entry found, return a 404
+if (!entry) {
+  return Astro.redirect('/404');
 }
 
-const { entry } = Astro.props;
+// Check if the entry is published (not draft)
+if (entry.data.draft) {
+  return Astro.redirect('/404');
+}
+
 const { Content } = await entry.render();
 ---
 
