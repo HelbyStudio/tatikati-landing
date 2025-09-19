@@ -152,20 +152,6 @@ const currentPath = Astro.url.pathname;
           </p>
         </div>
 
-        <div class="bottom-center">
-          <div class="footer-badges">
-            <div class="badge-item">
-              <span class="badge-text">{t('footer.badges.french')}</span>
-            </div>
-            <div class="badge-item">
-              <span class="badge-text">{t('footer.badges.gdpr')}</span>
-            </div>
-            <div class="badge-item">
-              <span class="badge-text">{t('footer.badges.accessible')}</span>
-            </div>
-          </div>
-        </div>
-
         <div class="bottom-right">
           <LanguageSwitcher locale={locale} currentPath={currentPath} />
         </div>
@@ -291,22 +277,18 @@ const currentPath = Astro.url.pathname;
   }
 
   .bottom-content {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
+    display: flex;
+    justify-content: space-between;
     align-items: center;
     gap: var(--space-lg);
   }
 
   .bottom-left {
-    justify-self: start;
-  }
-
-  .bottom-center {
-    justify-self: center;
+    flex: 1;
   }
 
   .bottom-right {
-    justify-self: end;
+    flex-shrink: 0;
   }
 
   .copyright {
@@ -338,16 +320,14 @@ const currentPath = Astro.url.pathname;
 
   @media (max-width: 1024px) {
     .bottom-content {
-      grid-template-columns: 1fr;
-      justify-items: center;
+      flex-direction: column;
       text-align: center;
       gap: var(--space-md);
     }
 
     .bottom-left,
-    .bottom-center, 
     .bottom-right {
-      justify-self: center;
+      flex: none;
     }
   }
 
