@@ -83,6 +83,10 @@ body {
 }
 
 /* Fixed navbar compensation - structural solution */
+html {
+  scroll-padding-top: 80px;
+}
+
 main {
     margin-top: 80px;
 }

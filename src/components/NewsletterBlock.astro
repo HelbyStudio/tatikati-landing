@@ -11,49 +11,61 @@ const {
 ---
 
 <section class="newsletter-block">
-  <div class="newsletter-content">
-    <h3 class="newsletter-title">{title}</h3>
-    <p class="newsletter-description">{description}</p>
+  <div class="container">
+    <div class="newsletter-content">
+    <div class="newsletter-text">
+      <h3 class="newsletter-title">{title}</h3>
+      <p class="newsletter-description">{description}</p>
+    </div>
     
-    <form class="newsletter-form" data-newsletter-form>
-      <div class="form-group">
-        <label for="newsletter-email-block" class="sr-only">Adresse email</label>
-        <input 
-          type="email" 
-          id="newsletter-email-block"
-          name="email"
-          placeholder="Votre adresse email"
-          class="newsletter-input"
-          required
-          aria-describedby="email-error-block"
-        />
-        <button type="submit" class="newsletter-submit">
-          <span>S'abonner</span>
-          <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
-        </button>
-      </div>
-      <div id="email-error-block" class="error-message" role="alert" aria-live="polite"></div>
-      <p class="newsletter-privacy">
-        En vous abonnant, vous acceptez de recevoir nos emails. 
-        <a href="/privacy">Politique de confidentialité</a>
-      </p>
-    </form>
+    <div class="newsletter-form-wrapper">
+      <form class="newsletter-form" data-newsletter-form>
+        <div class="form-group">
+          <label for="newsletter-email-block" class="sr-only">Adresse email</label>
+          <input 
+            type="email" 
+            id="newsletter-email-block"
+            name="email"
+            placeholder="Votre adresse email"
+            class="newsletter-input"
+            required
+            aria-describedby="email-error-block"
+          />
+          <button type="submit" class="newsletter-submit">
+            <span>S'abonner</span>
+            <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+          </button>
+        </div>
+        <div id="email-error-block" class="error-message" role="alert" aria-live="polite"></div>
+        <p class="newsletter-privacy">
+          En vous abonnant, vous acceptez de recevoir nos emails. 
+          <a href="/privacy">Politique de confidentialité</a>
+        </p>
+      </form>
+    </div>
   </div>
+</div>
 </section>
 
 <style>
   .newsletter-block {
     background: linear-gradient(135deg, var(--color-accent-3), var(--color-accent-1));
     border-radius: var(--radius-2xl);
-    padding: var(--space-3xl);
+    padding: var(--space-3xl) 0;
     color: white;
     margin: var(--space-4xl) 0;
   }
 
+  .newsletter-block .container {
+    padding-left: 0;
+  }
+
   .newsletter-content {
-    max-width: 600px;
-    margin: 0 auto;
-    text-align: center;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-3xl);
+    align-items: flex-start;
+    text-align: left;
   }
 
   .newsletter-title {
@@ -62,6 +74,9 @@ const {
     font-weight: 700;
     margin-bottom: var(--space-md);
     color: white;
+    text-align: left;
+    margin-left: 0;
+    margin-right: auto;
   }
 
   .newsletter-description {
@@ -69,6 +84,15 @@ const {
     line-height: 1.6;
     color: rgba(255, 255, 255, 0.9);
     margin-bottom: var(--space-xl);
+    text-align: left;
+    margin-left: 0;
+    margin-right: auto;
+  }
+
+  .newsletter-form-wrapper {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
   }
 
   .newsletter-form {
@@ -82,7 +106,7 @@ const {
     overflow: hidden;
     box-shadow: var(--shadow-soft);
     max-width: 450px;
-    margin: 0 auto var(--space-md);
+    margin: 0 0 var(--space-md) 0;
   }
 
   .newsletter-input {
@@ -143,14 +167,45 @@ const {
   }
 
   /* Responsive Design */
+  @media (min-width: 768px) {
+    .newsletter-content {
+      grid-template-columns: 1fr 1fr;
+      text-align: left;
+      align-items: flex-start;
+      justify-items: start;
+    }
+
+    .newsletter-text {
+      padding-right: var(--space-xl);
+      padding-left: var(--space-xl);
+      margin: 0;
+      text-align: left;
+      justify-self: start;
+    }
+
+    .newsletter-form-wrapper {
+      justify-content: flex-start;
+      align-items: flex-start;
+    }
+  }
+
   @media (max-width: 767px) {
     .newsletter-block {
-      padding: var(--space-2xl);
+      padding: var(--space-2xl) 0;
+    }
+
+    .newsletter-content {
+      text-align: center;
+    }
+
+    .newsletter-form-wrapper {
+      justify-content: center;
     }
 
     .form-group {
       flex-direction: column;
       max-width: 100%;
+      margin: 0 auto var(--space-md);
     }
 
     .newsletter-submit {
@@ -173,100 +228,9 @@ const {
 </style>
 
 <script>
+  import { initNewsletterHandler } from '../scripts/newsletterHandler.js';
+  
   document.addEventListener('DOMContentLoaded', function() {
-    // Newsletter form submission
-    const newsletterForms = document.querySelectorAll('[data-newsletter-form]');
-    
-    newsletterForms.forEach(form => {
-      const emailInput = form.querySelector('.newsletter-input');
-      const errorMessage = form.querySelector('.error-message');
-      const submitButton = form.querySelector('.newsletter-submit');
-
-      if (emailInput && errorMessage && submitButton) {
-        form.addEventListener('submit', async function(e) {
-          e.preventDefault();
-          
-          const email = emailInput.value.trim();
-          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-          // Reset error state
-          errorMessage.style.display = 'none';
-          errorMessage.textContent = '';
-          emailInput.classList.remove('error');
-
-          // Validate email
-          if (!email) {
-            showError('Veuillez saisir votre adresse email.');
-            return;
-          }
-
-          if (!emailRegex.test(email)) {
-            showError('Veuillez saisir une adresse email valide.');
-            return;
-          }
-
-          // Show loading state
-          const originalText = submitButton.innerHTML;
-          submitButton.innerHTML = '<span>Inscription...</span>';
-          submitButton.disabled = true;
-
-          try {
-            // Call newsletter API endpoint
-            const response = await fetch('/api/newsletter', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({ email })
-            });
-
-            const result = await response.json();
-
-            if (response.ok && result.success) {
-              // Success state
-              submitButton.innerHTML = '<span>✓ Inscrit !</span>';
-              submitButton.style.background = 'var(--color-accent-4)';
-              emailInput.value = '';
-              
-              // Analytics
-              console.log('Newsletter subscription success:', email);
-              
-              // Reset after 3 seconds
-              setTimeout(() => {
-                submitButton.innerHTML = originalText;
-                submitButton.disabled = false;
-                submitButton.style.background = '';
-              }, 3000);
-            } else {
-              // Show error from API or default message
-              showError(result.error || 'Une erreur est survenue. Veuillez réessayer.');
-              submitButton.innerHTML = originalText;
-              submitButton.disabled = false;
-            }
-
-          } catch (error) {
-            console.error('Newsletter error:', error);
-            showError('Une erreur est survenue. Veuillez réessayer.');
-            submitButton.innerHTML = originalText;
-            submitButton.disabled = false;
-          }
-        });
-
-        function showError(message) {
-          errorMessage.textContent = message;
-          errorMessage.style.display = 'block';
-          emailInput.classList.add('error');
-          emailInput.focus();
-        }
-
-        // Real-time validation
-        emailInput.addEventListener('input', function() {
-          if (errorMessage.style.display === 'block') {
-            errorMessage.style.display = 'none';
-            emailInput.classList.remove('error');
-          }
-        });
-      }
-    });
+    initNewsletterHandler('[data-newsletter-form]');
   });
 </script>

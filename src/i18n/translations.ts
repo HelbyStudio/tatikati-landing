@@ -23,7 +23,7 @@ export const translations = {
 
     // Features Section
     features: {
-      title: 'Pourquoi choisir Tatikati ?',
+      title: 'Pourquoi choisir Tatikati ?',
       subtitle: 'Des fonctionnalités pensées pour les enfants et leurs parents'
     },
 
@@ -47,7 +47,7 @@ export const translations = {
 
     // Download Section
     download: {
-      title: 'Prêt à commencer l\'aventure ?',
+      title: 'Prêt à commencer l\'aventure ?',
       description: 'Rejoignez des milliers de familles qui ont déjà adopté Tatikati pour des moments d\'écoute de qualité.'
     },
 
